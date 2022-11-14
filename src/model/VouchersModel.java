@@ -1,0 +1,20 @@
+package model;
+
+import db.objects.Voucher;
+import db.use.Model;
+import java.util.ArrayList;
+
+public class VouchersModel extends Model {
+    public VouchersModel() {
+        super("Vouchers", 6);
+    }
+    
+    public static ArrayList<Voucher> takeObject(ArrayList<String[]> listArr) {
+        ArrayList<Voucher> result = new ArrayList<>();
+        
+        for (int i = 0; i < listArr.size(); i++) {
+            result.add(new Voucher(listArr.get(i)));
+        }
+        return result;
+    }
+}
