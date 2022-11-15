@@ -1,10 +1,10 @@
 package view;
 
-import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.showMessageDialog;
+import controller.SellController;
 import db.objects.Customer;
 import java.util.ArrayList;
-import model.CustomersModel;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 
 public class Sell extends javax.swing.JPanel {
@@ -248,6 +248,11 @@ public class Sell extends javax.swing.JPanel {
 
         productIDOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         productIDOkBtn.setText("OK");
+        productIDOkBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleProductIDQuery(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Product Name:");
@@ -410,17 +415,20 @@ public class Sell extends javax.swing.JPanel {
     }//GEN-LAST:event_btnchoosedialogActionPerformed
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
-        if (customerChooseInput.getText().equals("")) {
-            showMessageDialog(null, "Customer Input Not Empty", "ERROR MESSAGE", JOptionPane.PLAIN_MESSAGE);
-            return;
+        String inputValue = customerChooseInput.getText();
+        String name = "";
+        ArrayList<Customer> customers = SellController.getCustomerList(this, inputValue);
+        try {
+            name = customers.get(0).getCustomerName();
+        } catch (Exception e) {
+        } finally {
         }
-        ArrayList<Customer> customers = CustomersModel.takeObject(new CustomersModel().selectWithCondition("CustomerID = " + customerChooseInput.getText()));
-        String customerName = customers.get(0).getCustomerName();
-        String phone = customers.get(0).getPhone();
-        
-        customerNameDisplay.setText(customerName);
-        phoneDisplay.setText(phone);
+        showMessageDialog(null, name, "Message", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_handleChooseCustomer
+
+    private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery
+        // TODO add your handling code here:
+    }//GEN-LAST:event_handleProductIDQuery
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
