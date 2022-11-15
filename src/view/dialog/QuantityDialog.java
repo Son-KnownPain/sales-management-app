@@ -4,11 +4,14 @@
  */
 package view.dialog;
 
+import view.Sell;
+
 /**
  *
  * @author PC HP
  */
 public class QuantityDialog extends javax.swing.JDialog {
+    private Sell sell;
 
     /**
      * Creates new form QuantityDialog
@@ -16,6 +19,10 @@ public class QuantityDialog extends javax.swing.JDialog {
     public QuantityDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public void getSell(Sell sell) {
+        this.sell = sell;
     }
 
     /**
@@ -29,9 +36,9 @@ public class QuantityDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        quantityInput = new javax.swing.JTextField();
+        cancelBtn = new javax.swing.JButton();
+        confirmBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(225, 244, 255));
@@ -42,14 +49,19 @@ public class QuantityDialog extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Enter Quantity");
 
-        jTextField1.setBackground(new java.awt.Color(235, 235, 235));
+        quantityInput.setBackground(new java.awt.Color(235, 235, 235));
 
-        jButton1.setBackground(new java.awt.Color(235, 235, 235));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Cancel");
+        cancelBtn.setBackground(new java.awt.Color(235, 235, 235));
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cancelBtn.setText("Cancel");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setText("Comfirm");
+        confirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        confirmBtn.setText("Comfirm");
+        confirmBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleQuantityConfirm(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -63,10 +75,10 @@ public class QuantityDialog extends javax.swing.JDialog {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(quantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -75,11 +87,11 @@ public class QuantityDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(quantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(141, 141, 141))
         );
 
@@ -95,12 +107,18 @@ public class QuantityDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
+        int quantity = Integer.parseInt(quantityInput.getText());
+        sell.renderRowTable(quantity);
+        this.dispose();
+    }//GEN-LAST:event_handleQuantityConfirm
 
     /**
      * @param args the command line arguments
@@ -145,10 +163,10 @@ public class QuantityDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton confirmBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField quantityInput;
     // End of variables declaration//GEN-END:variables
 }

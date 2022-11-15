@@ -64,7 +64,7 @@ public class CustomersDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         resultForValue = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultTable = new javax.swing.JTable();
@@ -77,13 +77,19 @@ public class CustomersDialog extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Result for:");
 
-        resultForValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        resultForValue.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        resultForValue.setForeground(new java.awt.Color(255, 153, 51));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Customer ID: ");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Cancel");
+        cancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCancel(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 255, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -120,6 +126,7 @@ public class CustomersDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(resultTable);
 
         idDisplay.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        idDisplay.setForeground(new java.awt.Color(255, 153, 51));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -140,7 +147,7 @@ public class CustomersDialog extends javax.swing.JDialog {
                                 .addComponent(idDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(226, 226, 226)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 7, Short.MAX_VALUE))
@@ -160,12 +167,10 @@ public class CustomersDialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        resultForValue.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,9 +190,14 @@ public class CustomersDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
+        if (idDisplay.getText().equals("")) return;
         sell.setCurrentCustomer(customerChoose);
         this.dispose();
     }//GEN-LAST:event_handleChooseCustomer
+
+    private void handleCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCancel
+        this.dispose();
+    }//GEN-LAST:event_handleCancel
 
     /**
      * @param args the command line arguments
@@ -232,8 +242,8 @@ public class CustomersDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelBtn;
     private javax.swing.JLabel idDisplay;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

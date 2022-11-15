@@ -2,14 +2,22 @@ package view;
 
 import controller.SellController;
 import db.objects.Customer;
+import db.objects.Product;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.showMessageDialog;
+import javax.swing.table.DefaultTableModel;
+import model.ProductsModel;
 import view.dialog.CustomersDialog;
+import view.dialog.QuantityDialog;
 
 
 public class Sell extends javax.swing.JPanel {
     private Customer currentCustomer;
+    private Product currentProduct;
+    
+    // Chỗ các biến tính toán tiền thanh toán
+    private int initialPrice = 0;
+    private int voucherValue = 0;
+    private int priceToPay = 0;
     
     public Sell() {
         initComponents();
@@ -19,6 +27,21 @@ public class Sell extends javax.swing.JPanel {
         this.currentCustomer = customer;
         customerNameDisplay.setText(currentCustomer.getCustomerName());
         phoneDisplay.setText(currentCustomer.getPhone());
+    }
+    
+    public void renderRowTable(int quantity) {
+        DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
+        Object[] data = { currentProduct.getProductName(), currentProduct.getPrice() * quantity, quantity, currentProduct.getUnitPerQuantity() };
+        defaultTableModel.addRow(data);
+        setInitialPrice(currentProduct.getPrice() * quantity);
+        currentProduct = null;
+    }
+    
+    private void setInitialPrice(int value) {
+        initialPrice += value;
+        priceToPay = initialPrice - voucherValue;
+        initialPriceDisplay.setText(initialPrice + "");
+        priceToPayDisplay.setText(priceToPay + "");
     }
     
     /**
@@ -202,33 +225,27 @@ public class Sell extends javax.swing.JPanel {
         sellConfirmBtn.setText("Sell");
 
         customerNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        customerNameDisplay.setText("Nguyen Hong Son");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Choose Customer: ");
 
         initialPriceDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        initialPriceDisplay.setText("54.000VNĐ");
+        initialPriceDisplay.setText("0 VNĐ");
 
         phoneDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        phoneDisplay.setText("0389845752");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Phone:");
 
         priceToPayDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        priceToPayDisplay.setText("42.000VNĐ");
+        priceToPayDisplay.setText("0 VNĐ");
 
         productsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "", "", "", ""
+                "Name", "Price", "Quantity", "UnitPerQuantity"
             }
         ) {
             Class[] types = new Class [] {
@@ -249,7 +266,7 @@ public class Sell extends javax.swing.JPanel {
         jScrollPane1.setViewportView(productsTable);
 
         voucherValueDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        voucherValueDisplay.setText("12.000VNĐ");
+        voucherValueDisplay.setText("0 VNĐ");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel5.setText("Product ID:");
@@ -432,7 +449,15 @@ public class Sell extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseCustomer
 
     private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery
-        // TODO add your handling code here:
+        int productIDEntered = Integer.parseInt(productIDInput.getText());
+        currentProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + productIDEntered)).get(0);
+        
+        
+        QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
+        dialog.getSell(this);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+        
     }//GEN-LAST:event_handleProductIDQuery
 
 
