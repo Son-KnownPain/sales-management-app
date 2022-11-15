@@ -4,11 +4,21 @@
  */
 package view.dialog;
 
+import db.objects.Customer;
+import java.util.ArrayList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import view.Sell;
+
 /**
  *
  * @author PC HP
  */
 public class CustomersDialog extends javax.swing.JDialog {
+    private Customer customerChoose;
+    private Sell sell;
 
     /**
      * Creates new form CustomersDialog
@@ -16,6 +26,29 @@ public class CustomersDialog extends javax.swing.JDialog {
     public CustomersDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public void renderResult(String value, ArrayList<Customer> result, Sell sell) {
+        // Set sell
+        this.sell = sell;
+        // Render data
+        resultForValue.setText(value);
+        DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
+        for (Customer customer : result) {
+            Object[] data = { customer.getCustomerName() + String.format(" [%s]", customer.getCustomerID()), customer.getPhone() };
+            defaultTableModel.addRow(data);
+        }
+        // Handle event select
+        ListSelectionModel listSelectionModel = resultTable.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedCount = listSelectionModel.getMinSelectionIndex();
+                customerChoose = result.get(selectedCount);
+                int customerIDSelect = customerChoose.getCustomerID();
+                idDisplay.setText(Integer.toString(customerIDSelect));
+            }
+        });
     }
 
     /**
@@ -29,12 +62,13 @@ public class CustomersDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        resultForValue = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        resultTable = new javax.swing.JTable();
+        idDisplay = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -43,8 +77,7 @@ public class CustomersDialog extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Result for:");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Son");
+        resultForValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Customer ID: ");
@@ -55,13 +88,18 @@ public class CustomersDialog extends javax.swing.JDialog {
         jButton2.setBackground(new java.awt.Color(0, 255, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton2.setText("Choose");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleChooseCustomer(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        resultTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", ""
+                "Name", "Phone"
             }
         ) {
             Class[] types = new Class [] {
@@ -79,7 +117,9 @@ public class CustomersDialog extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(resultTable);
+
+        idDisplay.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -93,9 +133,11 @@ public class CustomersDialog extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
+                                .addComponent(resultForValue)
                                 .addGap(195, 195, 195)
-                                .addComponent(jLabel3))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(idDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(226, 226, 226)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -111,8 +153,9 @@ public class CustomersDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(resultForValue, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idDisplay))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -121,6 +164,8 @@ public class CustomersDialog extends javax.swing.JDialog {
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        resultForValue.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,6 +183,11 @@ public class CustomersDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
+        sell.setCurrentCustomer(customerChoose);
+        this.dispose();
+    }//GEN-LAST:event_handleChooseCustomer
 
     /**
      * @param args the command line arguments
@@ -182,13 +232,14 @@ public class CustomersDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel idDisplay;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel resultForValue;
+    private javax.swing.JTable resultTable;
     // End of variables declaration//GEN-END:variables
 }

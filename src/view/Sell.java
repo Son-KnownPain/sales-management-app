@@ -5,12 +5,20 @@ import db.objects.Customer;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import view.dialog.CustomersDialog;
 
 
 public class Sell extends javax.swing.JPanel {
+    private Customer currentCustomer;
     
     public Sell() {
         initComponents();
+    }
+    
+    public void setCurrentCustomer(Customer customer) {
+        this.currentCustomer = customer;
+        customerNameDisplay.setText(currentCustomer.getCustomerName());
+        phoneDisplay.setText(currentCustomer.getPhone());
     }
     
     /**
@@ -416,14 +424,11 @@ public class Sell extends javax.swing.JPanel {
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
         String inputValue = customerChooseInput.getText();
-        String name = "";
-        ArrayList<Customer> customers = SellController.getCustomerList(this, inputValue);
-        try {
-            name = customers.get(0).getCustomerName();
-        } catch (Exception e) {
-        } finally {
-        }
-        showMessageDialog(null, name, "Message", JOptionPane.PLAIN_MESSAGE);
+        ArrayList<Customer> customers = SellController.getCustomersWithInput(inputValue);
+        CustomersDialog dialog = new CustomersDialog(new javax.swing.JFrame(), true);
+        dialog.renderResult(inputValue, customers, this);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_handleChooseCustomer
 
     private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery

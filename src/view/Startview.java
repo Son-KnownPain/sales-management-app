@@ -6,6 +6,7 @@ public class StartView extends javax.swing.JFrame {
     
     public StartView() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
