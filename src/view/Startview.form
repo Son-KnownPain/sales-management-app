@@ -194,7 +194,7 @@
                 <Property name="text" type="java.lang.String" value="Selling"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sellbtnActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleSellContent"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="voucherbtn">
@@ -236,9 +236,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Import goods"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importbtnActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

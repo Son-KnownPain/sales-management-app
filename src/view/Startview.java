@@ -1,22 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-import javax.swing.JPanel;
-
-/**
- *
- * @author PC HP
- */
-public class Startview extends javax.swing.JFrame {
+public class StartView extends javax.swing.JFrame {
     private Sell sell = new Sell();
-     private JPanel jPanel;
-    /**
-     * Creates new form f
-     */
-    public Startview() {
+    
+    
+    public StartView() {
         initComponents();
     }
 
@@ -77,7 +65,7 @@ public class Startview extends javax.swing.JFrame {
         sellbtn.setText("Selling");
         sellbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sellbtnActionPerformed(evt);
+                handleSellContent(evt);
             }
         });
 
@@ -95,11 +83,6 @@ public class Startview extends javax.swing.JFrame {
 
         importbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         importbtn.setText("Import goods");
-        importbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importbtnActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
@@ -190,25 +173,11 @@ public class Startview extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sellbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellbtnActionPerformed
-        // TODO add your handling code here:
-//        jPanel = new Sell();
+    private void handleSellContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSellContent
         JPMain.removeAll();
         JPMain.add(sell);
         JPMain.validate();
-        
-        sell.renderName();
-    }//GEN-LAST:event_sellbtnActionPerformed
-
-    private void importbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importbtnActionPerformed
-        // TODO add your handling code here:
-        jPanel = new pro();
-        JPMain.removeAll();
-        JPMain.add(jPanel);
-        JPMain.validate();
-        
-        
-    }//GEN-LAST:event_importbtnActionPerformed
+    }//GEN-LAST:event_handleSellContent
 
     /**
      * @param args the command line arguments
@@ -227,21 +196,23 @@ public class Startview extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Startview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StartView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Startview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StartView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Startview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StartView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Startview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StartView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Startview().setVisible(true);
+                new StartView().setVisible(true);
             }
         });
     }

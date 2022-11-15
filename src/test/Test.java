@@ -6,7 +6,8 @@ import model.CustomersModel;
 
 public class Test {
     public static void main(String[] args) {
-        System.out.println("Hello");
-        System.out.println("Java Version: " + System.getProperty("java.version"));
+        for (Customer a : CustomersModel.takeObject(new CustomersModel().selectAll())) {
+            System.out.println(a);
+        }
     }
 }
