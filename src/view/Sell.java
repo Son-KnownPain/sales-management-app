@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.ProductsModel;
 import view.dialog.CustomersDialog;
+import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
 
@@ -284,6 +285,11 @@ public class Sell extends javax.swing.JPanel {
 
         productNameOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         productNameOkBtn.setText("OK");
+        productNameOkBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productNameOkBtnActionPerformed(evt);
+            }
+        });
 
         voucherCodeOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         voucherCodeOkBtn.setText("OK");
@@ -459,6 +465,18 @@ public class Sell extends javax.swing.JPanel {
         dialog.setVisible(true);
         
     }//GEN-LAST:event_handleProductIDQuery
+
+    private void productNameOkBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameOkBtnActionPerformed
+        // TODO add your handling code here:
+        String value = productNameInput.getText();
+        ArrayList<Product> products = SellController.getProductsWithInput(value);
+        ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
+        dialog.renderProduct(value, products);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+        
+        
+    }//GEN-LAST:event_productNameOkBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

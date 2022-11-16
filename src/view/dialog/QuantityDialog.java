@@ -54,6 +54,11 @@ public class QuantityDialog extends javax.swing.JDialog {
         cancelBtn.setBackground(new java.awt.Color(235, 235, 235));
         cancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
 
         confirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         confirmBtn.setText("Comfirm");
@@ -107,7 +112,7 @@ public class QuantityDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -115,10 +120,16 @@ public class QuantityDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
+
         int quantity = Integer.parseInt(quantityInput.getText());
         sell.renderRowTable(quantity);
         this.dispose();
     }//GEN-LAST:event_handleQuantityConfirm
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_cancelBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,4 +180,6 @@ public class QuantityDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField quantityInput;
     // End of variables declaration//GEN-END:variables
+
+    
 }
