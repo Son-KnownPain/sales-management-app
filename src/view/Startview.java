@@ -1,8 +1,10 @@
 package view;
 
+import javax.swing.JPanel;
+
 public class StartView extends javax.swing.JFrame {
     private Sell sell = new Sell();
-    
+    private JPanel jPanel = new SupplierImport();
     
     public StartView() {
         initComponents();
@@ -84,6 +86,11 @@ public class StartView extends javax.swing.JFrame {
 
         importbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         importbtn.setText("Import goods");
+        importbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
@@ -179,6 +186,13 @@ public class StartView extends javax.swing.JFrame {
         JPMain.add(sell);
         JPMain.validate();
     }//GEN-LAST:event_handleSellContent
+
+    private void importbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importbtnActionPerformed
+        // TODO add your handling code here:
+        JPMain.removeAll();
+        JPMain.add(jPanel);
+        JPMain.validate();
+    }//GEN-LAST:event_importbtnActionPerformed
 
     /**
      * @param args the command line arguments
