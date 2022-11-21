@@ -538,6 +538,7 @@ public class Sell extends javax.swing.JPanel {
             return;
         } else if (!productIDInput.getText().matches("[0-9]+")) {
             showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
         int productIDEntered = Integer.parseInt(productIDInput.getText());
         currentProduct = SellController.getProductByID(productIDEntered);

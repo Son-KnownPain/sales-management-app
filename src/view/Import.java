@@ -96,7 +96,7 @@ public class Import extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Choose Supplier:");
 
-        supplierChooseInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        supplierChooseInput.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
         supplierChooseBtnOK.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         supplierChooseBtnOK.setText("OK");
@@ -125,9 +125,9 @@ public class Import extends javax.swing.JPanel {
         });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setText("Product DI:");
+        jLabel7.setText("Product ID:");
 
-        productIDInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        productIDInput.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
         productNameBtnOk.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         productNameBtnOk.setText("OK");
@@ -140,7 +140,7 @@ public class Import extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Product Name:");
 
-        productNameInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        productNameInput.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
         productTableImport.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -187,11 +187,6 @@ public class Import extends javax.swing.JPanel {
         Comfirmbtn.setBackground(new java.awt.Color(0, 255, 255));
         Comfirmbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Comfirmbtn.setText("Comfirm");
-        Comfirmbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ComfirmbtnActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -282,9 +277,9 @@ public class Import extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(supplierChooseInput)
-                            .addComponent(supplierChooseBtnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(supplierChooseBtnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(supplierChooseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(1, 1, 1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -341,13 +336,7 @@ public class Import extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ComfirmbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComfirmbtnActionPerformed
-        // TODO add your handling code here:
-       
-    }//GEN-LAST:event_ComfirmbtnActionPerformed
-
     private void supplierChooseBtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierChooseBtnOKActionPerformed
-        // TODO add your handling code here:
         String value = supplierChooseInput.getText();
         ArrayList<db.objects.Supplier> suppliers = SellController.getSupplierWithInput(value);
         SupplierDialog dialog = new SupplierDialog(new javax.swing.JFrame(), true);
