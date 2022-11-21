@@ -7,26 +7,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Voucher {
-    private int voucherID;
     private String voucherCode;
     private int voucherValue;
+    private String eventName;
     private int quantity;
     private Date createDate;
     private Date expiryDate;
 
-    public Voucher(int voucherID, String voucherCode, int voucherValue, int quantity, Date createDate, Date expiryDate) {
-        this.voucherID = voucherID;
+    public Voucher(String voucherCode, int voucherValue, String eventName, int quantity, Date createDate, Date expiryDate) {
         this.voucherCode = voucherCode;
         this.voucherValue = voucherValue;
+        this.eventName = eventName;
         this.quantity = quantity;
         this.createDate = createDate;
         this.expiryDate = expiryDate;
     }
     
     public Voucher(String[] fields) {
-        voucherID = Integer.parseInt(fields[0]);
-        voucherCode = fields[1];
-        voucherValue = Integer.parseInt(fields[2]);
+        voucherCode = fields[0];
+        voucherValue = Integer.parseInt(fields[1]);
+        eventName = fields[2];
         quantity = Integer.parseInt(fields[3]);
         try {
             createDate = new SimpleDateFormat("yyyy-MM-dd").parse(fields[4]);
@@ -34,10 +34,6 @@ public class Voucher {
         } catch (ParseException ex) {
             Logger.getLogger(Voucher.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public int getVoucherID() {
-        return voucherID;
     }
 
     public String getVoucherCode() {
@@ -56,14 +52,20 @@ public class Voucher {
         return createDate;
     }
 
+    public String getEventName() {
+        return eventName;
+    }
+
     public Date getExpiryDate() {
         return expiryDate;
     }
 
     @Override
     public String toString() {
-        return "Voucher{" + "voucherID=" + voucherID + ", voucherCode=" + voucherCode + ", voucherValue=" + voucherValue + ", quantity=" + quantity + ", createDate=" + new SimpleDateFormat("dd/MM/yyyy").format(createDate) + ", expiryDate=" + new SimpleDateFormat("dd/MM/yyyy").format(expiryDate) + '}';
+        return "Voucher{" + "voucherCode=" + voucherCode + ", voucherValue=" + voucherValue + ", eventName=" + eventName + ", quantity=" + quantity + ", createDate=" + createDate + ", expiryDate=" + expiryDate + '}';
     }
+
+    
     
     
 }

@@ -1,19 +1,36 @@
 package view;
 
 import controller.SellController;
+
 import db.objects.Customer;
 import db.objects.Product;
+import db.objects.Voucher;
+import db.objects.VoucherOfCustomer;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
-import model.ProductsModel;
+import static javax.swing.JOptionPane.showMessageDialog;
+
+import supports.MoneyFormat;
+
 import view.dialog.CustomersDialog;
 import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
 
 public class Sell extends javax.swing.JPanel {
-    private Customer currentCustomer;
-    private Product currentProduct;
+    private Customer currentCustomer = null;
+    private Product currentProduct = null;
+    
+    private Voucher currentVoucher = null;
+    
+    // HashMap save the id and quantity of the selected product and if you 
+    //choose the same product as last time, you will check if there is enough in 
+    //stock to get it and if it is not enough, it will not be taken
+    HashMap<Integer, Integer> selectedProduct = new HashMap<>();
     
     // Chỗ các biến tính toán tiền thanh toán
     private int initialPrice = 0;
@@ -28,6 +45,7 @@ public class Sell extends javax.swing.JPanel {
         this.currentCustomer = customer;
         customerNameDisplay.setText(currentCustomer.getCustomerName());
         phoneDisplay.setText(currentCustomer.getPhone());
+        renderVoucherOfCustomer();
     }
     
     public void setCurrentProduct(Product product) {
@@ -35,18 +53,62 @@ public class Sell extends javax.swing.JPanel {
     }
     
     public void renderRowTable(int quantity) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
-        Object[] data = { currentProduct.getProductName(), currentProduct.getPrice() * quantity, quantity, currentProduct.getUnitPerQuantity() };
-        defaultTableModel.addRow(data);
-        setInitialPrice(currentProduct.getPrice() * quantity);
+        int quantityOfProductExist = 0;
+        boolean isContainsKey = false;
+        if (selectedProduct.containsKey(currentProduct.getProductID())) {
+            quantityOfProductExist = selectedProduct.get(currentProduct.getProductID());
+            isContainsKey = true;
+        }
+        if ((quantity + quantityOfProductExist) > currentProduct.getQuantityInStore()) {
+            showMessageDialog(null, "The quantity entered cannot be greater than the quantity in the store", "Message", JOptionPane.PLAIN_MESSAGE);
+            currentProduct = null;
+            return;
+        } else if (!isContainsKey) {
+            selectedProduct.put(currentProduct.getProductID(), quantity);
+            DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
+            Object[] data = { currentProduct.getProductName(), currentProduct.getPrice() * quantity, quantity, currentProduct.getUnitPerQuantity() };
+            defaultTableModel.addRow(data);
+            setInitialPrice(currentProduct.getPrice() * quantity);
+        } else {
+            int row = 0;
+            for (int keyID : selectedProduct.keySet()) {
+                if (keyID == currentProduct.getProductID()) break;
+                row++;
+            }
+            int newQuantity = quantity + quantityOfProductExist;
+            productsTable.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
+            productsTable.setValueAt(newQuantity, row, 2);
+            setInitialPrice(currentProduct.getPrice() * quantity);
+        }
+        
         currentProduct = null;
+    }
+    
+    private void renderVoucherOfCustomer() {
+        optionsVoucher.removeAllItems();
+        optionsVoucher.addItem("Choose Voucher");
+        ArrayList<VoucherOfCustomer> listVoucherOfCustomer = SellController.getVouchersOfCustomer(currentCustomer);
+        for (VoucherOfCustomer voucherOfCustomer : listVoucherOfCustomer) {
+            optionsVoucher.addItem(voucherOfCustomer.getVoucherCode());
+        }
     }
     
     private void setInitialPrice(int value) {
         initialPrice += value;
         priceToPay = initialPrice - voucherValue;
-        initialPriceDisplay.setText(initialPrice + "");
-        priceToPayDisplay.setText(priceToPay + "");
+        changeAndDisplayPrice();
+    }
+    
+    private void setVoucherValue(int value) {
+        voucherValue = value;
+        priceToPay = initialPrice - voucherValue;
+        changeAndDisplayPrice();
+    }
+    
+    private void changeAndDisplayPrice() {
+        initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
+        voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(voucherValue) + " VNĐ");
+        priceToPayDisplay.setText(MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
     }
     
     /**
@@ -70,7 +132,7 @@ public class Sell extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        cbPrivate = new javax.swing.JComboBox<>();
+        optionsVoucher = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -200,7 +262,7 @@ public class Sell extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Private Voucher");
 
-        cbPrivate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose voucher", "5%", "10%", "15%", "20%", "25%", "20%", "30%", "35%", "40%", "45%", "50%" }));
+        optionsVoucher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Voucher" }));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel9.setText("Initial Price:");
@@ -257,7 +319,7 @@ public class Sell extends javax.swing.JPanel {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -297,6 +359,11 @@ public class Sell extends javax.swing.JPanel {
 
         voucherCodeOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         voucherCodeOkBtn.setText("OK");
+        voucherCodeOkBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleApplyVoucher(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -369,7 +436,7 @@ public class Sell extends javax.swing.JPanel {
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(36, 36, 36))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbPrivate, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sellConfirmBtn)
                         .addContainerGap())))
@@ -434,7 +501,7 @@ public class Sell extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbPrivate, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
@@ -450,6 +517,9 @@ public class Sell extends javax.swing.JPanel {
     }//GEN-LAST:event_btnchoosedialogActionPerformed
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
+        if (customerChooseInput.getText().equals("")) {
+            return;
+        }
         String inputValue = customerChooseInput.getText();
         ArrayList<Customer> customers = SellController.getCustomersWithInput(inputValue);
         CustomersDialog dialog = new CustomersDialog(new javax.swing.JFrame(), true);
@@ -459,9 +529,18 @@ public class Sell extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseCustomer
 
     private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery
+        if (productIDInput.getText().equals("")) {
+            return;
+        } else if (!productIDInput.getText().matches("[0-9]+")) {
+            showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        }
         int productIDEntered = Integer.parseInt(productIDInput.getText());
-        currentProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + productIDEntered)).get(0);
+        currentProduct = SellController.getProductByID(productIDEntered);
         
+        if (currentProduct == null) {
+            showMessageDialog(null, "ID does not exist", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
         
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
         dialog.getSell(this);
@@ -471,7 +550,7 @@ public class Sell extends javax.swing.JPanel {
     }//GEN-LAST:event_handleProductIDQuery
 
     private void productNameOkBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameOkBtnActionPerformed
-        // TODO add your handling code here:
+        if (productNameInput.getText().equals("")) return;
         String value = productNameInput.getText();
         ArrayList<Product> products = SellController.getProductsWithInput(value);
         ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
@@ -482,11 +561,22 @@ public class Sell extends javax.swing.JPanel {
         
     }//GEN-LAST:event_productNameOkBtnActionPerformed
 
+    private void handleApplyVoucher(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleApplyVoucher
+        String voucherCode = voucherCodeInput.getText();
+        currentVoucher = SellController.getVoucher(voucherCode);
+        if (currentVoucher == null) {
+            showMessageDialog(null, "Voucher code is incorrect", "Message", JOptionPane.PLAIN_MESSAGE);
+        } else if (currentVoucher.getQuantity() > 0) {
+            setVoucherValue(currentVoucher.getVoucherValue());
+        } else {
+            showMessageDialog(null, "Quantity is out", "Message", JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_handleApplyVoucher
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncanceldialog;
     private javax.swing.JButton btnchoosedialog;
-    private javax.swing.JComboBox<String> cbPrivate;
     private javax.swing.JTextField customerChooseInput;
     private javax.swing.JButton customerChooseOkBtn;
     private javax.swing.JLabel customerNameDisplay;
@@ -513,6 +603,7 @@ public class Sell extends javax.swing.JPanel {
     private javax.swing.JLabel lblNamedialog;
     private javax.swing.JLabel lblNamedialog1;
     private javax.swing.JLabel lblNamedialog2;
+    private javax.swing.JComboBox<String> optionsVoucher;
     private javax.swing.JLabel phoneDisplay;
     private javax.swing.JLabel priceToPayDisplay;
     private javax.swing.JTextField productIDInput;

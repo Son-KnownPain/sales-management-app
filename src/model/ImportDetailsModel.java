@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ImportDetailsModel extends Model {
     public ImportDetailsModel() {
-        super("ImportDetails", 5);
+        super("ImportDetails", 6);
     }
     
     public static ArrayList<ImportDetail> takeObject(ArrayList<String[]> listArr) {

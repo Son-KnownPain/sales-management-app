@@ -1,13 +1,15 @@
 package test;
 
-import db.objects.Customer;
-import model.CustomersModel;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 
 public class Test {
     public static void main(String[] args) {
-        for (Customer a : CustomersModel.takeObject(new CustomersModel().selectAll())) {
-            System.out.println(a);
-        }
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        
+        System.out.println(decimalFormat.format(12300000));
     }
 }

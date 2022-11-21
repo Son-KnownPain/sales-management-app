@@ -17,7 +17,7 @@ import view.Sell;
  * @author PC HP
  */
 public class ProductsDialog extends javax.swing.JDialog {
-    private Product productChoosing;
+    private Product productChoosing = null;
     private Sell sell;
     
     /**
@@ -83,6 +83,11 @@ public class ProductsDialog extends javax.swing.JDialog {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         chooseProduct.setBackground(new java.awt.Color(0, 255, 255));
         chooseProduct.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -182,6 +187,10 @@ public class ProductsDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chooseProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseProductActionPerformed
+        if (productChoosing == null) {
+            return;
+        }
+        
         sell.setCurrentProduct(productChoosing);
         this.dispose();
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
@@ -189,6 +198,10 @@ public class ProductsDialog extends javax.swing.JDialog {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_chooseProductActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
