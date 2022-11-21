@@ -3,8 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/controller/SellController.java</file>
             <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/Sell.java</file>
+=======
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/controller/SellController.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/Sell.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/ProductsDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SupplierImport.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/QuantityDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/ProductImportDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/db/use/Model.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/QuantityImportDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/CustomersDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/db/use/Connector.java</file>
+>>>>>>> 375717dea45ae9c9f087ce3ea6050af1c9cd2488
         </group>
     </open-files>
 </project-private>

@@ -2,6 +2,10 @@ package controller;
 
 import db.objects.Customer;
 import db.objects.Product;
+import db.objects.Supplier;
+import java.util.ArrayList;
+import model.ProductsModel;
+import model.SuppliersModel;
 import db.objects.Voucher;
 import db.objects.VoucherOfCustomer;
 import java.util.ArrayList;
@@ -9,6 +13,12 @@ import model.CustomersModel;
 import model.ProductsModel;
 import model.VoucherOfCustomerModel;
 import model.VouchersModel;
+import db.objects.Supplier;
+import java.util.ArrayList;
+import model.CustomersModel;
+import model.ProductsModel;
+import model.SuppliersModel;
+import view.Sell;
 
 public class SellController {
     public static ArrayList<Customer> getCustomersWithInput(String inputValue) {
@@ -29,6 +39,7 @@ public class SellController {
         return products;
     }
     
+
     public static Product getProductByID(int id) {
         ArrayList<Product> listProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + id));
         Product result = null;
@@ -49,5 +60,21 @@ public class SellController {
     
     public static ArrayList<VoucherOfCustomer> getVouchersOfCustomer(Customer customer) {
         return VoucherOfCustomerModel.takeObject(new VoucherOfCustomerModel().selectWithCondition("CustomerID = " + customer.getCustomerID()));
+    }
+    
+    public static ArrayList<Supplier> getSupplierWithInput(String value){
+        SuppliersModel suppliersModel = new SuppliersModel();
+        ArrayList<Supplier> suppliers = SuppliersModel.takeObject(suppliersModel.selectWithCondition("CompanyName LIKE '%" + value + " %'"));
+        
+        return suppliers;
+        
+    }
+    
+    public static ArrayList<Product> getProductsWithInput2(String value) {
+        ProductsModel productsModel = new ProductsModel();
+        ArrayList<Product> products 
+                = ProductsModel.takeObject(productsModel.selectWithCondition("ProductName LIKE '%" + value + "%'"));
+        return products;
+
     }
 }

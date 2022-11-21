@@ -4,7 +4,10 @@
  */
 package view.dialog;
 
+import db.objects.Product;
+import java.util.ArrayList;
 import view.Sell;
+import view.Import;
 
 /**
  *
@@ -181,5 +184,6 @@ public class QuantityDialog extends javax.swing.JDialog {
     private javax.swing.JTextField quantityInput;
     // End of variables declaration//GEN-END:variables
 
+    
     
 }
