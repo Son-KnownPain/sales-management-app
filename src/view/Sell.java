@@ -139,7 +139,7 @@ public class Sell extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         customerChooseInput = new javax.swing.JTextField();
         customerChooseOkBtn = new javax.swing.JButton();
-        sellConfirmBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
         customerNameDisplay = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         initialPriceDisplay = new javax.swing.JLabel();
@@ -159,6 +159,9 @@ public class Sell extends javax.swing.JPanel {
         productNameOkBtn = new javax.swing.JButton();
         voucherCodeInput = new javax.swing.JTextField();
         voucherCodeOkBtn = new javax.swing.JButton();
+        sellConfirmBtn1 = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
+        privareVoucherCancelBtn = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -283,14 +286,9 @@ public class Sell extends javax.swing.JPanel {
             }
         });
 
-        sellConfirmBtn.setBackground(new java.awt.Color(0, 255, 255));
-        sellConfirmBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        sellConfirmBtn.setText("Sell");
-        sellConfirmBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sellConfirmBtnActionPerformed(evt);
-            }
-        });
+        deleteBtn.setBackground(new java.awt.Color(255, 102, 51));
+        deleteBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        deleteBtn.setText("Delete");
 
         customerNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -366,6 +364,17 @@ public class Sell extends javax.swing.JPanel {
             }
         });
 
+        sellConfirmBtn1.setBackground(new java.awt.Color(0, 255, 255));
+        sellConfirmBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        sellConfirmBtn1.setText("Sell");
+
+        clearBtn.setBackground(new java.awt.Color(255, 153, 51));
+        clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        clearBtn.setText("Clear");
+
+        privareVoucherCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        privareVoucherCancelBtn.setText("Cancel");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -413,28 +422,44 @@ public class Sell extends javax.swing.JPanel {
                         .addGap(94, 94, 94))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(voucherCodeOkBtn))
-                            .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sellConfirmBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(voucherCodeOkBtn))
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(privareVoucherCancelBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(initialPriceDisplay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(voucherValueDisplay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(priceToPayDisplay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap())))
+                                    .addComponent(priceToPayDisplay, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(clearBtn)
+                                .addGap(109, 109, 109))))))
             .addComponent(jScrollPane1)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(639, Short.MAX_VALUE)
+                    .addComponent(sellConfirmBtn1)
+                    .addGap(16, 16, 16)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,9 +507,13 @@ public class Sell extends javax.swing.JPanel {
                             .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(voucherCodeOkBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(privareVoucherCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(44, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(initialPriceDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,9 +526,16 @@ public class Sell extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(sellConfirmBtn)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(deleteBtn)
+                            .addComponent(clearBtn))
+                        .addGap(17, 17, 17))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(613, Short.MAX_VALUE)
+                    .addComponent(sellConfirmBtn1)
+                    .addGap(16, 16, 16)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -566,18 +602,16 @@ public class Sell extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_handleApplyVoucher
 
-    private void sellConfirmBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellConfirmBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sellConfirmBtnActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncanceldialog;
     private javax.swing.JButton btnchoosedialog;
+    private javax.swing.JButton clearBtn;
     private javax.swing.JTextField customerChooseInput;
     private javax.swing.JButton customerChooseOkBtn;
     private javax.swing.JLabel customerNameDisplay;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JLabel initialPriceDisplay;
     private javax.swing.JDialog jDialog2;
     private javax.swing.JLabel jLabel10;
@@ -603,12 +637,13 @@ public class Sell extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> optionsVoucher;
     private javax.swing.JLabel phoneDisplay;
     private javax.swing.JLabel priceToPayDisplay;
+    private javax.swing.JButton privareVoucherCancelBtn;
     private javax.swing.JTextField productIDInput;
     private javax.swing.JButton productIDOkBtn;
     private javax.swing.JTextField productNameInput;
     private javax.swing.JButton productNameOkBtn;
     private javax.swing.JTable productsTable;
-    private javax.swing.JButton sellConfirmBtn;
+    private javax.swing.JButton sellConfirmBtn1;
     private javax.swing.JTextField voucherCodeInput;
     private javax.swing.JButton voucherCodeOkBtn;
     private javax.swing.JLabel voucherValueDisplay;
