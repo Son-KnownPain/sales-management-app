@@ -1,5 +1,6 @@
 package view;
 
+import controller.ImportController;
 import controller.SellController;
 import db.objects.Product;
 import db.objects.Supplier;
@@ -336,7 +337,7 @@ public class Import extends javax.swing.JPanel {
 
     private void supplierChooseBtnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplierChooseBtnOKActionPerformed
         String value = supplierChooseInput.getText();
-        ArrayList<db.objects.Supplier> suppliers = SellController.getSupplierWithInput(value);
+        ArrayList<db.objects.Supplier> suppliers = ImportController.getSupplierWithInput(value);
         SupplierDialog dialog = new SupplierDialog(new javax.swing.JFrame(), true);
         dialog.renderResultSupplier(value, suppliers, this);
         dialog.setLocationRelativeTo(null);
@@ -358,7 +359,7 @@ public class Import extends javax.swing.JPanel {
     private void productNameBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameBtnOkActionPerformed
         // TODO add your handling code here:
         String value = productNameInput.getText();
-        ArrayList<Product> sProducts = SellController.getProductsWithInput2(value);
+        ArrayList<Product> sProducts = SellController.getProductsWithInput(value);
         
         ProductImportDialog dialog = new ProductImportDialog(new javax.swing.JFrame(), true);
         dialog.renderProduct(value, sProducts, this);

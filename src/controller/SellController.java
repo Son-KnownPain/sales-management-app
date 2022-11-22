@@ -4,10 +4,12 @@ import db.objects.Customer;
 import db.objects.Product;
 import db.objects.Voucher;
 import db.objects.VoucherOfCustomer;
+import db.objects.Supplier;
+
+import java.util.ArrayList;
+
 import model.VoucherOfCustomerModel;
 import model.VouchersModel;
-import db.objects.Supplier;
-import java.util.ArrayList;
 import model.CustomersModel;
 import model.ProductsModel;
 import model.SuppliersModel;
@@ -54,19 +56,5 @@ public class SellController {
         return VoucherOfCustomerModel.takeObject(new VoucherOfCustomerModel().selectWithCondition("CustomerID = " + customer.getCustomerID()));
     }
     
-    public static ArrayList<Supplier> getSupplierWithInput(String value){
-        SuppliersModel suppliersModel = new SuppliersModel();
-        ArrayList<Supplier> suppliers = SuppliersModel.takeObject(suppliersModel.selectWithCondition("CompanyName LIKE '%" + value + "%'"));
-        
-        return suppliers;
-        
-    }
     
-    public static ArrayList<Product> getProductsWithInput2(String value) {
-        ProductsModel productsModel = new ProductsModel();
-        ArrayList<Product> products 
-                = ProductsModel.takeObject(productsModel.selectWithCondition("ProductName LIKE '%" + value + "%'"));
-        return products;
-
-    }
 }

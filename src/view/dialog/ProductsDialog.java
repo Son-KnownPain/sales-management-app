@@ -18,7 +18,7 @@ import view.Sell;
  */
 public class ProductsDialog extends javax.swing.JDialog {
     private Product productChoosing = null;
-    private Sell sell;
+    private Sell sell = null;
     
     /**
      * Creates new form ProductsDialog
