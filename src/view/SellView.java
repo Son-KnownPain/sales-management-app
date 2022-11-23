@@ -21,10 +21,9 @@ import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
 
-public class Sell extends javax.swing.JPanel {
+public class SellView extends javax.swing.JPanel {
     private Customer currentCustomer = null;
     private Product currentProduct = null;
-    
     private Voucher currentVoucher = null;
     
     // HashMap save the id and quantity of the selected product and if you 
@@ -37,19 +36,11 @@ public class Sell extends javax.swing.JPanel {
     private int voucherValue = 0;
     private int priceToPay = 0;
     
-    public Sell() {
+    // Có phải là voucher riêng của khách hàng không
+    private boolean isVoucherOfCustomer = false;
+    
+    public SellView() {
         initComponents();
-    }
-    
-    public void setCurrentCustomer(Customer customer) {
-        this.currentCustomer = customer;
-        customerNameDisplay.setText(currentCustomer.getCustomerName());
-        phoneDisplay.setText(currentCustomer.getPhone());
-        renderVoucherOfCustomer();
-    }
-    
-    public void setCurrentProduct(Product product) {
-        this.currentProduct = product;
     }
     
     public void renderRowTable(int quantity) {
@@ -66,7 +57,7 @@ public class Sell extends javax.swing.JPanel {
         } else if (!isContainsKey) {
             selectedProduct.put(currentProduct.getProductID(), quantity);
             DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
-            Object[] data = { currentProduct.getProductName(), currentProduct.getPrice() * quantity, quantity, currentProduct.getUnitPerQuantity() };
+            Object[] data = { currentProduct.getProductName(), MoneyFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity() };
             defaultTableModel.addRow(data);
             setInitialPrice(currentProduct.getPrice() * quantity);
         } else {
@@ -93,6 +84,34 @@ public class Sell extends javax.swing.JPanel {
         }
     }
     
+    // Set current object method
+    
+    public void setCurrentCustomer(Customer customer) {
+        this.currentCustomer = customer;
+        if (currentCustomer == null) {
+            customerNameDisplay.setText("");
+            phoneDisplay.setText("");
+            return;
+        }
+        customerNameDisplay.setText(currentCustomer.getCustomerName());
+        phoneDisplay.setText(currentCustomer.getPhone());
+        renderVoucherOfCustomer();
+    }
+    
+    public void setCurrentProduct(Product product) {
+        this.currentProduct = product;
+    }
+    
+    private void setCurrentVoucher(Voucher voucher) {
+        this.currentVoucher = voucher;
+        if (currentVoucher == null) {
+            voucherCodeDisplay.setText("No Voucher");
+        } else {
+            voucherCodeDisplay.setText(currentVoucher.getVoucherCode());
+            setVoucherValue(currentVoucher.getVoucherValue());
+        }
+    }
+    
     private void setInitialPrice(int value) {
         initialPrice += value;
         priceToPay = initialPrice - voucherValue;
@@ -108,7 +127,37 @@ public class Sell extends javax.swing.JPanel {
     private void changeAndDisplayPrice() {
         initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
         voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(voucherValue) + " VNĐ");
-        priceToPayDisplay.setText(MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
+        priceToPayDisplay.setText(priceToPay < 0 ? 0 + " VNĐ" : MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
+    }
+    
+    // Get
+    private int getProductIDByIndex(int index) {
+        int i = 0;
+        for (int keyID : selectedProduct.keySet()) {
+            if (i == index) {
+                return keyID;
+            }
+            i++;
+        }
+        return -1;
+    }
+    
+    // Clear all information
+    private void clearAllInformation() {
+        setCurrentCustomer(null);
+        setCurrentVoucher(null);
+        initialPrice = 0;
+        setVoucherValue(0);
+        optionsVoucher.removeAllItems();
+        optionsVoucher.addItem("Choose Voucher");
+        
+        DefaultTableModel producDefaultTableModel = (DefaultTableModel) productsTable.getModel();
+        producDefaultTableModel.setRowCount(0);
+        selectedProduct.clear();
+        customerChooseInput.setText("");
+        productIDInput.setText("");
+        productNameInput.setText("");
+        voucherCodeInput.setText("");
     }
     
     /**
@@ -162,6 +211,7 @@ public class Sell extends javax.swing.JPanel {
         sellConfirmBtn1 = new javax.swing.JButton();
         clearBtn = new javax.swing.JButton();
         privareVoucherCancelBtn = new javax.swing.JButton();
+        voucherCodeDisplay = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -259,12 +309,17 @@ public class Sell extends javax.swing.JPanel {
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setText("Voucher Code:");
+        jLabel7.setText("Voucher:");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Private Voucher");
 
         optionsVoucher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Voucher" }));
+        optionsVoucher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleChooseVoucherOfCustomer(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel9.setText("Initial Price:");
@@ -288,7 +343,13 @@ public class Sell extends javax.swing.JPanel {
 
         deleteBtn.setBackground(new java.awt.Color(255, 102, 51));
         deleteBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        deleteBtn.setForeground(new java.awt.Color(0, 0, 0));
         deleteBtn.setText("Delete");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleDeleteProduct(evt);
+            }
+        });
 
         customerNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -366,14 +427,35 @@ public class Sell extends javax.swing.JPanel {
 
         sellConfirmBtn1.setBackground(new java.awt.Color(0, 255, 255));
         sellConfirmBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        sellConfirmBtn1.setForeground(new java.awt.Color(0, 0, 0));
         sellConfirmBtn1.setText("Sell");
+        sellConfirmBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleSell(evt);
+            }
+        });
 
         clearBtn.setBackground(new java.awt.Color(255, 153, 51));
         clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        clearBtn.setForeground(new java.awt.Color(0, 0, 0));
         clearBtn.setText("Clear");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleClearForm(evt);
+            }
+        });
 
         privareVoucherCancelBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         privareVoucherCancelBtn.setText("Cancel");
+        privareVoucherCancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCancelVoucher(evt);
+            }
+        });
+
+        voucherCodeDisplay.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        voucherCodeDisplay.setForeground(new java.awt.Color(250, 30, 214));
+        voucherCodeDisplay.setText("No Voucher");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -388,12 +470,13 @@ public class Sell extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel3))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(customerChooseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addGap(24, 24, 24)
                                         .addComponent(customerChooseOkBtn)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,7 +495,7 @@ public class Sell extends javax.swing.JPanel {
                                 .addComponent(productIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(productIDOkBtn)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(productNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -424,7 +507,10 @@ public class Sell extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(voucherCodeDisplay))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
@@ -438,8 +524,7 @@ public class Sell extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(privareVoucherCancelBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(privareVoucherCancelBtn)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
@@ -457,7 +542,7 @@ public class Sell extends javax.swing.JPanel {
             .addComponent(jScrollPane1)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(639, Short.MAX_VALUE)
+                    .addContainerGap(622, Short.MAX_VALUE)
                     .addComponent(sellConfirmBtn1)
                     .addGap(16, 16, 16)))
         );
@@ -466,10 +551,10 @@ public class Sell extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(customerChooseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(57, 57, 57))
+                        .addGap(21, 21, 21)
+                        .addComponent(customerChooseInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -496,12 +581,14 @@ public class Sell extends javax.swing.JPanel {
                             .addComponent(productNameOkBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 27, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(voucherCodeDisplay))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -513,7 +600,7 @@ public class Sell extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(privareVoucherCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(44, Short.MAX_VALUE))
+                        .addContainerGap(39, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(initialPriceDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -526,14 +613,14 @@ public class Sell extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(deleteBtn)
                             .addComponent(clearBtn))
                         .addGap(17, 17, 17))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(613, Short.MAX_VALUE)
+                    .addContainerGap(593, Short.MAX_VALUE)
                     .addComponent(sellConfirmBtn1)
                     .addGap(16, 16, 16)))
         );
@@ -592,15 +679,61 @@ public class Sell extends javax.swing.JPanel {
 
     private void handleApplyVoucher(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleApplyVoucher
         String voucherCode = voucherCodeInput.getText();
-        currentVoucher = SellController.getVoucher(voucherCode);
-        if (currentVoucher == null) {
+        Voucher voucher = SellController.getVoucher(voucherCode);
+        if (voucher == null) {
             showMessageDialog(null, "Voucher code is incorrect", "Message", JOptionPane.PLAIN_MESSAGE);
-        } else if (currentVoucher.getQuantity() > 0) {
-            setVoucherValue(currentVoucher.getVoucherValue());
+        } else if (voucher.getQuantity() > 0) {
+            setCurrentVoucher(voucher);
+            isVoucherOfCustomer = false;
         } else {
             showMessageDialog(null, "Quantity is out", "Message", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_handleApplyVoucher
+
+    private void handleCancelVoucher(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCancelVoucher
+        setCurrentVoucher(null);
+        setVoucherValue(0);
+    }//GEN-LAST:event_handleCancelVoucher
+
+    private void handleDeleteProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleDeleteProduct
+        int viewIndex = productsTable.getSelectedRow();
+        
+        if (viewIndex != -1) {
+            //  Xóa dữ liệu lưu trữ quantity ở HashMap và set lại giá tiền
+            int productID = getProductIDByIndex(viewIndex);
+            selectedProduct.remove(productID);
+            setInitialPrice(- Integer.parseInt(productsTable.getValueAt(viewIndex, 1) + ""));
+            
+            int modelIndex = productsTable.convertColumnIndexToModel(viewIndex);
+            DefaultTableModel model = (DefaultTableModel) productsTable.getModel();
+            model.removeRow(modelIndex);
+        }
+    }//GEN-LAST:event_handleDeleteProduct
+
+    private void handleClearForm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClearForm
+        clearAllInformation();
+    }//GEN-LAST:event_handleClearForm
+
+    private void handleChooseVoucherOfCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseVoucherOfCustomer
+        String voucherCodeSelecting = (String) optionsVoucher.getSelectedItem();
+        if (voucherCodeSelecting == null || voucherCodeSelecting.equals("Choose Voucher")) {
+            return;
+        }
+        isVoucherOfCustomer = true;
+        Voucher voucher = SellController.getVoucher(voucherCodeSelecting);
+        setCurrentVoucher(voucher);
+    }//GEN-LAST:event_handleChooseVoucherOfCustomer
+
+    private void handleSell(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSell
+        if (currentCustomer == null || selectedProduct.isEmpty()) return;
+        boolean sellResult = SellController.sellOne(currentCustomer, currentVoucher, selectedProduct, isVoucherOfCustomer, priceToPay);
+        if (sellResult) {
+            showMessageDialog(null, "Sell Success", "Message", JOptionPane.PLAIN_MESSAGE);
+            clearAllInformation();
+        } else {
+            showMessageDialog(null, "Fail to sell", "Message", JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_handleSell
 
 
 
@@ -644,6 +777,7 @@ public class Sell extends javax.swing.JPanel {
     private javax.swing.JButton productNameOkBtn;
     private javax.swing.JTable productsTable;
     private javax.swing.JButton sellConfirmBtn1;
+    private javax.swing.JLabel voucherCodeDisplay;
     private javax.swing.JTextField voucherCodeInput;
     private javax.swing.JButton voucherCodeOkBtn;
     private javax.swing.JLabel voucherValueDisplay;

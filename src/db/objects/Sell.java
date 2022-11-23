@@ -10,16 +10,16 @@ public class Sell {
     private int sellID;
     private int customerID;
     private Date sellDateTime;
-    private int voucherValue;
+    private String voucherCode;
     // sellDateTime is converted from SellDate and SellTime;
     
     // Sells have 5 columns
 
-    public Sell(int sellID, int customerID, Date sellDateTime, int voucherValue) {
+    public Sell(int sellID, int customerID, Date sellDateTime, String voucherCode) {
         this.sellID = sellID;
         this.customerID = customerID;
         this.sellDateTime = sellDateTime;
-        this.voucherValue = voucherValue;
+        this.voucherCode = voucherCode;
     }
     
     public Sell(String[] fields) {
@@ -30,7 +30,7 @@ public class Sell {
         } catch (ParseException ex) {
             Logger.getLogger(Sell.class.getName()).log(Level.SEVERE, null, ex);
         }
-        voucherValue = Integer.parseInt(fields[4]);
+        voucherCode = fields[4];
     }
 
     public int getSellID() {
@@ -45,13 +45,13 @@ public class Sell {
         return sellDateTime;
     }
 
-    public int getVoucherValue() {
-        return voucherValue;
+    public String getVoucherValue() {
+        return voucherCode;
     }
 
     @Override
     public String toString() {
-        return "Sell{" + "sellID=" + sellID + ", customerID=" + customerID + ", sellDateTime=" + sellDateTime.toString() + ", voucherValue=" + voucherValue + '}';
+        return "Sell{" + "sellID=" + sellID + ", customerID=" + customerID + ", sellDateTime=" + sellDateTime.toString() + ", voucherCode=" + voucherCode + '}';
     }
     
     

@@ -4,7 +4,7 @@
  */
 package view.dialog;
 
-import view.Import;
+import view.ImportView;
 import db.objects.Supplier;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class SupplierDialog extends javax.swing.JDialog {
 
     private Supplier supplierChooseSupplier;
-    private Import supplierImport;
+    private ImportView supplierImport;
     
     /**
      * Creates new form SupplierDialog
@@ -29,7 +29,7 @@ public class SupplierDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void renderResultSupplier(String value, ArrayList<Supplier> sup, Import supplierImport){
+    public void renderResultSupplier(String value, ArrayList<Supplier> sup, ImportView supplierImport){
         this.supplierImport = supplierImport;
         resultForValue1.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();

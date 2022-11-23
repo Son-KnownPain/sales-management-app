@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
 import db.objects.Product;
@@ -10,15 +6,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import view.Sell;
+import supports.MoneyFormat;
+import view.SellView;
 
-/**
- *
- * @author PC HP
- */
 public class ProductsDialog extends javax.swing.JDialog {
     private Product productChoosing = null;
-    private Sell sell = null;
+    private SellView sell = null;
     
     /**
      * Creates new form ProductsDialog
@@ -28,12 +21,12 @@ public class ProductsDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void renderProduct(String value, ArrayList<Product> pro, Sell sell){
+    public void renderProduct(String value, ArrayList<Product> pro, SellView sell){
         this.sell = sell;
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
         for (Product product: pro) {
-            Object[] data = { product.getProductName()+ String.format("[%s]", product.getProductID()), product.getPrice(), product.getQuantityInStore(), product.getUnitPerQuantity()};
+            Object[] data = { product.getProductName() + String.format(" [%s]", product.getProductID()), MoneyFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
         }
         ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
@@ -77,6 +70,7 @@ public class ProductsDialog extends javax.swing.JDialog {
         jLabel1.setText("Result for:");
 
         resultForProduct.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        resultForProduct.setForeground(new java.awt.Color(255, 153, 51));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Product ID: ");
@@ -124,6 +118,7 @@ public class ProductsDialog extends javax.swing.JDialog {
         jScrollPane1.setViewportView(resultTableProduct);
 
         idDisplay.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        idDisplay.setForeground(new java.awt.Color(255, 153, 51));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

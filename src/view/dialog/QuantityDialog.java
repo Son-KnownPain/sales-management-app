@@ -6,15 +6,15 @@ package view.dialog;
 
 import db.objects.Product;
 import java.util.ArrayList;
-import view.Sell;
-import view.Import;
+import view.SellView;
+import view.ImportView;
 
 /**
  *
  * @author PC HP
  */
 public class QuantityDialog extends javax.swing.JDialog {
-    private Sell sell;
+    private SellView sell;
 
     /**
      * Creates new form QuantityDialog
@@ -24,7 +24,7 @@ public class QuantityDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void getSell(Sell sell) {
+    public void getSell(SellView sell) {
         this.sell = sell;
     }
 

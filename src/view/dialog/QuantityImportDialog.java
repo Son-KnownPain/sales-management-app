@@ -4,8 +4,8 @@
  */
 package view.dialog;
 
-import view.Sell;
-import view.Import;
+import view.SellView;
+import view.ImportView;
 
 /**
  *
@@ -13,7 +13,7 @@ import view.Import;
  */
 public class QuantityImportDialog extends javax.swing.JDialog {
 
-    private Import supplierImport;
+    private ImportView supplierImport;
             
     /**
      * Creates new form QuantityImport
@@ -23,7 +23,7 @@ public class QuantityImportDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void getSupplierImport(Import supplierImport) {
+    public void getSupplierImport(ImportView supplierImport) {
         this.supplierImport = supplierImport;
     }
     /**

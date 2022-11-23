@@ -11,7 +11,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import view.dialog.QuantityImportDialog;
-import view.Import;
+import view.ImportView;
 
 /**
  *
@@ -20,7 +20,7 @@ import view.Import;
 public class ProductImportDialog extends javax.swing.JDialog {
 
     private Product productChoosing;
-    private Import supplierImport;
+    private ImportView supplierImport;
     /**
      * Creates new form ProductImportDialog
      */
@@ -29,7 +29,7 @@ public class ProductImportDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void renderProduct(String value, ArrayList<Product> pro, Import supplierImport){
+    public void renderProduct(String value, ArrayList<Product> pro, ImportView supplierImport){
         this.supplierImport = supplierImport;
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();

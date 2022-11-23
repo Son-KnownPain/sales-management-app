@@ -12,7 +12,7 @@ import view.dialog.SupplierDialog;
 import view.dialog.QuantityImportDialog;
 import view.dialog.ProductImportDialog;
 
-public class Import extends javax.swing.JPanel {
+public class ImportView extends javax.swing.JPanel {
 
     private Supplier currSupplier;
     private Product currProduct;
@@ -22,7 +22,7 @@ public class Import extends javax.swing.JPanel {
     private int priceToPay = 0;
 
     
-    public Import() {
+    public ImportView() {
         initComponents();
     }
 
@@ -287,7 +287,6 @@ public class Import extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(supplierPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

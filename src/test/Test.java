@@ -1,15 +1,15 @@
 package test;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Test {
     public static void main(String[] args) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.');
-        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");  
+        LocalDateTime now = LocalDateTime.now();
+        String[] dateTimes = dtf.format(now).split(" ");
         
-        System.out.println(decimalFormat.format(12300000));
+        System.out.println(dateTimes[1]);
     }
 }

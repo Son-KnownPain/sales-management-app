@@ -1,13 +1,49 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Toolkit;
+
+
 
 public class StartView extends javax.swing.JFrame {
-    private Sell sell = null;
-    private Import imports = null;
+    private String currentContent = "";
+    
+    private final String SELL = "SELL";
+    private final String IMPORT = "IMPORT";
+    
+    private SellView sell = null;
+    private ImportView imports = null;
     
     public StartView() {
         initComponents();
+        settingIcon();
         this.setLocationRelativeTo(null);
+    }
+    
+    private void settingIcon() {
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/app-icon.png")));
+    }
+    
+    private void setActiveButton(String buttonContent) {
+        switch (currentContent) {
+            case SELL:
+                sellBtn.setForeground(Color.BLACK);
+                break;
+            case IMPORT:
+                importBtn.setForeground(Color.BLACK);
+                break;
+            default:
+        }
+        switch (buttonContent) {
+            case SELL:
+                sellBtn.setForeground(Color.decode("#0075FF"));
+                break;
+            case IMPORT:
+                importBtn.setForeground(Color.decode("#0075FF"));
+                break;
+            default:
+        }
+        currentContent = buttonContent;
     }
 
     /**
@@ -28,12 +64,12 @@ public class StartView extends javax.swing.JFrame {
         searchbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        sellbtn = new javax.swing.JButton();
+        sellBtn = new javax.swing.JButton();
         voucherbtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         prodyctbtn = new javax.swing.JButton();
         spendbtn = new javax.swing.JButton();
-        importbtn = new javax.swing.JButton();
+        importBtn = new javax.swing.JButton();
         JPMain = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -63,9 +99,9 @@ public class StartView extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel3.setText("Statistics");
 
-        sellbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        sellbtn.setText("Selling");
-        sellbtn.addActionListener(new java.awt.event.ActionListener() {
+        sellBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        sellBtn.setText("Selling");
+        sellBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleSellContent(evt);
             }
@@ -83,9 +119,9 @@ public class StartView extends javax.swing.JFrame {
         spendbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         spendbtn.setText("Spending");
 
-        importbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        importbtn.setText("Import goods");
-        importbtn.addActionListener(new java.awt.event.ActionListener() {
+        importBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        importBtn.setText("Import goods");
+        importBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleImportContent(evt);
             }
@@ -113,8 +149,8 @@ public class StartView extends javax.swing.JFrame {
                                     .addComponent(voucherbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(customerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(importbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sellbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(apllybtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(14, Short.MAX_VALUE))
@@ -125,9 +161,9 @@ public class StartView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(sellbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(importbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(apllybtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -181,14 +217,16 @@ public class StartView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleSellContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSellContent
-        sell = new Sell();
+        setActiveButton(SELL);
+        sell = new SellView();
         JPMain.removeAll();
         JPMain.add(sell);
         JPMain.validate();
     }//GEN-LAST:event_handleSellContent
 
     private void handleImportContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleImportContent
-        imports = new Import();
+        setActiveButton(IMPORT);
+        imports = new ImportView();
         JPMain.removeAll();
         JPMain.add(imports);
         JPMain.validate();
@@ -205,7 +243,7 @@ public class StartView extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -241,14 +279,14 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JButton apllybtn;
     private javax.swing.JButton bestbtn;
     private javax.swing.JButton customerbtn;
-    private javax.swing.JButton importbtn;
+    private javax.swing.JButton importBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton prodyctbtn;
     private javax.swing.JButton searchbtn;
-    private javax.swing.JButton sellbtn;
+    private javax.swing.JButton sellBtn;
     private javax.swing.JPanel sidebar;
     private javax.swing.JButton spendbtn;
     private javax.swing.JButton viewbtn;

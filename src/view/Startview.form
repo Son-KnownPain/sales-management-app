@@ -82,8 +82,8 @@
                                           <Component id="customerbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                          <Component id="importbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
-                                          <Component id="sellbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                                          <Component id="importBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                                          <Component id="sellBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                           <Component id="apllybtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                           <Component id="searchbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       </Group>
@@ -101,9 +101,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="sellbtn" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="sellBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="importbtn" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="importBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="apllybtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -186,7 +186,7 @@
                 <Property name="text" type="java.lang.String" value="Statistics"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="sellbtn">
+            <Component class="javax.swing.JButton" name="sellBtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
@@ -229,7 +229,7 @@
                 <Property name="text" type="java.lang.String" value="Spending"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="importbtn">
+            <Component class="javax.swing.JButton" name="importBtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>

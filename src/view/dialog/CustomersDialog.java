@@ -10,7 +10,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import view.Sell;
+import view.SellView;
 
 /**
  *
@@ -18,7 +18,7 @@ import view.Sell;
  */
 public class CustomersDialog extends javax.swing.JDialog {
     private Customer customerChoose;
-    private Sell sell;
+    private SellView sell;
 
     /**
      * Creates new form CustomersDialog
@@ -28,7 +28,7 @@ public class CustomersDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void renderResult(String value, ArrayList<Customer> result, Sell sell) {
+    public void renderResult(String value, ArrayList<Customer> result, SellView sell) {
         // Set sell
         this.sell = sell;
         // Render data
