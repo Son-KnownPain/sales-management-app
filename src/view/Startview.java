@@ -21,7 +21,7 @@ public class StartView extends javax.swing.JFrame {
     }
     
     private void settingIcon() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icons/app-icon.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/app-icon.png")));
     }
     
     private void setActiveButton(String buttonContent) {

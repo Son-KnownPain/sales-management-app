@@ -6,43 +6,47 @@ import db.objects.Customer;
 import db.objects.Product;
 import db.objects.Voucher;
 import db.objects.VoucherOfCustomer;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
+import supports.Convert;
 
 import supports.MoneyFormat;
 
 import view.dialog.CustomersDialog;
+import view.dialog.OrderSell;
 import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
-
 public class SellView extends javax.swing.JPanel {
+
     private Customer currentCustomer = null;
     private Product currentProduct = null;
     private Voucher currentVoucher = null;
-    
+
     // HashMap save the id and quantity of the selected product and if you 
     //choose the same product as last time, you will check if there is enough in 
     //stock to get it and if it is not enough, it will not be taken
     HashMap<Integer, Integer> selectedProduct = new HashMap<>();
-    
+
     // Chỗ các biến tính toán tiền thanh toán
     private int initialPrice = 0;
     private int voucherValue = 0;
     private int priceToPay = 0;
-    
+
     // Có phải là voucher riêng của khách hàng không
     private boolean isVoucherOfCustomer = false;
-    
+
     public SellView() {
         initComponents();
     }
-    
+
     public void renderRowTable(int quantity) {
         int quantityOfProductExist = 0;
         boolean isContainsKey = false;
@@ -57,13 +61,15 @@ public class SellView extends javax.swing.JPanel {
         } else if (!isContainsKey) {
             selectedProduct.put(currentProduct.getProductID(), quantity);
             DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
-            Object[] data = { currentProduct.getProductName(), MoneyFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity() };
+            Object[] data = {currentProduct.getProductName(), MoneyFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
             setInitialPrice(currentProduct.getPrice() * quantity);
         } else {
             int row = 0;
             for (int keyID : selectedProduct.keySet()) {
-                if (keyID == currentProduct.getProductID()) break;
+                if (keyID == currentProduct.getProductID()) {
+                    break;
+                }
                 row++;
             }
             int newQuantity = quantity + quantityOfProductExist;
@@ -71,21 +77,23 @@ public class SellView extends javax.swing.JPanel {
             productsTable.setValueAt(newQuantity, row, 2);
             setInitialPrice(currentProduct.getPrice() * quantity);
         }
-        
+
         currentProduct = null;
     }
-    
+
     private void renderVoucherOfCustomer() {
         optionsVoucher.removeAllItems();
         optionsVoucher.addItem("Choose Voucher");
         ArrayList<VoucherOfCustomer> listVoucherOfCustomer = SellController.getVouchersOfCustomer(currentCustomer);
         for (VoucherOfCustomer voucherOfCustomer : listVoucherOfCustomer) {
+            if (voucherOfCustomer.getQuantity() <= 0) {
+                continue;
+            }
             optionsVoucher.addItem(voucherOfCustomer.getVoucherCode());
         }
     }
-    
+
     // Set current object method
-    
     public void setCurrentCustomer(Customer customer) {
         this.currentCustomer = customer;
         if (currentCustomer == null) {
@@ -97,39 +105,59 @@ public class SellView extends javax.swing.JPanel {
         phoneDisplay.setText(currentCustomer.getPhone());
         renderVoucherOfCustomer();
     }
-    
+
     public void setCurrentProduct(Product product) {
         this.currentProduct = product;
     }
-    
+
     private void setCurrentVoucher(Voucher voucher) {
         this.currentVoucher = voucher;
-        if (currentVoucher == null) {
+        
+        LocalDate now = LocalDate.now();
+        LocalDate createDate;
+        LocalDate expiryDate;
+        
+        
+        
+        if (voucher == null) {
             voucherCodeDisplay.setText("No Voucher");
+            return;
         } else {
+            createDate = Convert.dateToLocalDate(currentVoucher.getCreateDate());
+            expiryDate = Convert.dateToLocalDate(currentVoucher.getExpiryDate());
+        }
+        if (now.compareTo(createDate) >= 0 && now.compareTo(expiryDate) <= 0) {
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode());
             setVoucherValue(currentVoucher.getVoucherValue());
+        } else {
+            if (now.compareTo(createDate) < 0) {
+                showMessageDialog(null, "Voucher can only be used on " + createDate.toString(), "Voucher Invalid Message", JOptionPane.PLAIN_MESSAGE);
+            }
+            if (now.compareTo(expiryDate) > 0) {
+                showMessageDialog(null, "Voucher has expired", "Voucher Invalid Message", JOptionPane.PLAIN_MESSAGE);
+            }
+            this.currentVoucher = null;
         }
     }
-    
+
     private void setInitialPrice(int value) {
         initialPrice += value;
         priceToPay = initialPrice - voucherValue;
         changeAndDisplayPrice();
     }
-    
+
     private void setVoucherValue(int value) {
         voucherValue = value;
         priceToPay = initialPrice - voucherValue;
         changeAndDisplayPrice();
     }
-    
+
     private void changeAndDisplayPrice() {
         initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
         voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(voucherValue) + " VNĐ");
         priceToPayDisplay.setText(priceToPay < 0 ? 0 + " VNĐ" : MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
     }
-    
+
     // Get
     private int getProductIDByIndex(int index) {
         int i = 0;
@@ -141,7 +169,7 @@ public class SellView extends javax.swing.JPanel {
         }
         return -1;
     }
-    
+
     // Clear all information
     private void clearAllInformation() {
         setCurrentCustomer(null);
@@ -150,7 +178,7 @@ public class SellView extends javax.swing.JPanel {
         setVoucherValue(0);
         optionsVoucher.removeAllItems();
         optionsVoucher.addItem("Choose Voucher");
-        
+
         DefaultTableModel producDefaultTableModel = (DefaultTableModel) productsTable.getModel();
         producDefaultTableModel.setRowCount(0);
         selectedProduct.clear();
@@ -159,7 +187,7 @@ public class SellView extends javax.swing.JPanel {
         productNameInput.setText("");
         voucherCodeInput.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -651,29 +679,31 @@ public class SellView extends javax.swing.JPanel {
         }
         int productIDEntered = Integer.parseInt(productIDInput.getText());
         currentProduct = SellController.getProductByID(productIDEntered);
-        
+
         if (currentProduct == null) {
             showMessageDialog(null, "ID does not exist", "Message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
+
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
         dialog.getSell(this);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-        
+
     }//GEN-LAST:event_handleProductIDQuery
 
     private void productNameOkBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameOkBtnActionPerformed
-        if (productNameInput.getText().equals("")) return;
+        if (productNameInput.getText().equals("")) {
+            return;
+        }
         String value = productNameInput.getText();
         ArrayList<Product> products = SellController.getProductsWithInput(value);
         ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
         dialog.renderProduct(value, products, this);
-        dialog.setLocationRelativeTo(null); 
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_productNameOkBtnActionPerformed
 
 
@@ -697,13 +727,13 @@ public class SellView extends javax.swing.JPanel {
 
     private void handleDeleteProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleDeleteProduct
         int viewIndex = productsTable.getSelectedRow();
-        
+
         if (viewIndex != -1) {
             //  Xóa dữ liệu lưu trữ quantity ở HashMap và set lại giá tiền
             int productID = getProductIDByIndex(viewIndex);
             selectedProduct.remove(productID);
-            setInitialPrice(- Integer.parseInt(productsTable.getValueAt(viewIndex, 1) + ""));
-            
+            setInitialPrice(-Integer.parseInt(String.join("", (productsTable.getValueAt(viewIndex, 1) + "").split("[.]"))));
+
             int modelIndex = productsTable.convertColumnIndexToModel(viewIndex);
             DefaultTableModel model = (DefaultTableModel) productsTable.getModel();
             model.removeRow(modelIndex);
@@ -725,16 +755,32 @@ public class SellView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseVoucherOfCustomer
 
     private void handleSell(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSell
-        if (currentCustomer == null || selectedProduct.isEmpty()) return;
+        if (currentCustomer == null || selectedProduct.isEmpty()) {
+            return;
+        }
         boolean sellResult = SellController.sellOne(currentCustomer, currentVoucher, selectedProduct, isVoucherOfCustomer, priceToPay);
         if (sellResult) {
-            showMessageDialog(null, "Sell Success", "Message", JOptionPane.PLAIN_MESSAGE);
+            OrderSell dialog = new OrderSell(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setInformation(
+                    currentCustomer.getCustomerName(), 
+                    currentCustomer.getPhone(), 
+                    voucherValue, 
+                    initialPrice, 
+                    priceToPay,
+                    currentCustomer.getBuyPoint()
+            );
+            dialog.setVisible(true);
             clearAllInformation();
         } else {
             showMessageDialog(null, "Fail to sell", "Message", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_handleSell
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

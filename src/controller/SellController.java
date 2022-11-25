@@ -18,6 +18,7 @@ import model.CustomersModel;
 import model.ProductsModel;
 import model.SellDetailsModel;
 import model.SellsModel;
+import supports.Gift;
 
 public class SellController {
     public static ArrayList<Customer> getCustomersWithInput(String inputValue) {
@@ -76,6 +77,7 @@ public class SellController {
         // Get Models
         SellsModel sellsModel = new SellsModel();
         ProductsModel productsModel = new ProductsModel();
+        VoucherOfCustomerModel voucherOfCustomerModel = new VoucherOfCustomerModel();;
         
         // Get current date time
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ms");  
@@ -128,11 +130,10 @@ public class SellController {
         // Update voucher quantity, default TRUE
         boolean updateVoucherResult = true;
         if (isVoucherOfCustomer && voucher != null) {
-            VoucherOfCustomerModel voucherOfCustomerModel = new VoucherOfCustomerModel();
             updateVoucherResult = voucherOfCustomerModel.update("Quantity = Quantity - 1", "VoucherCode = '" + voucherCode + "'");
         } else if (voucher != null) {
             VouchersModel vouchersModel = new VouchersModel();
-            updateVoucherResult = vouchersModel.update("Quantity = Quantity - 1", "VoucherCode = " + voucherCode);
+            updateVoucherResult = vouchersModel.update("Quantity = Quantity - 1", "VoucherCode = '" + voucherCode + "'");
         }
         
         // Update BuyPoint
@@ -140,6 +141,79 @@ public class SellController {
         int buyPointIncrease = priceToPay / 1000;
         boolean updateBuyPointResult = customersModel.updateByID("BuyPoint = BuyPoint + " + buyPointIncrease, customer.getCustomerID());
         
-        return !(!sellInsertResult || !updateVoucherResult || !updateBuyPointResult);
+        // Gift BuyPoint
+        boolean giftResult = true;
+        final int MILESTONE = Gift.getMilestone(customer.getBuyPoint(), customer.getBuyPoint() + buyPointIncrease);
+        switch (MILESTONE) {
+            case Gift.MILESTONE_1:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_1, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_2:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_2, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_3:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_3, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_4:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_4, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_5:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_5, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_6:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_6, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_7:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_7, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            case Gift.MILESTONE_8:
+                giftResult = voucherOfCustomerModel.insertOne(String.format(
+                        "'%s', %d, %d", 
+                        Gift.GIFTCODE_8, 
+                        customer.getCustomerID(), 
+                        1
+                ));
+                break;
+            default:
+                // Do nothing
+                break;
+        }
+        
+        return !(!sellInsertResult || !updateVoucherResult || !updateBuyPointResult || !giftResult);
     }
 }
