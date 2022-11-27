@@ -9,7 +9,7 @@ public class MoneyFormat {
         symbols.setGroupingSeparator('.');
         DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
         
-        return decimalFormat.format(value);
+        return decimalFormat.format(Integer.parseInt(value));
     }
     
     public static String getMoneyFormat(int value) {

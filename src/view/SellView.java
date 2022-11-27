@@ -9,7 +9,6 @@ import db.objects.VoucherOfCustomer;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -123,8 +122,8 @@ public class SellView extends javax.swing.JPanel {
             voucherCodeDisplay.setText("No Voucher");
             return;
         } else {
-            createDate = Convert.dateToLocalDate(currentVoucher.getCreateDate());
-            expiryDate = Convert.dateToLocalDate(currentVoucher.getExpiryDate());
+            createDate = Convert.toLocalDate(currentVoucher.getCreateDate());
+            expiryDate = Convert.toLocalDate(currentVoucher.getExpiryDate());
         }
         if (now.compareTo(createDate) >= 0 && now.compareTo(expiryDate) <= 0) {
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode());

@@ -123,7 +123,7 @@ public class QuantityDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
-        if (quantityInput.getText().equals("")) return;
+        if (quantityInput.getText().equals("") || !quantityInput.getText().matches("[0-9]+")) return;
         int quantity = Integer.parseInt(quantityInput.getText());
         sell.renderRowTable(quantity);
         this.dispose();
