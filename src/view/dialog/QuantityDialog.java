@@ -1,20 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
-import db.objects.Product;
-import java.util.ArrayList;
 import view.SellView;
 import view.ImportView;
 
-/**
- *
- * @author PC HP
- */
 public class QuantityDialog extends javax.swing.JDialog {
+
     private SellView sell;
+    private ImportView supplierImport;
+
+    private String currentUse = "";
 
     /**
      * Creates new form QuantityDialog
@@ -23,9 +17,15 @@ public class QuantityDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
+
     public void getSell(SellView sell) {
+        currentUse = "SELL";
         this.sell = sell;
+    }
+
+    public void getSupplierImport(ImportView supplierImport) {
+        currentUse = "IMPORT";
+        this.supplierImport = supplierImport;
     }
 
     /**
@@ -123,10 +123,25 @@ public class QuantityDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
-        if (quantityInput.getText().equals("") || !quantityInput.getText().matches("[0-9]+")) return;
+        if (quantityInput.getText().equals("") || !quantityInput.getText().matches("[0-9]+")) {
+            return;
+        }
         int quantity = Integer.parseInt(quantityInput.getText());
-        sell.renderRowTable(quantity);
-        this.dispose();
+        switch (currentUse) {
+            case "SELL":
+                
+                sell.renderRowTable(quantity);
+                this.dispose();
+                break;
+            case "IMPORT":
+                // Switch case chia sell và import ra
+                // M code của import thì chỉ cần sửa bên trong case IMPORT
+                // ----- Chỉnh sửa trong này hoặc có gì thắc mắc thì hỏi t
+                supplierImport.renderRowTableImport(quantity);
+                this.dispose();
+                break;
+            default:
+        }
     }//GEN-LAST:event_handleQuantityConfirm
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -184,6 +199,4 @@ public class QuantityDialog extends javax.swing.JDialog {
     private javax.swing.JTextField quantityInput;
     // End of variables declaration//GEN-END:variables
 
-    
-    
 }

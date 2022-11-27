@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/StatisticProductsView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/StartView.java</file>
-=======
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/Startview.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SellView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/images/app-icon.png</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/db/use/Connector.java</file>
->>>>>>> 726b2d40508dc63432730fb4f232f3d8bd45b30a
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/ImportView.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/OrderSell.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/QuantityDialog.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/ProductsDialog.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/SupplierDialog.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditProduct.java</file>
         </group>
     </open-files>
 </project-private>

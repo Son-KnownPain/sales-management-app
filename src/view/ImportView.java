@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.ProductsModel;
 import supports.MoneyFormat;
-import view.dialog.SupplierDialog;
-import view.dialog.QuantityImportDialog;
-import view.dialog.ProductImportDialog;
+import view.dialog.ProductsDialog;
+import view.dialog.QuantityDialog;
 
 public class ImportView extends javax.swing.JPanel {
 
@@ -379,7 +378,7 @@ public class ImportView extends javax.swing.JPanel {
         int productIDEnter = Integer.parseInt(productIDInput.getText());
         currProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + productIDEnter)).get(0);
 
-        QuantityImportDialog dialog = new QuantityImportDialog(new javax.swing.JFrame(), true);
+        QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
         
         dialog.getSupplierImport(this);
         dialog.setLocationRelativeTo(null);
@@ -391,7 +390,7 @@ public class ImportView extends javax.swing.JPanel {
         String value = productNameInput.getText();
         ArrayList<Product> sProducts = SellController.getProductsWithInput(value);
         
-        ProductImportDialog dialog = new ProductImportDialog(new javax.swing.JFrame(), true);
+        ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
         dialog.renderProduct(value, sProducts, this);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
