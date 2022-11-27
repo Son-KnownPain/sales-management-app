@@ -1,29 +1,63 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
-
+import javax.swing.JPanel;
 
 public class StartView extends javax.swing.JFrame {
+
     private String currentContent = "";
-    
+
     private final String SELL = "SELL";
     private final String IMPORT = "IMPORT";
-    
+
     private SellView sell = null;
     private ImportView imports = null;
-    
+
     public StartView() {
         initComponents();
         settingIcon();
         this.setLocationRelativeTo(null);
+        Creeping();
+    }
+    
+    private  void Creeping(){
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                 String txt = lblName.getText() + " ";
+                 while (true) {                    
+                    txt = txt.substring(1,txt.length()) + txt.charAt(0);
+                     try {
+                         sleep(150);
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(StartView.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                     
+                     lblName.setText(txt);
+                }
+            }
+            
+        };
+        thread.start();
+        
     }
     
     private void settingIcon() {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/app-icon.png")));
     }
-    
+
     private void setActiveButton(String buttonContent) {
         switch (currentContent) {
             case SELL:
@@ -71,6 +105,9 @@ public class StartView extends javax.swing.JFrame {
         spendbtn = new javax.swing.JButton();
         importBtn = new javax.swing.JButton();
         JPMain = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -192,6 +229,22 @@ public class StartView extends javax.swing.JFrame {
         JPMain.setPreferredSize(new java.awt.Dimension(727, 656));
         JPMain.setLayout(new java.awt.BorderLayout());
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel5.setText("                         Thanh Tao Store");
+        jLabel5.setPreferredSize(new java.awt.Dimension(20, 100));
+        JPMain.add(jLabel5, java.awt.BorderLayout.PAGE_START);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Ban-hang.jpg"))); // NOI18N
+        jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        JPMain.add(jLabel4, java.awt.BorderLayout.LINE_START);
+
+        lblName.setFont(new java.awt.Font("Segoe UI", 0, 30)); // NOI18N
+        lblName.setForeground(new java.awt.Color(0, 204, 204));
+        lblName.setText("       Đã tới Thanh Tao store, bạn không cần phải lo");
+        lblName.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        lblName.setPreferredSize(new java.awt.Dimension(38, 90));
+        JPMain.add(lblName, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -283,7 +336,10 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblName;
     private javax.swing.JButton prodyctbtn;
     private javax.swing.JButton searchbtn;
     private javax.swing.JButton sellBtn;
@@ -292,4 +348,6 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JButton viewbtn;
     private javax.swing.JButton voucherbtn;
     // End of variables declaration//GEN-END:variables
+
+    
 }

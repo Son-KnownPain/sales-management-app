@@ -5,7 +5,12 @@
         <group>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/Startview.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SellView.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/QuantityDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/images/app-icon.png</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditProduct.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/ProductImportDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/CustomersDialog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/SupplierDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/db/use/Connector.java</file>
         </group>
     </open-files>
