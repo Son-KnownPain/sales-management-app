@@ -21,4 +21,9 @@ public class Convert {
         }
         return null;
     }
+    
+    public static int toInt(String money) {
+        String[] moneys = money.split("[.]");
+        return Integer.parseInt(String.join("", moneys));
+    }
 }

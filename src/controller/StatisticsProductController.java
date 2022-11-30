@@ -15,12 +15,12 @@ public class StatisticsProductController {
         if (type.equals("BEST")) {
             switch (time) {
                 case "All Time":
-                    return sellDetailsModel.run(4, "EXEC StatisticsBestAllTime");
+                    return sellDetailsModel.run(5, "EXEC StatisticsBestAllTime");
                 case "Today":
-                    return sellDetailsModel.run(4, "EXEC StatisticsBestToday");
+                    return sellDetailsModel.run(5, "EXEC StatisticsBestToday");
                 case "7 Days Ago":
                     return sellDetailsModel.run(
-                            4, 
+                            5, 
                             String.format(
                                     "EXEC StatisticsBestPeriodTime @StartTime = '%s', @EndTime = '%s'", 
                                     oneWeekAgo.toString(), 
@@ -29,7 +29,7 @@ public class StatisticsProductController {
                     );
                 case "30 Days Ago":
                     return sellDetailsModel.run(
-                            4, 
+                            5, 
                             String.format(
                                     "EXEC StatisticsBestPeriodTime @StartTime = '%s', @EndTime = '%s'", 
                                     oneMonthAgo.toString(), 
@@ -41,12 +41,12 @@ public class StatisticsProductController {
         } else if (type.equals("WORSE")) {
             switch (time) {
                 case "All Time":
-                    return sellDetailsModel.run(4, "EXEC StatisticsWorseAllTime");
+                    return sellDetailsModel.run(5, "EXEC StatisticsWorseAllTime");
                 case "Today":
-                    return sellDetailsModel.run(4, "EXEC StatisticsWorseToday");
+                    return sellDetailsModel.run(5, "EXEC StatisticsWorseToday");
                 case "7 Days Ago":
                     return sellDetailsModel.run(
-                            4, 
+                            5, 
                             String.format(
                                     "EXEC StatisticsWorsePeriodTime @StartTime = '%s', @EndTime = '%s'", 
                                     oneWeekAgo.toString(), 
@@ -55,7 +55,7 @@ public class StatisticsProductController {
                     );
                 case "30 Days Ago":
                     return sellDetailsModel.run(
-                            4, 
+                            5, 
                             String.format(
                                     "EXEC StatisticsWorsePeriodTime @StartTime = '%s', @EndTime = '%s'", 
                                     oneMonthAgo.toString(), 
@@ -74,7 +74,7 @@ public class StatisticsProductController {
         SellDetailsModel sellDetailsModel = new SellDetailsModel();
         if (type.equals("BEST")) {
             return sellDetailsModel.run(
-                    4, 
+                    5, 
                     String.format(
                             "EXEC StatisticsBestPeriodTime @StartTime = '%s', @EndTime = '%s'",
                             startTime.toString(),
@@ -83,7 +83,7 @@ public class StatisticsProductController {
             );
         } else if (type.equals("WORSE")) {
             return sellDetailsModel.run(
-                    4, 
+                    5, 
                     String.format(
                             "EXEC StatisticsWorsePeriodTime @StartTime = '%s', @EndTime = '%s'",
                             startTime.toString(),
@@ -92,5 +92,24 @@ public class StatisticsProductController {
             );
         }
         return null;
+    }
+    
+    public static String[] getBestCustomer(int productID, LocalDate startTime, LocalDate endTime) {
+        return new SellDetailsModel().run(
+                3,
+                String.format(
+                        "EXEC BestCustomerForAProduct @product_id = %d, @start_time = '%s', @end_time = '%s'",
+                        productID,
+                        startTime.toString(),
+                        endTime.toString()
+                )
+        ).get(0);
+    }
+    
+    public static String getPriceForOne(int productID) {
+        return new SellDetailsModel().run(
+                1,
+                "EXEC PriceForOne @product_id = " + productID
+        ).get(0)[0];
     }
 }

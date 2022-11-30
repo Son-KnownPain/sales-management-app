@@ -1,44 +1,127 @@
 package view;
 
 import controller.StatisticsProductController;
+import db.use.Connector;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import supports.Convert;
 import supports.MoneyFormat;
 
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.jdbc.JDBCCategoryDataset;
+
 public class StatisticProductsView extends javax.swing.JPanel {
+    private boolean isCustom = false;
+    
+    private LocalDate startDate = null;
+    private LocalDate endDate = null;
+
     private String currentType = "BEST";
     private String time = "All Time";
     
+    private ArrayList<Integer> listProductID = new ArrayList<>();
+
     public StatisticProductsView() {
         initComponents();
         renderTable();
+        handleDate(time);
+        handleSelectRow();
     }
     
+    private void handleDate(String time) {
+        LocalDate now = LocalDate.now();
+        LocalDate oneWeekAgo = now.minusDays(6);
+        LocalDate oneMonthAgo = now.minusDays(29);
+        switch (time) {
+            case "All Time":
+                startDate = now.minusDays(99999);
+                endDate = now;
+                break;
+            case "Today":
+                startDate = now;
+                endDate = now;
+                break;
+            case "7 Days Ago":
+                startDate = oneWeekAgo;
+                endDate = now;
+                break;
+            case "30 Days Ago":
+                startDate = oneMonthAgo;
+                endDate = now;
+                break;
+            default:
+        }
+    }
+
     private void renderTable() {
+        listProductID.clear();
         DefaultTableModel tableModel = (DefaultTableModel) productsTable.getModel();
         tableModel.setRowCount(0);
         ArrayList<String[]> data = StatisticsProductController.getStatisticProduct(currentType, time);
         for (String[] rowData : data) {
+            listProductID.add(Integer.parseInt(rowData[4]));
             rowData[1] = MoneyFormat.getMoneyFormat(rowData[1]);
             rowData[2] = MoneyFormat.getMoneyFormat(rowData[2]);
             tableModel.addRow(rowData);
         }
     }
-    
+
     private void renderTable(LocalDate startTime, LocalDate endTime) {
+        listProductID.clear();
         DefaultTableModel tableModel = (DefaultTableModel) productsTable.getModel();
         tableModel.setRowCount(0);
         ArrayList<String[]> data = StatisticsProductController.customDateStatistics(currentType, startTime, endTime);
         for (String[] rowData : data) {
+            listProductID.add(Integer.parseInt(rowData[4]));
             rowData[1] = MoneyFormat.getMoneyFormat(rowData[1]);
             rowData[2] = MoneyFormat.getMoneyFormat(rowData[2]);
             tableModel.addRow(rowData);
         }
     }
+
+    private void handleSelectRow() {
+        ListSelectionModel listSelectionModel = productsTable.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int index = listSelectionModel.getMinSelectionIndex();
+                    if (index != -1) {
+                        displayInfo(index);
+                    }
+                }
+            }
+        });
+    }
     
+    private void displayInfo(int index) {
+        String[] customersInfo = StatisticsProductController.getBestCustomer(listProductID.get(index), startDate, endDate);
+        String priceForOne = StatisticsProductController.getPriceForOne(listProductID.get(index));
+        
+        bestCustomerDisplay.setText(customersInfo[0] + " - " + customersInfo[1] + ", bought " + customersInfo[2]);
+        
+        int totalPrice = Convert.toInt(productsTable.getValueAt(index, 1) + "");
+        totalPriceDisplay.setText(MoneyFormat.getMoneyFormat(totalPrice) + " VNĐ");
+        
+        pricePerProductDisplay.setText(MoneyFormat.getMoneyFormat(priceForOne) + " VNĐ");
+        
+        int quantity = Integer.parseInt(productsTable.getValueAt(index, 2) + "");
+        int totalCost = Integer.parseInt(priceForOne) * quantity;
+        totalCostDisplay.setText(MoneyFormat.getMoneyFormat(totalCost) + " VNĐ");
+        
+        benefitsDisplay.setText(MoneyFormat.getMoneyFormat((totalPrice - totalCost)) + " VNĐ");
+    }
+
     // ------------------------------------------
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -148,22 +231,27 @@ public class StatisticProductsView extends javax.swing.JPanel {
         });
 
         bestCustomerDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        bestCustomerDisplay.setText("Nguyen Hong Son - 0389845752, bought 12");
+        bestCustomerDisplay.setText("Select a row");
 
         totalPriceDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        totalPriceDisplay.setText("1.800.000");
+        totalPriceDisplay.setText("0");
 
         pricePerProductDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        pricePerProductDisplay.setText("11.000");
+        pricePerProductDisplay.setText("0");
 
         totalCostDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        totalCostDisplay.setText("1.700.000");
+        totalCostDisplay.setText("0");
 
         benefitsDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        benefitsDisplay.setText("100.000");
+        benefitsDisplay.setText("0");
 
         viewChartBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         viewChartBtn.setText("View Chart");
+        viewChartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleViewChart(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -267,16 +355,27 @@ public class StatisticProductsView extends javax.swing.JPanel {
     // ------------------------------------------
     private void handleClickBest(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClickBest
         currentType = "BEST";
-        renderTable();
+        if (isCustom && startDate != null && endDate != null) {
+            renderTable(startDate, endDate);
+        } else {
+            
+            renderTable();
+        }
     }//GEN-LAST:event_handleClickBest
 
     private void handleClickWorse(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClickWorse
         currentType = "WORSE";
-        renderTable();
+        if (isCustom && startDate != null && endDate != null) {
+            renderTable(startDate, endDate);
+        } else {
+            renderTable();
+        }
     }//GEN-LAST:event_handleClickWorse
 
     private void handleChangeOptionsTime(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChangeOptionsTime
+        isCustom = false;
         time = (String) optionsTime.getSelectedItem();
+        handleDate(time);
         renderTable();
     }//GEN-LAST:event_handleChangeOptionsTime
 
@@ -287,12 +386,32 @@ public class StatisticProductsView extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Invalid input, value must be format dd/MM/yyyy, example: 11/11/2022", "Message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
-        
-        LocalDate startDate = Convert.toLocalDate(Convert.toDate(startTime));
-        LocalDate endDate = Convert.toLocalDate(Convert.toDate(endTime));
+
+        isCustom = true;
+        startDate = Convert.toLocalDate(Convert.toDate(startTime));
+        endDate = Convert.toLocalDate(Convert.toDate(endTime));
         renderTable(startDate, endDate);
-        
+
     }//GEN-LAST:event_handleCustomDate
+
+    private void handleViewChart(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleViewChart
+        try {
+            String query 
+                    = "SELECT SellDate, SUM(TotalPrice) AS TotalValue FROM Sells "
+                    + "JOIN SellDetails ON Sells.SellID = SellDetails.SellID GROUP BY SellDate";
+            JDBCCategoryDataset dataset = new JDBCCategoryDataset(new Connector("SalesManagement").getConnection(), query);
+            JFreeChart chart = ChartFactory.createLineChart("Turnover by date", "Date", "Total Value (VNĐ)", dataset, PlotOrientation.VERTICAL, false, true, true);
+            
+            BarRenderer renderer = new BarRenderer();
+            CategoryPlot plot = null;
+            ChartFrame chartFrame = new ChartFrame("Chart", chart);
+            
+            chartFrame.setSize(900, 600);
+            chartFrame.setLocationRelativeTo(null);
+            chartFrame.setVisible(true);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_handleViewChart
     // ------------------------------------------
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

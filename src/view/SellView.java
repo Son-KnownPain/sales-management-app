@@ -72,6 +72,8 @@ public class SellView extends javax.swing.JPanel {
                 row++;
             }
             int newQuantity = quantity + quantityOfProductExist;
+            selectedProduct.put(currentProduct.getProductID(), newQuantity);
+            
             productsTable.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
             productsTable.setValueAt(newQuantity, row, 2);
             setInitialPrice(currentProduct.getPrice() * quantity);
