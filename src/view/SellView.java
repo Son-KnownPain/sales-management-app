@@ -45,6 +45,7 @@ public class SellView extends javax.swing.JPanel {
     public SellView() {
         initComponents();
     }
+    
 
     public void renderRowTable(int quantity) {
         int quantityOfProductExist = 0;
@@ -73,13 +74,13 @@ public class SellView extends javax.swing.JPanel {
             }
             int newQuantity = quantity + quantityOfProductExist;
             selectedProduct.put(currentProduct.getProductID(), newQuantity);
-            
             productsTable.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
             productsTable.setValueAt(newQuantity, row, 2);
             setInitialPrice(currentProduct.getPrice() * quantity);
         }
 
         currentProduct = null;
+       
     }
 
     private void renderVoucherOfCustomer() {
@@ -91,6 +92,7 @@ public class SellView extends javax.swing.JPanel {
                 continue;
             }
             optionsVoucher.addItem(voucherOfCustomer.getVoucherCode());
+           
         }
     }
 
@@ -372,7 +374,6 @@ public class SellView extends javax.swing.JPanel {
 
         deleteBtn.setBackground(new java.awt.Color(255, 102, 51));
         deleteBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        deleteBtn.setForeground(new java.awt.Color(0, 0, 0));
         deleteBtn.setText("Delete");
         deleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -456,7 +457,6 @@ public class SellView extends javax.swing.JPanel {
 
         sellConfirmBtn1.setBackground(new java.awt.Color(0, 255, 255));
         sellConfirmBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        sellConfirmBtn1.setForeground(new java.awt.Color(0, 0, 0));
         sellConfirmBtn1.setText("Sell");
         sellConfirmBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -466,7 +466,6 @@ public class SellView extends javax.swing.JPanel {
 
         clearBtn.setBackground(new java.awt.Color(255, 153, 51));
         clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        clearBtn.setForeground(new java.awt.Color(0, 0, 0));
         clearBtn.setText("Clear");
         clearBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -629,7 +628,7 @@ public class SellView extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(optionsVoucher, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(privareVoucherCancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(39, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(initialPriceDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -642,7 +641,7 @@ public class SellView extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(deleteBtn)
                             .addComponent(clearBtn))

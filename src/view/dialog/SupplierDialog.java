@@ -4,9 +4,12 @@
  */
 package view.dialog;
 
+import controller.ImportController;
 import view.ImportView;
 import db.objects.Supplier;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -18,34 +21,38 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SupplierDialog extends javax.swing.JDialog {
 
-    private Supplier supplierChooseSupplier;
-    private ImportView supplierImport;
-    
+    private Supplier supplierChoosing = null;
+    private ImportView supplierImport = null;
+
     /**
      * Creates new form SupplierDialog
      */
     public SupplierDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
     }
-    
-    public void renderResultSupplier(String value, ArrayList<Supplier> sup, ImportView supplierImport){
-        this.supplierImport = supplierImport;
-//        resultForValue1.setText(value);
+
+    public void setImportView(ImportView importView) {
+        this.supplierImport = importView;
+    }
+
+    public void renderResultSupplier(String value, ArrayList<Supplier> sup) {
+        searchNameInput.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
         for (Supplier suppliers : sup) {
-            Object[] data = {suppliers.getCompanyName() + String.format("%s", suppliers.getSupplierID()), suppliers.getPhone()};
+            Object[] data = {suppliers.getCompanyName() + String.format("[%s]", suppliers.getSupplierID()), suppliers.getPhone()};
             defaultTableModel.addRow(data);
         }
-        
+
         ListSelectionModel listSelectionModel = resultTable.getSelectionModel();
         listSelectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 int selectedCount = listSelectionModel.getMinSelectionIndex();
-                supplierChooseSupplier = sup.get(selectedCount);
-                int customerIDSelect = supplierChooseSupplier.getSupplierID();
-                supplierIDValue.setText(Integer.toString(customerIDSelect));
+                supplierChoosing = sup.get(selectedCount);
+                int supplierIDSelect = supplierChoosing.getSupplierID();
+                supplierIDValue.setText(Integer.toString(supplierIDSelect));
             }
         });
     }
@@ -65,10 +72,10 @@ public class SupplierDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         resultTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        chooseBtn = new javax.swing.JButton();
         supplierIDValue = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        searchNameInput = new javax.swing.JTextField();
+        searchBtn = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -105,20 +112,25 @@ public class SupplierDialog extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(0, 255, 255));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton3.setText("Choose");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        chooseBtn.setBackground(new java.awt.Color(0, 255, 255));
+        chooseBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        chooseBtn.setText("Choose");
+        chooseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                chooseBtnActionPerformed(evt);
             }
         });
 
         supplierIDValue.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         supplierIDValue.setForeground(new java.awt.Color(255, 153, 51));
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton4.setText("Search");
+        searchBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        searchBtn.setText("Search");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,9 +138,9 @@ public class SupplierDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(searchBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -141,7 +153,7 @@ public class SupplierDialog extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(chooseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
@@ -151,14 +163,14 @@ public class SupplierDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(supplierIDValue, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chooseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -179,18 +191,35 @@ public class SupplierDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        if (supplierIDValue.getText().equals("")) return;
-            supplierImport.getCurrSupplier(supplierChooseSupplier);
+    private void chooseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseBtnActionPerformed
+        if (supplierChoosing != null && supplierImport != null) {
+            supplierImport.setCurrentSupplier(supplierChoosing);
+
+            EnterDiscountValue dialog = new EnterDiscountValue(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setImportView(supplierImport);
+            dialog.setLocationRelativeTo(null);
             this.dispose();
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_chooseBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        // TODO add your handling code here:
+        String value = searchNameInput.getText();
+        ArrayList<Supplier> suppliers = ImportController.getSupplierWithInput(value);
+        renderResultSupplier(value, suppliers);
+    }//GEN-LAST:event_searchBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,15 +264,15 @@ public class SupplierDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton chooseBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable resultTable;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchNameInput;
     private javax.swing.JLabel supplierIDValue;
     // End of variables declaration//GEN-END:variables
 }

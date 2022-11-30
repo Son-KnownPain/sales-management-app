@@ -1,5 +1,8 @@
 package view.dialog;
 
+import controller.ImportController;
+import db.objects.Supplier;
+import java.util.ArrayList;
 import view.SellView;
 import view.ImportView;
 
@@ -137,8 +140,12 @@ public class QuantityDialog extends javax.swing.JDialog {
                 // Switch case chia sell và import ra
                 // M code của import thì chỉ cần sửa bên trong case IMPORT
                 // ----- Chỉnh sửa trong này hoặc có gì thắc mắc thì hỏi t
-                supplierImport.renderRowTableImport(quantity);
+                supplierImport.setCurrentQuantity(quantity);
+                SupplierDialog dialog = new SupplierDialog(new javax.swing.JFrame(), true);
+                dialog.setImportView(supplierImport);
+                dialog.setLocationRelativeTo(null);
                 this.dispose();
+                dialog.setVisible(true);
                 break;
             default:
         }

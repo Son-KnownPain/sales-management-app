@@ -68,6 +68,10 @@ public class Product {
     public String toString() {
         return "Product{" + "productID=" + productID + ", categoryID=" + categoryID + ", productName=" + productName + ", price=" + price + ", description=" + description + ", discount=" + discount + ", quantityInStore=" + quantityInStore + ", unitPerQuantity=" + unitPerQuantity + '}';
     }
+
+    public Object getSupplierID() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     
 }
