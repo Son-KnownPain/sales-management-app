@@ -9,7 +9,6 @@ import db.objects.VoucherOfCustomer;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -46,6 +45,7 @@ public class SellView extends javax.swing.JPanel {
     public SellView() {
         initComponents();
     }
+    
 
     public void renderRowTable(int quantity) {
         int quantityOfProductExist = 0;
@@ -73,12 +73,14 @@ public class SellView extends javax.swing.JPanel {
                 row++;
             }
             int newQuantity = quantity + quantityOfProductExist;
+            selectedProduct.put(currentProduct.getProductID(), newQuantity);
             productsTable.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
             productsTable.setValueAt(newQuantity, row, 2);
             setInitialPrice(currentProduct.getPrice() * quantity);
         }
 
         currentProduct = null;
+       
     }
 
     private void renderVoucherOfCustomer() {
@@ -90,6 +92,7 @@ public class SellView extends javax.swing.JPanel {
                 continue;
             }
             optionsVoucher.addItem(voucherOfCustomer.getVoucherCode());
+           
         }
     }
 
@@ -123,8 +126,8 @@ public class SellView extends javax.swing.JPanel {
             voucherCodeDisplay.setText("No Voucher");
             return;
         } else {
-            createDate = Convert.dateToLocalDate(currentVoucher.getCreateDate());
-            expiryDate = Convert.dateToLocalDate(currentVoucher.getExpiryDate());
+            createDate = Convert.toLocalDate(currentVoucher.getCreateDate());
+            expiryDate = Convert.toLocalDate(currentVoucher.getExpiryDate());
         }
         if (now.compareTo(createDate) >= 0 && now.compareTo(expiryDate) <= 0) {
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode());

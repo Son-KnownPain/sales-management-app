@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+
 import javax.swing.JPanel;
 
 public class StartView extends javax.swing.JFrame {
@@ -22,10 +23,19 @@ public class StartView extends javax.swing.JFrame {
     private final String SELL = "SELL";
     private final String IMPORT = "IMPORT";
 
+
     private SellView sell = null;
     private ImportView imports = null;
 
+
+    private final String STATISTIC_PRODUCT = "STATISTIC_PRODUCT";
+    
+    
+    private StatisticProductsView statisticProducts = null;
+    
+
     public StartView() {
+        this.setTitle("Thanh Tao Store Management");
         initComponents();
         settingIcon();
         this.setLocationRelativeTo(null);
@@ -55,27 +65,23 @@ public class StartView extends javax.swing.JFrame {
     }
     
     private void settingIcon() {
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/app-icon.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/main-icon.png")));
     }
 
     private void setActiveButton(String buttonContent) {
         switch (currentContent) {
-            case SELL:
-                sellBtn.setForeground(Color.BLACK);
-                break;
-            case IMPORT:
-                importBtn.setForeground(Color.BLACK);
-                break;
-            default:
+            case SELL -> sellBtn.setForeground(Color.BLACK);
+            case IMPORT -> importBtn.setForeground(Color.BLACK);
+            case STATISTIC_PRODUCT -> statisticsProductBtn.setForeground(Color.BLACK);
+            default -> {
+            }
         }
         switch (buttonContent) {
-            case SELL:
-                sellBtn.setForeground(Color.decode("#0075FF"));
-                break;
-            case IMPORT:
-                importBtn.setForeground(Color.decode("#0075FF"));
-                break;
-            default:
+            case SELL -> sellBtn.setForeground(Color.decode("#0075FF"));
+            case IMPORT -> importBtn.setForeground(Color.decode("#0075FF"));
+            case STATISTIC_PRODUCT -> statisticsProductBtn.setForeground(Color.decode("#0075FF"));
+            default -> {
+            }
         }
         currentContent = buttonContent;
     }
@@ -93,7 +99,7 @@ public class StartView extends javax.swing.JFrame {
         sidebar = new javax.swing.JPanel();
         customerbtn = new javax.swing.JButton();
         viewbtn = new javax.swing.JButton();
-        bestbtn = new javax.swing.JButton();
+        statisticsProductBtn = new javax.swing.JButton();
         apllybtn = new javax.swing.JButton();
         searchbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -121,8 +127,13 @@ public class StartView extends javax.swing.JFrame {
         viewbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         viewbtn.setText("View sale history");
 
-        bestbtn.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        bestbtn.setText("Best/ Worst products");
+        statisticsProductBtn.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        statisticsProductBtn.setText("Best/ Worst products");
+        statisticsProductBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statisticsProductBtnActionPerformed(evt);
+            }
+        });
 
         apllybtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         apllybtn.setText("Apply voucher ");
@@ -178,7 +189,7 @@ public class StartView extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(spendbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bestbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(statisticsProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(prodyctbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,7 +229,7 @@ public class StartView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(bestbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(statisticsProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(spendbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(51, Short.MAX_VALUE))
@@ -229,18 +240,19 @@ public class StartView extends javax.swing.JFrame {
         JPMain.setPreferredSize(new java.awt.Dimension(727, 656));
         JPMain.setLayout(new java.awt.BorderLayout());
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel5.setText("                         Thanh Tao Store");
+        jLabel5.setFont(new java.awt.Font("Monotype Corsiva", 0, 36)); // NOI18N
+        jLabel5.setText("                               Thanh Tao Store");
         jLabel5.setPreferredSize(new java.awt.Dimension(20, 100));
         JPMain.add(jLabel5, java.awt.BorderLayout.PAGE_START);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Ban-hang.jpg"))); // NOI18N
         jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        JPMain.add(jLabel4, java.awt.BorderLayout.LINE_START);
+        jLabel4.setPreferredSize(new java.awt.Dimension(700, 500));
+        JPMain.add(jLabel4, java.awt.BorderLayout.CENTER);
 
-        lblName.setFont(new java.awt.Font("Segoe UI", 0, 30)); // NOI18N
+        lblName.setFont(new java.awt.Font("Tw Cen MT", 0, 30)); // NOI18N
         lblName.setForeground(new java.awt.Color(0, 204, 204));
-        lblName.setText("       Đã tới Thanh Tao store, bạn không cần phải lo");
+        lblName.setText("                               Come to Thanh Tao store, buy so more");
         lblName.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         lblName.setPreferredSize(new java.awt.Dimension(38, 90));
         JPMain.add(lblName, java.awt.BorderLayout.PAGE_END);
@@ -285,6 +297,14 @@ public class StartView extends javax.swing.JFrame {
         JPMain.validate();
     }//GEN-LAST:event_handleImportContent
 
+    private void statisticsProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statisticsProductBtnActionPerformed
+        setActiveButton(STATISTIC_PRODUCT);
+        statisticProducts = new StatisticProductsView();
+        JPMain.removeAll();
+        JPMain.add(statisticProducts);
+        JPMain.validate();
+    }//GEN-LAST:event_statisticsProductBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -296,7 +316,7 @@ public class StartView extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Linux".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -321,6 +341,7 @@ public class StartView extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new StartView().setVisible(true);
             }
@@ -330,7 +351,6 @@ public class StartView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPMain;
     private javax.swing.JButton apllybtn;
-    private javax.swing.JButton bestbtn;
     private javax.swing.JButton customerbtn;
     private javax.swing.JButton importBtn;
     private javax.swing.JLabel jLabel1;
@@ -345,6 +365,7 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JButton sellBtn;
     private javax.swing.JPanel sidebar;
     private javax.swing.JButton spendbtn;
+    private javax.swing.JButton statisticsProductBtn;
     private javax.swing.JButton viewbtn;
     private javax.swing.JButton voucherbtn;
     // End of variables declaration//GEN-END:variables

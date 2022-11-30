@@ -7,26 +7,30 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import supports.MoneyFormat;
+import view.ImportView;
 import view.SellView;
 
 public class ProductsDialog extends javax.swing.JDialog {
+
     private Product productChoosing = null;
+
     private SellView sell = null;
-    
-    /**
-     * Creates new form ProductsDialog
-     */
+    private ImportView supplierImport;
+
+    private String currentUse = "";
+
     public ProductsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-    
-    public void renderProduct(String value, ArrayList<Product> pro, SellView sell){
+
+    public void renderProduct(String value, ArrayList<Product> pro, SellView sell) {
+        this.currentUse = "SELL";
         this.sell = sell;
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
-        for (Product product: pro) {
-            Object[] data = { product.getProductName() + String.format(" [%s]", product.getProductID()), MoneyFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
+        for (Product product : pro) {
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), MoneyFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
         }
         ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
@@ -37,10 +41,33 @@ public class ProductsDialog extends javax.swing.JDialog {
                 productChoosing = pro.get(selectedCount);
                 int productIDSelecting = productChoosing.getProductID();
                 idDisplay.setText(productIDSelecting + "");
-                
+
             }
         });
-         
+
+    }
+
+    public void renderProduct(String value, ArrayList<Product> pro, ImportView supplierImport) {
+        this.currentUse = "IMPORT";
+        this.supplierImport = supplierImport;
+        resultForProduct.setText(value);
+        DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
+        for (Product product : pro) {
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), product.getPrice(), product.getQuantityInStore(), product.getUnitPerQuantity()};
+            defaultTableModel.addRow(data);
+        }
+        ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedCount = listSelectionModel.getMinSelectionIndex();
+                productChoosing = pro.get(selectedCount);
+                int productIDSelecting = productChoosing.getProductID();
+                idDisplay.setText(productIDSelecting + "");
+
+            }
+        });
+
     }
 
     /**
@@ -185,13 +212,29 @@ public class ProductsDialog extends javax.swing.JDialog {
         if (productChoosing == null) {
             return;
         }
-        
-        sell.setCurrentProduct(productChoosing);
-        this.dispose();
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
-        dialog.getSell(sell);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        
+        switch (currentUse) {
+            case "SELL":
+                sell.setCurrentProduct(productChoosing);
+                this.dispose();
+                dialog.getSell(sell);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+                break;
+            case "IMPORT":
+                // Switch case chia sell và import ra
+                // M code của import thì chỉ cần sửa bên trong case IMPORT
+                // ----- Chỉnh sửa trong này hoặc có gì thắc mắc thì hỏi t
+                supplierImport.setCurrProduct(productChoosing);
+                this.dispose();
+                dialog.getSupplierImport(supplierImport);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+                break;
+                // ---------------------------------------
+            default:
+        }
     }//GEN-LAST:event_chooseProductActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
