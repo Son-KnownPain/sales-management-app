@@ -88,7 +88,7 @@ public class ImportView extends javax.swing.JPanel {
             Object[] data = {currProduct.getProductName(), currProduct.getPrice() * currentQuantity, currentQuantity, currProduct.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
             setInitialPrice(currProduct.getPrice() * currentQuantity);
-            setDiscountValue(currentDiscount);
+            setVoucherValue(currentDiscount);
             currProduct = null;
 
         } else {
@@ -104,7 +104,7 @@ public class ImportView extends javax.swing.JPanel {
             productTableImport.setValueAt(newQuantity * currProduct.getPrice(), row, 1);
             productTableImport.setValueAt(newQuantity, row, 2);
             setInitialPrice(currProduct.getPrice() * currentQuantity);
-            setDiscountValue(currentDiscount);
+           setVoucherValue(currentDiscount);
             
         }
         
