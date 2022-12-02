@@ -19,7 +19,7 @@ import supports.Convert;
 import supports.MoneyFormat;
 
 import view.dialog.CustomersDialog;
-import view.dialog.OrderSell;
+import view.dialog.OrderSellDialog;
 import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
@@ -570,7 +570,7 @@ public class SellView extends javax.swing.JPanel {
             .addComponent(jScrollPane1)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(622, Short.MAX_VALUE)
+                    .addContainerGap(678, Short.MAX_VALUE)
                     .addComponent(sellConfirmBtn1)
                     .addGap(16, 16, 16)))
         );
@@ -760,7 +760,7 @@ public class SellView extends javax.swing.JPanel {
         }
         boolean sellResult = SellController.sellOne(currentCustomer, currentVoucher, selectedProduct, isVoucherOfCustomer, priceToPay);
         if (sellResult) {
-            OrderSell dialog = new OrderSell(new javax.swing.JFrame(), true);
+            OrderSellDialog dialog = new OrderSellDialog(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
