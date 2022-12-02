@@ -2,9 +2,9 @@ package view.dialog;
 
 import supports.MoneyFormat;
 
-public class OrderSell extends javax.swing.JDialog {
+public class OrderSellDialog extends javax.swing.JDialog {
 
-    public OrderSell(java.awt.Frame parent, boolean modal) {
+    public OrderSellDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
@@ -56,7 +56,6 @@ public class OrderSell extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(225, 244, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Invoice");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -64,39 +63,30 @@ public class OrderSell extends javax.swing.JDialog {
         jLabel2.setText("Successfully Payment");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Customer:");
 
         customerNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        customerNameDisplay.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Phone:");
 
         phoneDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        phoneDisplay.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Discount Value:");
 
         discountValueDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        discountValueDisplay.setForeground(new java.awt.Color(0, 0, 0));
 
         priceToPayDisplay.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         priceToPayDisplay.setForeground(new java.awt.Color(0, 90, 172));
 
         initialPriceDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        initialPriceDisplay.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Final Price:");
 
         yesBtn.setBackground(new java.awt.Color(0, 90, 172));
         yesBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        yesBtn.setForeground(new java.awt.Color(0, 0, 0));
         yesBtn.setText("Yes");
         yesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,11 +95,9 @@ public class OrderSell extends javax.swing.JDialog {
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Buy Point:");
 
         buyPointDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        buyPointDisplay.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -230,20 +218,21 @@ public class OrderSell extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OrderSell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderSellDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OrderSell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderSellDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OrderSell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderSellDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OrderSell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OrderSellDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                OrderSell dialog = new OrderSell(new javax.swing.JFrame(), true);
+                OrderSellDialog dialog = new OrderSellDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

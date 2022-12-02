@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import model.ProductsModel;
 import model.SuppliersModel;
 import supports.MoneyFormat;
-import view.dialog.EditProduct;
+import view.dialog.EditProductDialog;
 import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
@@ -384,7 +384,7 @@ public class ImportView extends javax.swing.JPanel {
                                         .addComponent(productNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(productNameBtnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(36, 36, 36))
+                                .addGap(62, 62, 62))
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
@@ -430,7 +430,7 @@ public class ImportView extends javax.swing.JPanel {
                                         .addComponent(jLabel15)
                                         .addGap(18, 18, 18)
                                         .addComponent(supplierNameDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -518,7 +518,7 @@ public class ImportView extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(informationPriceSellingDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(30, Short.MAX_VALUE))))
+                        .addContainerGap(77, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -589,7 +589,7 @@ public class ImportView extends javax.swing.JPanel {
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         // TODO add your handling code here:
-        EditProduct dialog = new EditProduct(new javax.swing.JFrame(), true);
+        EditProductDialog dialog = new EditProductDialog(new javax.swing.JFrame(), true);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_editBtnActionPerformed
