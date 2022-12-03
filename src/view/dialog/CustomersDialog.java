@@ -93,7 +93,7 @@ public class CustomersDialog extends javax.swing.JDialog {
 
         jButton2.setBackground(new java.awt.Color(0, 255, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setText("Choose");
+        jButton2.setText("Enter");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleChooseCustomer(evt);

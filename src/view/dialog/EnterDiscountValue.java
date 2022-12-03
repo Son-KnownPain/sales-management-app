@@ -4,6 +4,7 @@
  */
 package view.dialog;
 
+import javax.swing.JOptionPane;
 import view.ImportView;
 
 /**
@@ -115,10 +116,12 @@ public class EnterDiscountValue extends javax.swing.JDialog {
 
     private void handleConfirmDiscount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleConfirmDiscount
         if (inputValue.getText().equals("") || !inputValue.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Plerase enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         
         importView.setDiscountValue(Integer.parseInt(inputValue.getText()));
+        
         this.dispose();
     }//GEN-LAST:event_handleConfirmDiscount
 

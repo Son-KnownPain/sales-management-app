@@ -112,7 +112,7 @@ public class ProductsDialog extends javax.swing.JDialog {
 
         chooseProduct.setBackground(new java.awt.Color(0, 255, 255));
         chooseProduct.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        chooseProduct.setText("Choose");
+        chooseProduct.setText("Enter");
         chooseProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseProductActionPerformed(evt);
