@@ -128,7 +128,7 @@ public class StartView extends javax.swing.JFrame {
         viewbtn.setText("History");
 
         statisticsProductBtn.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
-        statisticsProductBtn.setText("Products/ Category");
+        statisticsProductBtn.setText("Best/ Worst products");
         statisticsProductBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statisticsProductBtnActionPerformed(evt);
@@ -162,7 +162,7 @@ public class StartView extends javax.swing.JFrame {
         jLabel1.setText("Function");
 
         prodyctbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        prodyctbtn.setText("Best/ Worst products");
+        prodyctbtn.setText("Products/ Category");
 
         spendbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         spendbtn.setText("Vouchers");

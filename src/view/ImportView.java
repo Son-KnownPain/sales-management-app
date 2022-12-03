@@ -99,8 +99,6 @@ public class ImportView extends javax.swing.JPanel {
             productTableImport.setValueAt(newQuantity, row, 2);
             setInitialPrice(currProduct.getPrice() * currentQuantity);
             setVoucherValue(currentDiscount);
-           
-            
         }
         
 

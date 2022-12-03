@@ -3,6 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/ImportView.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/HistoryView.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/ProductCategoryView.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/SpendingView.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/Startview.java</file>
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditCustomerDialog.java</file>
+=======
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/StatisticProductsView.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SupplierView.java</file>
+>>>>>>> 44d234949cd802e8cd8a8e47a89b42c88b936584
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/ProductsDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/VoucherOfCustomerDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditCategoryDialog.java</file>
@@ -22,6 +35,7 @@
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/SupplierDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditVoucherDialog.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditSupplierDialog.java</file>
+>>>>>>> 32e80997f03906110796cc6bd9ebaf98941d0f34
         </group>
     </open-files>
 </project-private>
