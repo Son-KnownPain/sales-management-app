@@ -21,16 +21,7 @@ import model.SellsModel;
 import supports.Gift;
 
 public class SellController {
-    public static ArrayList<Customer> getCustomersWithInput(String inputValue) {
-        CustomersModel customersModel = new CustomersModel();
-        ArrayList<Customer> customers;
-        if (inputValue.matches("[A-Za-z\s]+")) {
-            customers = CustomersModel.takeObject(customersModel.selectWithCondition("CustomerName LIKE '%" + inputValue + "%'"));
-        } else {
-            customers = CustomersModel.takeObject(customersModel.selectWithCondition("Phone LIKE '%" + inputValue + "%'"));
-        }
-        return customers;
-    }
+    
     
     public static ArrayList<Product> getProductsWithInput(String value) {
         ProductsModel productsModel = new ProductsModel();

@@ -1,32 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
 import controller.ImportController;
 import view.ImportView;
 import db.objects.Supplier;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import view.SupplierView;
 
-/**
- *
- * @author PC HP
- */
 public class SupplierDialog extends javax.swing.JDialog {
 
     private Supplier supplierChoosing = null;
-    private ImportView supplierImport = null;
 
-    /**
-     * Creates new form SupplierDialog
-     */
+    private ImportView importView = null;
+    private SupplierView supplierView = null;
+
+    private String currentUsing = "";
+    private final String IMPORT = "IMPORT";
+    private final String SUPPLIER = "SUPPLIER";
+
     public SupplierDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -34,7 +28,13 @@ public class SupplierDialog extends javax.swing.JDialog {
     }
 
     public void setImportView(ImportView importView) {
-        this.supplierImport = importView;
+        currentUsing = IMPORT;
+        this.importView = importView;
+    }
+
+    public void setSupplierView(SupplierView supplierView) {
+        currentUsing = SUPPLIER;
+        this.supplierView = supplierView;
     }
 
     public void renderResultSupplier(String value, ArrayList<Supplier> sup) {
@@ -117,7 +117,7 @@ public class SupplierDialog extends javax.swing.JDialog {
         chooseBtn.setText("Choose");
         chooseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chooseBtnActionPerformed(evt);
+                handleChooseSupplier(evt);
             }
         });
 
@@ -191,23 +191,36 @@ public class SupplierDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chooseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseBtnActionPerformed
-        if (supplierChoosing != null && supplierImport != null) {
-            supplierImport.setCurrentSupplier(supplierChoosing);
+    private void handleChooseSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseSupplier
+        switch (currentUsing) {
+            case IMPORT:
+                if (supplierChoosing != null && importView != null) {
+                    importView.setCurrentSupplier(supplierChoosing);
 
-            EnterDiscountValue dialog = new EnterDiscountValue(new javax.swing.JFrame(), true);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
+                    EnterDiscountValue dialog = new EnterDiscountValue(new javax.swing.JFrame(), true);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    dialog.setImportView(importView);
+                    dialog.setLocationRelativeTo(null);
+                    this.dispose();
+                    dialog.setVisible(true);
                 }
-            });
-            dialog.setImportView(supplierImport);
-            dialog.setLocationRelativeTo(null);
-            this.dispose();
-            dialog.setVisible(true);
+                break;
+            case SUPPLIER:
+                if (supplierChoosing != null && supplierView != null) {
+                    supplierView.setCurrentSupplier(supplierChoosing);
+                    this.dispose();
+                }
+                break;
+            default:
+                System.out.println("DEFAULT SWITCH");
         }
-    }//GEN-LAST:event_chooseBtnActionPerformed
+
+    }//GEN-LAST:event_handleChooseSupplier
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:

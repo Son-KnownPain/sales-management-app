@@ -10,6 +10,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import view.CustomerView;
 import view.SellView;
 
 /**
@@ -18,7 +19,15 @@ import view.SellView;
  */
 public class CustomersDialog extends javax.swing.JDialog {
     private Customer customerChoose;
-    private SellView sell;
+    
+    // Split views when confirm
+    private String currentUsed = "";
+    // Final views
+    private final String SELL = "SELL";
+    private final String CUSTOMER_MANAGEMENT = "CUSTOMER_MANAGEMENT";
+    
+    private SellView sell = null;
+    private CustomerView customerView = null;
 
     /**
      * Creates new form CustomersDialog
@@ -30,7 +39,32 @@ public class CustomersDialog extends javax.swing.JDialog {
     
     public void renderResult(String value, ArrayList<Customer> result, SellView sell) {
         // Set sell
+        currentUsed = SELL;
         this.sell = sell;
+        // Render data
+        resultForValue.setText(value);
+        DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
+        for (Customer customer : result) {
+            Object[] data = { customer.getCustomerName() + String.format(" [%s]", customer.getCustomerID()), customer.getPhone() };
+            defaultTableModel.addRow(data);
+        }
+        // Handle event select
+        ListSelectionModel listSelectionModel = resultTable.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedCount = listSelectionModel.getMinSelectionIndex();
+                customerChoose = result.get(selectedCount);
+                int customerIDSelect = customerChoose.getCustomerID();
+                idDisplay.setText(Integer.toString(customerIDSelect));
+            }
+        });
+    }
+    
+    public void renderResult(String value, ArrayList<Customer> result, CustomerView customerView) {
+        // Set customer view
+        currentUsed = CUSTOMER_MANAGEMENT;
+        this.customerView = customerView;
         // Render data
         resultForValue.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
@@ -188,7 +222,14 @@ public class CustomersDialog extends javax.swing.JDialog {
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
         if (idDisplay.getText().equals("")) return;
-        sell.setCurrentCustomer(customerChoose);
+        
+        switch (currentUsed) {
+            case SELL -> sell.setCurrentCustomer(customerChoose);
+            case CUSTOMER_MANAGEMENT -> customerView.setCurrentCustomer(customerChoose);
+            default -> {
+                
+            }
+        }
         this.dispose();
     }//GEN-LAST:event_handleChooseCustomer
 

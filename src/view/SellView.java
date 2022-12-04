@@ -1,5 +1,6 @@
 package view;
 
+import controller.GeneralController;
 import controller.SellController;
 
 import db.objects.Customer;
@@ -384,7 +385,7 @@ public class SellView extends javax.swing.JPanel {
         customerNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Choose Customer: ");
+        jLabel3.setText("Enter Customer: ");
 
         initialPriceDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         initialPriceDisplay.setText("0 VNĐ");
@@ -663,7 +664,7 @@ public class SellView extends javax.swing.JPanel {
             return;
         }
         String inputValue = customerChooseInput.getText();
-        ArrayList<Customer> customers = SellController.getCustomersWithInput(inputValue);
+        ArrayList<Customer> customers = GeneralController.getCustomersWithInput(inputValue);
         CustomersDialog dialog = new CustomersDialog(new javax.swing.JFrame(), true);
         dialog.renderResult(inputValue, customers, this);
         dialog.setLocationRelativeTo(null);

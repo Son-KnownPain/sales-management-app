@@ -168,7 +168,7 @@ public class Model {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             int updateResult = preparedStatement.executeUpdate();
             
-            if (updateResult == 1) {
+            if (updateResult >= 1) {
                 return true;
             }
             
