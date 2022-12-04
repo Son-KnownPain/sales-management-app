@@ -317,9 +317,9 @@ public class StartView extends javax.swing.JFrame {
 
     private void handleSupplierContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSupplierContent
         setActiveButton(SUPPLIER_MANAGEMENT);
-        supplierView = new SupplierView();
+        statisticProducts = new StatisticProductsView();
         JPMain.removeAll();
-        JPMain.add(supplierView);
+        JPMain.add(statisticProducts);
         JPMain.validate();
     }//GEN-LAST:event_handleSupplierContent
 

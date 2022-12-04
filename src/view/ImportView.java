@@ -26,6 +26,7 @@ public class ImportView extends javax.swing.JPanel {
 
     private int initialPrice = 0;
     private int totalDiscount = 0;
+   
     private int priceToPay = 0;
 
     public ImportView() {
@@ -41,18 +42,10 @@ public class ImportView extends javax.swing.JPanel {
     
     HashMap<Integer, Integer> discountsOfProduct = new HashMap<>();
     
+   
+    
     
 
-//    private void getSelectFromJtable() {
-//        List<Supplier> supplierss = new ArrayList<>();
-//        
-//        int i = productTableImport.getSelectedRow();
-//        Supplier s = supplierss.get(i);
-//        supplierIDDisplay.setText(String.valueOf(s.getSupplierID()));
-//        supplierNameDisplay.setText(s.getCompanyName());
-//        supplierPhoneDisplay.setText(s.getPhone());
-//
-//    }
     
     
     public void setCurrProduct(Product product) {
@@ -73,7 +66,7 @@ public class ImportView extends javax.swing.JPanel {
         discountsOfProduct.put(currProduct.getProductID(), value);
         renderRowTableImport();
     }
-
+    
     public void renderRowTableImport() {
 
         int quantityOfProductExist = 0;
@@ -89,6 +82,7 @@ public class ImportView extends javax.swing.JPanel {
             defaultTableModel.addRow(data);
             setInitialPrice(currProduct.getPrice() * currentQuantity);
             setVoucherValue(currentDiscount);
+            
             currProduct = null;
 
         } else {
@@ -105,7 +99,6 @@ public class ImportView extends javax.swing.JPanel {
             productTableImport.setValueAt(newQuantity, row, 2);
             setInitialPrice(currProduct.getPrice() * currentQuantity);
             setVoucherValue(currentDiscount);
-            
         }
         
 
@@ -133,10 +126,11 @@ public class ImportView extends javax.swing.JPanel {
         priceToPay = initialPrice - totalDiscount;
         changeAndDisplayPrice();
     }
-
+    
     private void changeAndDisplayPrice() {
         initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
         totalValueDisplay.setText(MoneyFormat.getMoneyFormat(totalDiscount) + " VNĐ");
+        informationDiscountDisplay.setText(MoneyFormat.getMoneyFormat(totalDiscount) + " VNĐ");
         priceToPayDisplay.setText(MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
     }
 
@@ -525,7 +519,7 @@ public class ImportView extends javax.swing.JPanel {
     private void productIDBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDBtnOkActionPerformed
         // TODO add your handling code here:
         if (productIDInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter characters, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         } else if (!productIDInput.getText().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
@@ -549,7 +543,8 @@ public class ImportView extends javax.swing.JPanel {
     private void productNameBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameBtnOkActionPerformed
         // TODO add your handling code here:
         if (productNameInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter characters, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
         String value = productNameInput.getText();
         ArrayList<Product> sProducts = SellController.getProductsWithInput(value);
@@ -566,14 +561,6 @@ public class ImportView extends javax.swing.JPanel {
         int i = productTableImport.getSelectedRow();
 
         informationTotalDisplay.setText(defaultTableModel.getValueAt(i, 1).toString() + " VNĐ");
-        
-//        SuppliersModel suppliersModel = new SuppliersModel();
-//        ArrayList<String[]> arraylist = suppliersModel.selectAll();
-//        ArrayList<Supplier> list = SuppliersModel.takeObject(arraylist);
-//        for (Supplier supplier : list) {
-//           supplier.getSupplierID();
-//            
-//        } 
       
     }//GEN-LAST:event_productTableImportMouseClicked
 

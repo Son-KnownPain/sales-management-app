@@ -114,7 +114,7 @@ public class SupplierDialog extends javax.swing.JDialog {
 
         chooseBtn.setBackground(new java.awt.Color(0, 255, 255));
         chooseBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        chooseBtn.setText("Choose");
+        chooseBtn.setText("Enter");
         chooseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleChooseSupplier(evt);

@@ -661,8 +661,10 @@ public class SellView extends javax.swing.JPanel {
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
         if (customerChooseInput.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter characters, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
+        
         String inputValue = customerChooseInput.getText();
         ArrayList<Customer> customers = GeneralController.getCustomersWithInput(inputValue);
         CustomersDialog dialog = new CustomersDialog(new javax.swing.JFrame(), true);
@@ -673,6 +675,7 @@ public class SellView extends javax.swing.JPanel {
 
     private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery
         if (productIDInput.getText().equals("")) {
+            showMessageDialog(null, "Please enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         } else if (!productIDInput.getText().matches("[0-9]+")) {
             showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
@@ -695,6 +698,7 @@ public class SellView extends javax.swing.JPanel {
 
     private void productNameOkBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameOkBtnActionPerformed
         if (productNameInput.getText().equals("")) {
+            showMessageDialog(null, "Please enter characters, don't leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String value = productNameInput.getText();
@@ -713,11 +717,13 @@ public class SellView extends javax.swing.JPanel {
         Voucher voucher = SellController.getVoucher(voucherCode);
         if (voucher == null) {
             showMessageDialog(null, "Voucher code is incorrect", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
         } else if (voucher.getQuantity() > 0) {
             setCurrentVoucher(voucher);
             isVoucherOfCustomer = false;
         } else {
             showMessageDialog(null, "Quantity is out", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
     }//GEN-LAST:event_handleApplyVoucher
 

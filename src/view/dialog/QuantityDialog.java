@@ -3,6 +3,7 @@ package view.dialog;
 import controller.ImportController;
 import db.objects.Supplier;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import view.SellView;
 import view.ImportView;
 
@@ -123,6 +124,7 @@ public class QuantityDialog extends javax.swing.JDialog {
 
     private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
         if (quantityInput.getText().equals("") || !quantityInput.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Please enter number, don't leave empty and do not enter negative numbers", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         int quantity = Integer.parseInt(quantityInput.getText());
