@@ -1,5 +1,6 @@
 package view;
 
+import controller.SupplierController;
 import db.objects.Supplier;
 import javax.swing.JOptionPane;
 import view.dialog.EditSupplierDialog;
@@ -26,6 +27,14 @@ public class SupplierView extends javax.swing.JPanel {
             emailDisplay.setText(currentSupplier.getEmail());
             postalCodeDisplay.setText(currentSupplier.getPostalCode());
         }
+    }
+    
+    private void clearAddSupplier() {
+        companyNameInput.setText("");
+        phoneInput.setText("");
+        addressInput.setText("");
+        postalCodeInput.setText("");
+        emailInput.setText("");
     }
 
     // -----------------------------------------------
@@ -289,7 +298,34 @@ public class SupplierView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseSupplier
 
     private void handleAddSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleAddSupplier
+        String companyName = companyNameInput.getText();
+        String phone = phoneInput.getText();
+        String email = emailInput.getText();
+        String postalCode = postalCodeInput.getText();
+        String address = addressInput.getText();
         
+        if(companyName.trim().isBlank() || phone.trim().isBlank() || email.trim().isBlank() || postalCode.trim().isBlank() || address.trim().isBlank()){
+            JOptionPane.showMessageDialog(null, "Inputs can not be empty");
+            return;
+        }
+        
+        if(!phone.matches("^\\d{10}$") || !phone.matches("[0-9]+")){
+            JOptionPane.showMessageDialog(null, "Phone only accept number and get ten numbers");
+            return;
+        }
+        
+        if(!email.matches("^(.+)@(.+).(.+)$")){
+            JOptionPane.showMessageDialog(null, "Please enter the correct email structure '@', '.'");
+            return;
+        }
+        
+        boolean result = SupplierController.addSupplier(companyName, address, phone, email, postalCode);
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Add customer successfully");
+            clearAddSupplier();
+        } else {
+            JOptionPane.showMessageDialog(null, "Add failed, please check the information again !!");
+        }
     }//GEN-LAST:event_handleAddSupplier
 
     private void handleEditSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleEditSupplier

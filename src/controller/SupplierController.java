@@ -19,4 +19,18 @@ public class SupplierController {
                 supplier.getSupplierID()
         );
     }
+    
+    public static boolean addSupplier(String name, String address, String phone, String email, String postalCode){
+        SuppliersModel suppliersModel = new SuppliersModel();
+         boolean result = suppliersModel.insertOne(String.format(
+                "'%s', '%s', '%s', '%s', '%s'",
+                name,
+                address,
+                phone,
+                email,
+                postalCode
+                
+        ));
+        return result;
+    }
 }

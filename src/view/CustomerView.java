@@ -340,6 +340,7 @@ public class CustomerView extends javax.swing.JPanel {
         }
         if (!phoneValue.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Phone only accept number");
+            return;
         }
 
         boolean result = CustomerController.addCustomer(nameValue, phoneValue, addressValue);

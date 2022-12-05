@@ -10,13 +10,13 @@ import java.util.logging.Logger;
 public class Connector {
     private String databaseName;
     private String username = "sa";
-    private String password = "hongson26203_";
+    private String password = "sa";
     
     private Connection connection;
 
     public Connector(String databaseName) {
         this.databaseName = databaseName;
-        String url = "jdbc:sqlserver://localhost\\KTEAM:1433;databaseName=" + this.databaseName;
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=" + this.databaseName;
         try {
             this.connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
