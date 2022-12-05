@@ -150,7 +150,6 @@ public class QuantityDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_handleQuantityConfirm
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 

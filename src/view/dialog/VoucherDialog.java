@@ -108,6 +108,11 @@ public class VoucherDialog extends javax.swing.JDialog {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         chooseBtn.setBackground(new java.awt.Color(0, 255, 255));
         chooseBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -188,6 +193,10 @@ public class VoucherDialog extends javax.swing.JDialog {
             default:
         }
     }//GEN-LAST:event_handleChooseVoucher
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
