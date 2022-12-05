@@ -1,16 +1,35 @@
 package view.dialog;
 
 import controller.CustomerController;
+import db.objects.Customer;
 import db.objects.Voucher;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import supports.MoneyFormat;
 
 public class DonateVoucherDialog extends javax.swing.JDialog {
-    private Voucher currentVoucher;
+    private Voucher currentVoucher = null;
+    private Customer customerBeDonated = null;
     
     public DonateVoucherDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    public void setCurrentVoucher(Voucher currentVoucher) {
+        this.currentVoucher = currentVoucher;
+        displayInformation();
+    }
+
+    public void setCustomerBeDonated(Customer customerBeDonated) {
+        this.customerBeDonated = customerBeDonated;
+    }
+    
+    private void displayInformation() {
+        if (currentVoucher != null) {
+            voucherCodeDisplay.setText(currentVoucher.getVoucherCode());
+            voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getVoucherValue()) + " VNĐ");
+        }
     }
 
     // -------------------------------------------------------
@@ -74,6 +93,11 @@ public class DonateVoucherDialog extends javax.swing.JDialog {
 
         donateBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         donateBtn.setText("Donate");
+        donateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleConfirmDonate(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -171,10 +195,34 @@ public class DonateVoucherDialog extends javax.swing.JDialog {
         }
         
         ArrayList<Voucher> vouchersList = CustomerController.getVoucherByEvent(eventNameValue);
-        for (Voucher voucher : vouchersList) {
-            System.out.println(voucher);
-        }
+        VoucherDialog dialog = new VoucherDialog(new javax.swing.JFrame(), true);
+        dialog.setVouchers(vouchersList);
+        dialog.setDonateVoucherDialog(this);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_handleChooseVoucher
+
+    private void handleConfirmDonate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleConfirmDonate
+        if (quantityInput.getText().trim().isBlank() || currentVoucher == null) {
+            JOptionPane.showMessageDialog(null, "Please enter information of voucher and quantity");
+            return;
+        }
+        if (!quantityInput.getText().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Quantity only accept number");
+        }
+        if (customerBeDonated == null) {
+            JOptionPane.showMessageDialog(null, "Customer is null");
+            return;
+        }
+        
+        boolean result = CustomerController.donateVoucher(customerBeDonated, currentVoucher, Integer.parseInt(quantityInput.getText()));
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Donate voucher successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "Donate fail !");
+        }
+        this.dispose();
+    }//GEN-LAST:event_handleConfirmDonate
 
     /**
      * @param args the command line arguments

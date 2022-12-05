@@ -370,6 +370,7 @@ public class CustomerView extends javax.swing.JPanel {
             return;
         }
         DonateVoucherDialog dialog = new DonateVoucherDialog(new javax.swing.JFrame(), true);
+        dialog.setCustomerBeDonated(currentCustomer);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_handleShowDonateVoucher

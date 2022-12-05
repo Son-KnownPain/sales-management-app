@@ -2,6 +2,7 @@ package controller;
 
 import db.objects.Customer;
 import db.objects.Voucher;
+import db.objects.VoucherOfCustomer;
 import java.util.ArrayList;
 import model.CustomersModel;
 import model.VoucherOfCustomerModel;
@@ -44,5 +45,18 @@ public class CustomerController {
     public static ArrayList<Voucher> getVoucherByEvent(String eventName) {
         VouchersModel vouchersModel = new VouchersModel();
         return VouchersModel.takeObject(vouchersModel.selectWithCondition("EventName LIKE '%" + eventName + "%'"));
+    }
+    
+    public static boolean donateVoucher(Customer customer, Voucher voucher, int quantity) {
+        VoucherOfCustomerModel vocm = new VoucherOfCustomerModel();
+        ArrayList<VoucherOfCustomer> voucherOfCustomer 
+                =  VoucherOfCustomerModel.takeObject(
+                        vocm.selectWithCondition("CustomerID = " + customer.getCustomerID() + " AND VoucherCode = '" + voucher.getVoucherCode() + "'")
+                );
+        if (voucherOfCustomer.isEmpty()) {
+            return vocm.insertOne(String.format("'%s', %d, %d", voucher.getVoucherCode(), customer.getCustomerID(), quantity));
+        } else {
+            return vocm.update("Quantity = " + quantity, "CustomerID = " + customer.getCustomerID());
+        }
     }
 }
