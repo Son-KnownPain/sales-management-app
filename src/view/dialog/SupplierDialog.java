@@ -4,6 +4,7 @@ import controller.ImportController;
 import view.ImportView;
 import db.objects.Supplier;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -228,6 +229,10 @@ public class SupplierDialog extends javax.swing.JDialog {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // TODO add your handling code here:
+        if(searchNameInput.getText().equals("") || searchNameInput.getText().matches("[0-9]+")){
+            JOptionPane.showMessageDialog(null, "Please enter letter", "Invaild value message", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
         String value = searchNameInput.getText();
         ArrayList<Supplier> suppliers = ImportController.getSupplierWithInput(value);
         renderResultSupplier(value, suppliers);
