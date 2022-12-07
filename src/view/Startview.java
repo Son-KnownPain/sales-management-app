@@ -14,14 +14,20 @@ public class StartView extends javax.swing.JFrame {
     private final String CUSTOMER_MANAGEMENT = "CUSTOMER_MANAGEMENT";
     private final String STATISTIC_PRODUCT = "STATISTIC_PRODUCT";
     private final String SUPPLIER_MANAGEMENT = "SUPPLIER_MANAGEMENT";
-
+    private final String History = "History";
+    private final String SPENDING = "SPENDING";
+    private final String PRODUCT_CATEGORY = "PRODUCT_CATEGORY";
+    private final String VOUCHER_MANAGEMENT = "VOUCHER_MANAGEMENT";
 
     private SellView sell = null;
     private ImportView imports = null;
     private CustomerView customerView = null;
     private StatisticProductsView statisticProducts = null;
     private SupplierView supplierView = null;
-    
+    private HistoryView historyView = null;
+    private SpendingView spendingView = null;
+    private ProductCategoryView productCategoryView = null;
+    private VoucherView voucherView = null;
 
     public StartView() {
         this.setTitle("Thanh Tao Store Management");
@@ -30,49 +36,75 @@ public class StartView extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         Creeping();
     }
-    
-    private  void Creeping(){
-        Thread thread = new Thread(){
+
+    private void Creeping() {
+        Thread thread = new Thread() {
             @Override
             public void run() {
-                 String txt = lblName.getText() + " ";
-                 while (true) {                    
-                    txt = txt.substring(1,txt.length()) + txt.charAt(0);
-                     try {
-                         sleep(150);
-                     } catch (InterruptedException ex) {
-                         Logger.getLogger(StartView.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                     
-                     lblName.setText(txt);
+                String txt = lblName.getText() + " ";
+                while (true) {
+                    txt = txt.substring(1, txt.length()) + txt.charAt(0);
+                    try {
+                        sleep(150);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(StartView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    lblName.setText(txt);
                 }
             }
-            
+
         };
         thread.start();
-        
+
     }
-    
+
     private void settingIcon() {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/images/main-icon.png")));
     }
 
     private void setActiveButton(String buttonContent) {
         switch (currentContent) {
-            case SELL -> sellBtn.setForeground(Color.BLACK);
-            case IMPORT -> importBtn.setForeground(Color.BLACK);
-            case STATISTIC_PRODUCT -> statisticProductBtn.setForeground(Color.BLACK);
-            case CUSTOMER_MANAGEMENT -> customerBtn.setForeground(Color.BLACK);
-            case SUPPLIER_MANAGEMENT -> supplierBtn.setForeground(Color.BLACK);
+            case SELL ->
+                sellBtn.setForeground(Color.BLACK);
+            case IMPORT ->
+                importBtn.setForeground(Color.BLACK);
+            case STATISTIC_PRODUCT ->
+                statisticProductBtn.setForeground(Color.BLACK);
+            case CUSTOMER_MANAGEMENT ->
+                customerBtn.setForeground(Color.BLACK);
+            case SUPPLIER_MANAGEMENT ->
+                supplierBtn.setForeground(Color.BLACK);
+            case History ->
+                historyBtn.setForeground(Color.BLACK);
+            case SPENDING ->
+                spendingBtn.setForeground(Color.BLACK);
+            case PRODUCT_CATEGORY ->
+                productCategoryBtn.setForeground(Color.BLACK);
+            case VOUCHER_MANAGEMENT ->
+                voucherBtn.setForeground(Color.BLACK);
             default -> {
             }
         }
         switch (buttonContent) {
-            case SELL -> sellBtn.setForeground(Color.decode("#0075FF"));
-            case IMPORT -> importBtn.setForeground(Color.decode("#0075FF"));
-            case STATISTIC_PRODUCT -> statisticProductBtn.setForeground(Color.decode("#0075FF"));
-            case CUSTOMER_MANAGEMENT -> customerBtn.setForeground(Color.decode("#0075FF"));
-            case SUPPLIER_MANAGEMENT -> supplierBtn.setForeground(Color.decode("#0075FF"));
+            case SELL ->
+                sellBtn.setForeground(Color.decode("#0075FF"));
+            case IMPORT ->
+                importBtn.setForeground(Color.decode("#0075FF"));
+            case STATISTIC_PRODUCT ->
+                statisticProductBtn.setForeground(Color.decode("#0075FF"));
+            case CUSTOMER_MANAGEMENT ->
+                customerBtn.setForeground(Color.decode("#0075FF"));
+            case SUPPLIER_MANAGEMENT ->
+                supplierBtn.setForeground(Color.decode("#0075FF"));
+            case History ->
+                historyBtn.setForeground(Color.decode("#0075FF"));
+            case SPENDING ->
+                spendingBtn.setForeground(Color.decode("#0075FF"));
+            case PRODUCT_CATEGORY ->
+                productCategoryBtn.setForeground(Color.decode("#0075FF"));
+            case VOUCHER_MANAGEMENT ->
+                voucherBtn.setForeground(Color.decode("#0075FF"));
             default -> {
             }
         }
@@ -91,18 +123,17 @@ public class StartView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         sidebar = new javax.swing.JPanel();
         supplierBtn = new javax.swing.JButton();
-        viewbtn = new javax.swing.JButton();
+        historyBtn = new javax.swing.JButton();
         customerBtn = new javax.swing.JButton();
-        searchbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         sellBtn = new javax.swing.JButton();
-        voucherbtn = new javax.swing.JButton();
+        spendingBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         statisticProductBtn = new javax.swing.JButton();
-        spendbtn = new javax.swing.JButton();
+        voucherBtn = new javax.swing.JButton();
         importBtn = new javax.swing.JButton();
-        statisticProductBtn1 = new javax.swing.JButton();
+        productCategoryBtn = new javax.swing.JButton();
         JPMain = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -122,8 +153,13 @@ public class StartView extends javax.swing.JFrame {
             }
         });
 
-        viewbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        viewbtn.setText("History");
+        historyBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        historyBtn.setText("History");
+        historyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historyBtnActionPerformed(evt);
+            }
+        });
 
         customerBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         customerBtn.setText("Customer");
@@ -132,9 +168,6 @@ public class StartView extends javax.swing.JFrame {
                 handleCustomerContent(evt);
             }
         });
-
-        searchbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        searchbtn.setText("Search");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel2.setText("Statistics");
@@ -150,8 +183,13 @@ public class StartView extends javax.swing.JFrame {
             }
         });
 
-        voucherbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        voucherbtn.setText("Spending");
+        spendingBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        spendingBtn.setText("Spending");
+        spendingBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spendingBtnActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jLabel1.setText("Function");
@@ -164,8 +202,13 @@ public class StartView extends javax.swing.JFrame {
             }
         });
 
-        spendbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        spendbtn.setText("Vouchers");
+        voucherBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        voucherBtn.setText("Vouchers");
+        voucherBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voucherBtnActionPerformed(evt);
+            }
+        });
 
         importBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         importBtn.setText("Import");
@@ -175,11 +218,11 @@ public class StartView extends javax.swing.JFrame {
             }
         });
 
-        statisticProductBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        statisticProductBtn1.setText("Products/ Category");
-        statisticProductBtn1.addActionListener(new java.awt.event.ActionListener() {
+        productCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        productCategoryBtn.setText("Products/ Category");
+        productCategoryBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statisticProductBtn1handleStatisticsProductContent(evt);
+                productCategoryBtnhandleStatisticsProductContent(evt);
             }
         });
 
@@ -191,23 +234,24 @@ public class StartView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sidebarLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(statisticProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(viewbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(voucherbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(sellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(customerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(spendbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(supplierBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(statisticProductBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(sellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(customerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(voucherBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(supplierBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(productCategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(statisticProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spendingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         sidebarLayout.setVerticalGroup(
@@ -221,25 +265,23 @@ public class StartView extends javax.swing.JFrame {
                 .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(customerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(searchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(viewbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(statisticProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(voucherbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(spendingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(statisticProductBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(productCategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(spendbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(voucherBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(supplierBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(sidebar);
@@ -328,9 +370,38 @@ public class StartView extends javax.swing.JFrame {
         JPMain.validate();
     }//GEN-LAST:event_handleSupplierContent
 
-    private void statisticProductBtn1handleStatisticsProductContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statisticProductBtn1handleStatisticsProductContent
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statisticProductBtn1handleStatisticsProductContent
+    private void productCategoryBtnhandleStatisticsProductContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productCategoryBtnhandleStatisticsProductContent
+        setActiveButton(PRODUCT_CATEGORY);
+        productCategoryView = new ProductCategoryView();
+        JPMain.removeAll();
+        JPMain.add(productCategoryView);
+        JPMain.validate();
+    }//GEN-LAST:event_productCategoryBtnhandleStatisticsProductContent
+
+    private void historyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyBtnActionPerformed
+        setActiveButton(History);
+        historyView = new HistoryView();
+        JPMain.removeAll();
+        JPMain.add(historyView);
+        JPMain.validate();
+
+    }//GEN-LAST:event_historyBtnActionPerformed
+
+    private void spendingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spendingBtnActionPerformed
+        setActiveButton(SPENDING);
+        spendingView = new SpendingView();
+        JPMain.removeAll();
+        JPMain.add(spendingView);
+        JPMain.validate();
+    }//GEN-LAST:event_spendingBtnActionPerformed
+
+    private void voucherBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voucherBtnActionPerformed
+        setActiveButton(VOUCHER_MANAGEMENT);
+        voucherView = new VoucherView();
+        JPMain.removeAll();
+        JPMain.add(voucherView);
+        JPMain.validate();
+    }//GEN-LAST:event_voucherBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,6 +449,7 @@ public class StartView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPMain;
     private javax.swing.JButton customerBtn;
+    private javax.swing.JButton historyBtn;
     private javax.swing.JButton importBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -386,16 +458,13 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblName;
-    private javax.swing.JButton searchbtn;
+    private javax.swing.JButton productCategoryBtn;
     private javax.swing.JButton sellBtn;
     private javax.swing.JPanel sidebar;
-    private javax.swing.JButton spendbtn;
+    private javax.swing.JButton spendingBtn;
     private javax.swing.JButton statisticProductBtn;
-    private javax.swing.JButton statisticProductBtn1;
     private javax.swing.JButton supplierBtn;
-    private javax.swing.JButton viewbtn;
-    private javax.swing.JButton voucherbtn;
+    private javax.swing.JButton voucherBtn;
     // End of variables declaration//GEN-END:variables
 
-    
 }

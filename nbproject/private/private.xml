@@ -3,19 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SupplierView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/BestCustomerDialog.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditSupplierDialog.java</file>
-=======
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/DonateVoucherDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/SellView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/controller/CustomerController.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/VoucherDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/StatisticProductDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/CustomerView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/StartView.java</file>
->>>>>>> 8789c1bd81b4d4e73aeb46fac9dc7230efb5467d
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditProductImportDailog.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/ImportView.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/ProductCategoryView.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/CustomerView.java</file>
         </group>
     </open-files>
 </project-private>

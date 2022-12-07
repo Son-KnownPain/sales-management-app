@@ -17,4 +17,8 @@ public class VouchersModel extends Model {
         }
         return result;
     }
+
+    public boolean updateByID(String format) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

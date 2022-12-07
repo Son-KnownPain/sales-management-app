@@ -1,44 +1,55 @@
 package view.dialog;
 
+import db.objects.Customer;
+import db.objects.Product;
 import db.objects.Voucher;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import supports.MoneyFormat;
+import view.VoucherView;
 
 public class VoucherDialog extends javax.swing.JDialog {
+
     private Voucher currentVoucher = null;
-    
+    private VoucherView voucherView = null;
+
     private String currentUsing = "";
     private final String DONATE_VOUCHER = "DONATE_VOUCHER";
-    
+
+    private String currentUsingVoucher = "";
+    private final String VOUCHER_VIEW = "VOUCHER_VIEW";
+
     private DonateVoucherDialog donateVoucherDialog = null;
-    
+
     private ArrayList<Voucher> vouchers = new ArrayList<>();
-    
+
     public void setVouchers(ArrayList<Voucher> vouchers) {
         this.vouchers = vouchers;
         renderTable();
     }
-    
+
     public void setDonateVoucherDialog(DonateVoucherDialog dialog) {
         currentUsing = DONATE_VOUCHER;
         donateVoucherDialog = dialog;
     }
-    
+
     private void renderTable() {
+
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         if (vouchers != null) {
             for (Voucher voucher : vouchers) {
-                Object[] rowData = new Object[] { voucher.getVoucherCode(), voucher.getVoucherValue() };
+                Object[] rowData = new Object[]{voucher.getVoucherCode(), voucher.getVoucherValue()};
                 tableModel.addRow(rowData);
             }
         }
         handleDisplayEventName();
     }
-    
+
     private void handleDisplayEventName() {
+
         ListSelectionModel listSelectionModel = table.getSelectionModel();
         listSelectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -49,12 +60,35 @@ public class VoucherDialog extends javax.swing.JDialog {
             }
         });
     }
-    
+
+    public void renderVoucher(String valueInput, ArrayList<Voucher> arrayList, VoucherView voucherView) {
+        this.currentUsing = VOUCHER_VIEW;
+        this.voucherView = voucherView;
+        resultVoucherDisplay.setText(valueInput);
+
+        DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
+        for (Voucher voucher : arrayList) {
+            Object[] data = {voucher.getVoucherCode(), MoneyFormat.getMoneyFormat(voucher.getVoucherValue())};
+            defaultTableModel.addRow(data);
+        }
+
+        ListSelectionModel listSelectionModel = table.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int index = listSelectionModel.getMinSelectionIndex();
+                currentVoucher = arrayList.get(index);
+                eventDisplay.setText(arrayList.get(index).getVoucherCode());
+
+            }
+        });
+    }
+
     public VoucherDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -67,6 +101,8 @@ public class VoucherDialog extends javax.swing.JDialog {
         table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         chooseBtn = new javax.swing.JButton();
+        resultVoucherDisplay = new javax.swing.JLabel();
+        eventDisplay = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -108,15 +144,24 @@ public class VoucherDialog extends javax.swing.JDialog {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         chooseBtn.setBackground(new java.awt.Color(0, 255, 255));
         chooseBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        chooseBtn.setText("Choose");
+        chooseBtn.setText("Enter");
         chooseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleChooseVoucher(evt);
             }
         });
+
+        resultVoucherDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        eventDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,32 +171,41 @@ public class VoucherDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(eventNameDisplay)))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(chooseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(chooseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(resultVoucherDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(eventNameDisplay)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(eventDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(eventNameDisplay))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(resultVoucherDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(eventNameDisplay))
+                    .addComponent(eventDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -179,15 +233,28 @@ public class VoucherDialog extends javax.swing.JDialog {
 
     private void handleChooseVoucher(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseVoucher
         switch (currentUsing) {
-            case DONATE_VOUCHER:
+            case DONATE_VOUCHER -> {
                 if (donateVoucherDialog != null) {
                     donateVoucherDialog.setCurrentVoucher(currentVoucher);
                     this.dispose();
                 }
                 break;
-            default:
+            }
+            case VOUCHER_VIEW -> {
+                voucherView.setCurrentVoucher(currentVoucher);
+                break;
+            }
+
+            default -> {
+            }
         }
+        this.dispose();
     }//GEN-LAST:event_handleChooseVoucher
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -230,12 +297,14 @@ public class VoucherDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chooseBtn;
+    private javax.swing.JLabel eventDisplay;
     private javax.swing.JLabel eventNameDisplay;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel resultVoucherDisplay;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

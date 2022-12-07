@@ -36,6 +36,7 @@ public class Voucher {
         }
     }
 
+
     public String getVoucherCode() {
         return voucherCode;
     }

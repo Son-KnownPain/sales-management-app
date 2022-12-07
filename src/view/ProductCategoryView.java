@@ -4,6 +4,8 @@
  */
 package view;
 
+import view.dialog.EditCategoryDialog;
+
 /**
  *
  * @author PC HP
@@ -140,6 +142,11 @@ public class ProductCategoryView extends javax.swing.JPanel {
 
         worseBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         worseBtn1.setText("Edit");
+        worseBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                worseBtn1ActionPerformed(evt);
+            }
+        });
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(90, 90, 90));
@@ -293,6 +300,17 @@ public class ProductCategoryView extends javax.swing.JPanel {
                     .addGap(205, 205, 205)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void worseBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_worseBtn1ActionPerformed
+        EditCategoryDialog dialog = new EditCategoryDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+    }//GEN-LAST:event_worseBtn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
