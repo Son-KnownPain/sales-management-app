@@ -1,5 +1,6 @@
 package view.dialog;
 
+import controller.GeneralController;
 import controller.ImportController;
 import view.ImportView;
 import db.objects.Supplier;
@@ -17,15 +18,17 @@ public class SupplierDialog extends javax.swing.JDialog {
 
     private ImportView importView = null;
     private SupplierView supplierView = null;
+    private EditProductImportDailog editImportDailog = null;
 
     private String currentUsing = "";
     private final String IMPORT = "IMPORT";
     private final String SUPPLIER = "SUPPLIER";
+    private final String EDIT_IMPORT_DIALOG = "EDIT_IMPORT_DIALOG";
 
     public SupplierDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        renderResultSupplier(GeneralController.getAllSupplier());
     }
 
     public void setImportView(ImportView importView) {
@@ -37,9 +40,13 @@ public class SupplierDialog extends javax.swing.JDialog {
         currentUsing = SUPPLIER;
         this.supplierView = supplierView;
     }
+    
+    public void setEditProductImportDialog(EditProductImportDailog dialog) {
+        currentUsing = EDIT_IMPORT_DIALOG;
+        this.editImportDailog = dialog;
+    }
 
-    public void renderResultSupplier(String value, ArrayList<Supplier> sup) {
-        searchNameInput.setText(value);
+    private void renderResultSupplier(ArrayList<Supplier> sup) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
         for (Supplier suppliers : sup) {
             Object[] data = {suppliers.getCompanyName() + String.format("[%s]", suppliers.getSupplierID()), suppliers.getPhone()};
@@ -198,13 +205,7 @@ public class SupplierDialog extends javax.swing.JDialog {
                 if (supplierChoosing != null && importView != null) {
                     importView.setCurrentSupplier(supplierChoosing);
 
-                    EnterDiscountValue dialog = new EnterDiscountValue(new javax.swing.JFrame(), true);
-                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                        @Override
-                        public void windowClosing(java.awt.event.WindowEvent e) {
-                            System.exit(0);
-                        }
-                    });
+                    ImportPriceDialog dialog = new ImportPriceDialog(new javax.swing.JFrame(), true);
                     dialog.setImportView(importView);
                     dialog.setLocationRelativeTo(null);
                     this.dispose();
@@ -214,6 +215,12 @@ public class SupplierDialog extends javax.swing.JDialog {
             case SUPPLIER:
                 if (supplierChoosing != null && supplierView != null) {
                     supplierView.setCurrentSupplier(supplierChoosing);
+                    this.dispose();
+                }
+                break;
+            case EDIT_IMPORT_DIALOG:
+                if (supplierChoosing != null && editImportDailog != null) {
+                    editImportDailog.changeSupplier(supplierChoosing);
                     this.dispose();
                 }
                 break;
@@ -228,14 +235,13 @@ public class SupplierDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        // TODO add your handling code here:
-        if(searchNameInput.getText().equals("") || searchNameInput.getText().matches("[0-9]+")){
-            JOptionPane.showMessageDialog(null, "Please enter letter", "Invaild value message", JOptionPane.PLAIN_MESSAGE);
+        if (searchNameInput.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter company name of supplier", "Invaild value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String value = searchNameInput.getText();
         ArrayList<Supplier> suppliers = ImportController.getSupplierWithInput(value);
-        renderResultSupplier(value, suppliers);
+        renderResultSupplier(suppliers);
     }//GEN-LAST:event_searchBtnActionPerformed
 
     /**

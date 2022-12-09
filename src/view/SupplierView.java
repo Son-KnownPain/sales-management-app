@@ -321,7 +321,7 @@ public class SupplierView extends javax.swing.JPanel {
         
         boolean result = SupplierController.addSupplier(companyName, address, phone, email, postalCode);
         if (result) {
-            JOptionPane.showMessageDialog(null, "Add customer successfully");
+            JOptionPane.showMessageDialog(null, "Add supplier successfully");
             clearAddSupplier();
         } else {
             JOptionPane.showMessageDialog(null, "Add failed, please check the information again !!");

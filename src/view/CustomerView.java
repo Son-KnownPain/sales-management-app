@@ -5,7 +5,8 @@ import controller.GeneralController;
 import db.objects.Customer;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import supports.MoneyFormat;
+import supports.NumberFormat;
+import view.dialog.BestCustomerDialog;
 import view.dialog.CustomersDialog;
 import view.dialog.DonateVoucherDialog;
 import view.dialog.EditCustomerDialog;
@@ -29,7 +30,7 @@ public class CustomerView extends javax.swing.JPanel {
         nameDisplay.setText(currentCustomer.getCustomerName());
         phoneDisplay.setText(currentCustomer.getPhone());
         addressDisplay.setText(currentCustomer.getAddress());
-        buyPointDislpay.setText(MoneyFormat.getMoneyFormat(currentCustomer.getBuyPoint()));
+        buyPointDislpay.setText(NumberFormat.getMoneyFormat(currentCustomer.getBuyPoint()));
     }
 
     private void clearAddInput() {
@@ -163,6 +164,11 @@ public class CustomerView extends javax.swing.JPanel {
 
         jButton5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton5.setText("Best customer");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleShowBestCustomer(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton6.setText("Donate voucher");
@@ -374,6 +380,12 @@ public class CustomerView extends javax.swing.JPanel {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_handleShowDonateVoucher
+
+    private void handleShowBestCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleShowBestCustomer
+        BestCustomerDialog dialog = new BestCustomerDialog(new javax.swing.JFrame(), true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_handleShowBestCustomer
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

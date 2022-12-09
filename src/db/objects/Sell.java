@@ -26,7 +26,7 @@ public class Sell {
         sellID = Integer.parseInt(fields[0]);
         customerID = Integer.parseInt(fields[1]);
         try {
-            sellDateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(fields[2] + " " + fields[3].split("[.]")[0]);
+            sellDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fields[2] + " " + fields[3].split("[.]")[0]);
         } catch (ParseException ex) {
             Logger.getLogger(Sell.class.getName()).log(Level.SEVERE, null, ex);
         }

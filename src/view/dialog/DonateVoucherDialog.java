@@ -5,7 +5,7 @@ import db.objects.Customer;
 import db.objects.Voucher;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import supports.MoneyFormat;
+import supports.NumberFormat;
 
 public class DonateVoucherDialog extends javax.swing.JDialog {
     private Voucher currentVoucher = null;
@@ -28,7 +28,7 @@ public class DonateVoucherDialog extends javax.swing.JDialog {
     private void displayInformation() {
         if (currentVoucher != null) {
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode());
-            voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getVoucherValue()) + " VNĐ");
+            voucherValueDisplay.setText(NumberFormat.getMoneyFormat(currentVoucher.getVoucherValue()) + " VNĐ");
         }
     }
 

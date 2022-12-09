@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import static javax.swing.JOptionPane.showMessageDialog;
 import supports.Convert;
 
-import supports.MoneyFormat;
+import supports.NumberFormat;
 
 import view.dialog.CustomersDialog;
 import view.dialog.OrderSellDialog;
@@ -62,7 +62,7 @@ public class SellView extends javax.swing.JPanel {
         } else if (!isContainsKey) {
             selectedProduct.put(currentProduct.getProductID(), quantity);
             DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
-            Object[] data = {currentProduct.getProductName(), MoneyFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity()};
+            Object[] data = {currentProduct.getProductName(), NumberFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
             setInitialPrice(currentProduct.getPrice() * quantity);
         } else {
@@ -157,9 +157,9 @@ public class SellView extends javax.swing.JPanel {
     }
 
     private void changeAndDisplayPrice() {
-        initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
-        voucherValueDisplay.setText(MoneyFormat.getMoneyFormat(voucherValue) + " VNĐ");
-        priceToPayDisplay.setText(priceToPay < 0 ? 0 + " VNĐ" : MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
+        initialPriceDisplay.setText(NumberFormat.getMoneyFormat(initialPrice) + " VNĐ");
+        voucherValueDisplay.setText(NumberFormat.getMoneyFormat(voucherValue) + " VNĐ");
+        priceToPayDisplay.setText(priceToPay < 0 ? 0 + " VNĐ" : NumberFormat.getMoneyFormat(priceToPay) + " VNĐ");
     }
 
     // Get
@@ -682,7 +682,7 @@ public class SellView extends javax.swing.JPanel {
             return;
         }
         int productIDEntered = Integer.parseInt(productIDInput.getText());
-        currentProduct = SellController.getProductByID(productIDEntered);
+        currentProduct = GeneralController.getProductByID(productIDEntered);
 
         if (currentProduct == null) {
             showMessageDialog(null, "ID does not exist", "Message", JOptionPane.PLAIN_MESSAGE);
@@ -690,7 +690,8 @@ public class SellView extends javax.swing.JPanel {
         }
 
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
-        dialog.getSell(this);
+        dialog.setSell(this);
+        dialog.setTitle(currentProduct.getProductName() + ", price: " + NumberFormat.getKMAfter(currentProduct.getPrice()) + "/1");
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
@@ -702,7 +703,7 @@ public class SellView extends javax.swing.JPanel {
             return;
         }
         String value = productNameInput.getText();
-        ArrayList<Product> products = SellController.getProductsWithInput(value);
+        ArrayList<Product> products = GeneralController.getProductsWithInput(value);
         ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
         dialog.renderProduct(value, products, this);
         dialog.setLocationRelativeTo(null);

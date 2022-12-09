@@ -14,6 +14,7 @@ public class StartView extends javax.swing.JFrame {
     private final String CUSTOMER_MANAGEMENT = "CUSTOMER_MANAGEMENT";
     private final String STATISTIC_PRODUCT = "STATISTIC_PRODUCT";
     private final String SUPPLIER_MANAGEMENT = "SUPPLIER_MANAGEMENT";
+    private final String HISTORY = "HISTORY";
 
 
     private SellView sell = null;
@@ -21,9 +22,11 @@ public class StartView extends javax.swing.JFrame {
     private CustomerView customerView = null;
     private StatisticProductsView statisticProducts = null;
     private SupplierView supplierView = null;
+    private HistoryView historyView = null;
     
 
     public StartView() {
+        this.setResizable(false);
         this.setTitle("Thanh Tao Store Management");
         initComponents();
         settingIcon();
@@ -64,6 +67,7 @@ public class StartView extends javax.swing.JFrame {
             case STATISTIC_PRODUCT -> statisticProductBtn.setForeground(Color.BLACK);
             case CUSTOMER_MANAGEMENT -> customerBtn.setForeground(Color.BLACK);
             case SUPPLIER_MANAGEMENT -> supplierBtn.setForeground(Color.BLACK);
+            case HISTORY -> historyBtn.setForeground(Color.BLACK);
             default -> {
             }
         }
@@ -73,6 +77,7 @@ public class StartView extends javax.swing.JFrame {
             case STATISTIC_PRODUCT -> statisticProductBtn.setForeground(Color.decode("#0075FF"));
             case CUSTOMER_MANAGEMENT -> customerBtn.setForeground(Color.decode("#0075FF"));
             case SUPPLIER_MANAGEMENT -> supplierBtn.setForeground(Color.decode("#0075FF"));
+            case HISTORY -> historyBtn.setForeground(Color.decode("#0075FF"));
             default -> {
             }
         }
@@ -91,7 +96,7 @@ public class StartView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         sidebar = new javax.swing.JPanel();
         supplierBtn = new javax.swing.JButton();
-        viewbtn = new javax.swing.JButton();
+        historyBtn = new javax.swing.JButton();
         customerBtn = new javax.swing.JButton();
         searchbtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -122,8 +127,13 @@ public class StartView extends javax.swing.JFrame {
             }
         });
 
-        viewbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        viewbtn.setText("History");
+        historyBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        historyBtn.setText("History");
+        historyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleHistoryContent(evt);
+            }
+        });
 
         customerBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         customerBtn.setText("Customer");
@@ -177,11 +187,6 @@ public class StartView extends javax.swing.JFrame {
 
         statisticProductBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         statisticProductBtn1.setText("Products/ Category");
-        statisticProductBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statisticProductBtn1handleStatisticsProductContent(evt);
-            }
-        });
 
         javax.swing.GroupLayout sidebarLayout = new javax.swing.GroupLayout(sidebar);
         sidebar.setLayout(sidebarLayout);
@@ -198,7 +203,7 @@ public class StartView extends javax.swing.JFrame {
                         .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(statisticProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(viewbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(voucherbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(sidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(importBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,7 +231,7 @@ public class StartView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(viewbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(historyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(statisticProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -328,9 +333,13 @@ public class StartView extends javax.swing.JFrame {
         JPMain.validate();
     }//GEN-LAST:event_handleSupplierContent
 
-    private void statisticProductBtn1handleStatisticsProductContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statisticProductBtn1handleStatisticsProductContent
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statisticProductBtn1handleStatisticsProductContent
+    private void handleHistoryContent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleHistoryContent
+        setActiveButton(HISTORY);
+        historyView = new HistoryView();
+        JPMain.removeAll();
+        JPMain.add(historyView);
+        JPMain.validate();
+    }//GEN-LAST:event_handleHistoryContent
 
     /**
      * @param args the command line arguments
@@ -378,6 +387,7 @@ public class StartView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPMain;
     private javax.swing.JButton customerBtn;
+    private javax.swing.JButton historyBtn;
     private javax.swing.JButton importBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -393,7 +403,6 @@ public class StartView extends javax.swing.JFrame {
     private javax.swing.JButton statisticProductBtn;
     private javax.swing.JButton statisticProductBtn1;
     private javax.swing.JButton supplierBtn;
-    private javax.swing.JButton viewbtn;
     private javax.swing.JButton voucherbtn;
     // End of variables declaration//GEN-END:variables
 

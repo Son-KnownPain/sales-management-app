@@ -4,6 +4,12 @@
  */
 package view.dialog;
 
+import controller.CustomerController;
+import db.objects.Customer;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import supports.NumberFormat;
+
 /**
  *
  * @author PC HP
@@ -16,6 +22,18 @@ public class BestCustomerDialog extends javax.swing.JDialog {
     public BestCustomerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        renderBestCustomer();
+    }
+    
+    private void renderBestCustomer() {
+        ArrayList<Customer> customers = CustomerController.getBestCustomers();
+        int top = 0;
+        for (Customer customer : customers) {
+            top++;
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            Object[] data = { "Top " + top, customer.getCustomerName() + " [" + customer.getCustomerID() + "]", NumberFormat.getMoneyFormat(customer.getBuyPoint()) };
+            model.addRow(data);
+        }
     }
 
     /**
@@ -32,7 +50,7 @@ public class BestCustomerDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -42,31 +60,41 @@ public class BestCustomerDialog extends javax.swing.JDialog {
         jLabel1.setText("Best Customer");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(90, 90, 90));
         jLabel2.setText("Top 10 customer with the most buy point");
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCancel(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "", "", " ", ""
+                "Top", "Name", "Buy Point"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,8 +125,8 @@ public class BestCustomerDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -120,6 +148,10 @@ public class BestCustomerDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCancel
+        this.dispose();
+    }//GEN-LAST:event_handleCancel
 
     /**
      * @param args the command line arguments
@@ -169,6 +201,6 @@ public class BestCustomerDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

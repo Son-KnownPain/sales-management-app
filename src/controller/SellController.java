@@ -23,22 +23,6 @@ import supports.Gift;
 public class SellController {
     
     
-    public static ArrayList<Product> getProductsWithInput(String value) {
-        ProductsModel productsModel = new ProductsModel();
-        ArrayList<Product> products 
-                = ProductsModel.takeObject(productsModel.selectWithCondition("ProductName LIKE '%" + value + "%'"));
-        return products;
-    }
-    
-
-    public static Product getProductByID(int id) {
-        ArrayList<Product> listProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + id));
-        Product result = null;
-        if (!listProduct.isEmpty()) {
-            result = listProduct.get(0);
-        }
-        return result;
-    }
     
     public static Voucher getVoucher(String voucherCode) {
         ArrayList<Voucher> vouchers = 
