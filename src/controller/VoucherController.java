@@ -5,6 +5,8 @@
 package controller;
 
 import db.objects.Voucher;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import model.VouchersModel;
@@ -17,24 +19,25 @@ public class VoucherController {
     
     public static ArrayList<Voucher> getVoucherWithInuput(String valueInput){
         VouchersModel vouchersModel = new VouchersModel();
-        ArrayList<Voucher> arrayList = VouchersModel.takeObject(vouchersModel.selectWithCondition("EventName LIKE '%" + valueInput + "%'"));
+        ArrayList<Voucher> arrayList = VouchersModel.takeObject(vouchersModel.selectWithCondition("VoucherCode LIKE '%" + valueInput + "%'"));
         return arrayList;
         
     }
     
     public static boolean editVoucher(Voucher voucher){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         VouchersModel vouchersModel = new VouchersModel();
-        return vouchersModel.updateByID(String.format(
-                "VoucherCode = '%s', VoucherValue = %s, EventName = '%s', Quantity = %s, CreateDate = '%s', ExpiryDate = '%s'",
-                voucher.getVoucherCode(),
-                voucher.getVoucherValue(),
+        boolean result = vouchersModel.update(
+                String.format(
+                "EventName = '%s', Quantity = %d, CreateDate = '%s', ExpiryDate = '%s'",
                 voucher.getEventName(), 
                 voucher.getQuantity(),
-                voucher.getCreateDate(), 
-                voucher.getExpiryDate()
-            )
-                
+                format.format(voucher.getCreateDate()), 
+                format.format(voucher.getExpiryDate())
+            ),
+            "VoucherCode = '" + voucher.getVoucherCode() + "'"
        );
+         return result;
     }
 
     public static boolean addVoucher(String vCode, String vValue, String vEventName, String vQuantity, String vCreateDate, String vExpiryDate) {

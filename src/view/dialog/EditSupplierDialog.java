@@ -173,11 +173,11 @@ public class EditSupplierDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
-        String newCompanyName = companyNameInput.getText();
-        String newAddress = addressInput.getText();
-        String newPhone = phoneInput.getText();
-        String newEmail = emailInput.getText();
-        String newPostalCode = postalCodeInput.getText();
+        String newCompanyName = companyNameInput.getText().trim();
+        String newAddress = addressInput.getText().trim();
+        String newPhone = phoneInput.getText().trim();
+        String newEmail = emailInput.getText().trim();
+        String newPostalCode = postalCodeInput.getText().trim();
         
         if (newCompanyName.isBlank() || newAddress.isBlank() || newPhone.isBlank() || newEmail.isBlank() || newPostalCode.isBlank()) {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
@@ -187,6 +187,11 @@ public class EditSupplierDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Phone only accept number");
             return;
         }
+        if (!newEmail.matches("^(.+)@(.+).(.+)$")) {
+            JOptionPane.showMessageDialog(null, "Please enter the correct email structure '@', '.'");
+            return;
+        }
+        
         if (newCompanyName.equals(oldData[0]) && newAddress.equals(oldData[1]) && newPhone.equals(oldData[2]) && newEmail.equals(oldData[3]) && newPostalCode.equals(oldData[4])) {
             JOptionPane.showMessageDialog(null, "Nothing to edit");
             this.dispose();

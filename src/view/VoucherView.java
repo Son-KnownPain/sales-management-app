@@ -30,22 +30,23 @@ public class VoucherView extends javax.swing.JPanel {
         initComponents();
     }
 
-    
     public void setCurrentVoucher(Voucher voucher) {
-        currentVoucher = voucher;
+        this.currentVoucher = voucher;
         displayVoucherInformation();
     }
 
     private void displayVoucherInformation() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        voucherCodeDisplay.setText(currentVoucher.getVoucherCode() + "");
-        valueDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getVoucherValue()));
-        eventNameDisplay.setText(currentVoucher.getEventName());
-        quantityDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getQuantity()));
-        dateDisplay.setText(formatter.format(currentVoucher.getCreateDate()) + "  - ");
-        exprityDate.setText(formatter.format(currentVoucher.getExpiryDate()));
+        if (currentVoucher != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            voucherCodeDisplay.setText(currentVoucher.getVoucherCode() + "");
+            valueDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getVoucherValue()));
+            eventNameDisplay.setText(currentVoucher.getEventName());
+            quantityDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getQuantity()));
+            dateDisplay.setText(formatter.format(currentVoucher.getCreateDate()) + "  - ");
+            exprityDate.setText(formatter.format(currentVoucher.getExpiryDate()));
+        }
     }
-    
+
     private void clearAddVoucher() {
         voucherCodeInput.setText("");
         valueInput.setText("");
@@ -54,6 +55,7 @@ public class VoucherView extends javax.swing.JPanel {
         createDateInput.setText("");
         expiryDateInput.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -329,8 +331,8 @@ public class VoucherView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chooseVoucherBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseVoucherBtnActionPerformed
-        if (voucherInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "can not be left blank", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        if (voucherInput.getText().equals("") || voucherInput.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "can not be left blank and no spaces", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String valueInput = voucherInput.getText();
@@ -342,43 +344,46 @@ public class VoucherView extends javax.swing.JPanel {
     }//GEN-LAST:event_chooseVoucherBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-       if (currentVoucher == null) {
+        if (currentVoucher == null) {
             JOptionPane.showMessageDialog(null, "Plase choose voucher");
             return;
         }
-        
+
         EditVoucherDialog dialog = new EditVoucherDialog(new javax.swing.JFrame(), true);
         dialog.setCurrentVoucher(currentVoucher);
         dialog.setVoucherView(this);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-        dialog.setVisible(true);
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        String vCode = voucherCodeInput.getText();
-        String vValue = valueInput.getText();
-        String vEventName = eventNameInput.getText();
-        String vQuantity = quantityInput.getText();
-        String vCreateDate = createDateInput.getText();
-        String vExpiryDate = expiryDateInput.getText();
-        
-        if(vCode.trim().isBlank() || vValue.trim().isBlank() || vEventName.trim().isBlank() || vQuantity.trim().isBlank() || vCreateDate.trim().isBlank() || vExpiryDate.trim().isBlank()){
+        String vCode = voucherCodeInput.getText().trim();
+        String vValue = valueInput.getText().trim();
+        String vEventName = eventNameInput.getText().trim();
+        String vQuantity = quantityInput.getText().trim();
+        String vCreateDate = createDateInput.getText().trim();
+        String vExpiryDate = expiryDateInput.getText().trim();
+
+        if (vCode.trim().isBlank() || vValue.trim().isBlank() || vEventName.trim().isBlank() || vQuantity.trim().isBlank() || vCreateDate.trim().isBlank() || vExpiryDate.trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
+
+        if (!vCreateDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$") || !vExpiryDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$")) {
+            JOptionPane.showMessageDialog(null, "Enter the correct format dd-MM-yyyy");
+            return;
+        }
         
-        if(!vCreateDate.matches("^(\\d{4})-(\\d{2})-(\\d{2})$") || !vExpiryDate.matches("^(\\d{4})-(\\d{2})-(\\d{2})$")){
-            JOptionPane.showMessageDialog(null, "Enter the correct format yyyy-MM-dd");
+        if(!vQuantity.matches("[0-9]+") || !vValue.matches("[0-9]+")){
+            JOptionPane.showMessageDialog(null, "please enter number for value or quantity");
             return;
         }
         
         boolean result = VoucherController.addVoucher(vCode, vValue, vEventName, vQuantity, vCreateDate, vExpiryDate);
-        if(result){
+        if (result) {
             JOptionPane.showMessageDialog(null, "Add voucher successfully");
             clearAddVoucher();
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Add failed, please check the information again !!");
         }
     }//GEN-LAST:event_addBtnActionPerformed
