@@ -4,12 +4,31 @@
  */
 package view.dialog;
 
+import controller.SupplierController;
+import controller.VoucherController;
+import db.objects.Supplier;
+import db.objects.Voucher;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import supports.Convert;
+import view.VoucherView;
+
 /**
  *
  * @author PC HP
  */
 public class EditVoucherDialog extends javax.swing.JDialog {
 
+    private Voucher currentVoucher = null;
+    private Voucher voucherEdit = null;
+    
+    private VoucherView voucherView = null;
+    
+    private LocalDate createDate = null;
+    private LocalDate expiryDate = null;
+    
+     private String[] oldData = new String[4];
     /**
      * Creates new form EditVoucherDialog
      */
@@ -17,7 +36,35 @@ public class EditVoucherDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    
+    public void setCurrentVoucher(Voucher voucher){
+        this.currentVoucher = voucher;
+    }
+    
+    public void setVoucherView(VoucherView voucherView){
+        this.voucherView = voucherView;
+    }
 
+    private void setResultBack(){
+        voucherView.setCurrentVoucher(voucherEdit);
+    }
+    
+    private void renderInput() {
+        if (currentVoucher != null) {
+            eventNameInput.setText(currentVoucher.getEventName());
+            quantityInput.setText(currentVoucher.getQuantity() + "");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            createDateInput.setText(formatter.format(currentVoucher.getCreateDate()));
+            expiryDateInput.setText(formatter.format(currentVoucher.getExpiryDate()));
+            
+            
+           oldData[0] = currentVoucher.getEventName();
+           oldData[1] = currentVoucher.getQuantity() + "";
+           oldData[2] = formatter.format(currentVoucher.getCreateDate());
+           oldData[3] = formatter.format(currentVoucher.getExpiryDate());
+            
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,14 +77,14 @@ public class EditVoucherDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        eventNameInput = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        quantityInput = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        createDateInput = new javax.swing.JTextField();
+        saveBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        expiryDateInput = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -55,8 +102,13 @@ public class EditVoucherDialog extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Create date:");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Save");
+        saveBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Expiry date:");
@@ -69,7 +121,7 @@ public class EditVoucherDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -82,10 +134,10 @@ public class EditVoucherDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5)
+                            .addComponent(eventNameInput)
+                            .addComponent(quantityInput)
+                            .addComponent(createDateInput)
+                            .addComponent(expiryDateInput)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -102,21 +154,21 @@ public class EditVoucherDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(eventNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(quantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(createDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(expiryDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -133,6 +185,58 @@ public class EditVoucherDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        
+        String newEventName = eventNameInput.getText();
+        String newQuantity = quantityInput.getText();
+        String newCreateDate = createDateInput.getText();
+        String newExpiryDate = expiryDateInput.getText();
+        
+        if(newEventName.trim().isBlank() || newQuantity.trim().isBlank() || newCreateDate.trim().isBlank() || newExpiryDate.trim().isBlank()){
+            JOptionPane.showMessageDialog(null, "Inputs can not be empty");
+            return;
+        }
+        
+        if(!newCreateDate.matches("^(\\d{2})-(\\d{2})-(\\d{4})$") || !newExpiryDate.matches("^(\\d{2})-(\\d{2})-(\\d{4})$")){
+            JOptionPane.showMessageDialog(null, "Enter the correct format dd-MM-yyyy");
+            return;
+        }
+        
+        if (newEventName.equals(oldData[0]) && newQuantity.equals(oldData[1]) && newCreateDate.equals(oldData[2]) && newExpiryDate.equals(oldData[3])) {
+            JOptionPane.showMessageDialog(null, "Nothing to edit");
+            this.dispose();
+            return;
+        }
+        
+        if(!newQuantity.trim().matches("[0-9]+")){
+            JOptionPane.showMessageDialog(null, "Quantity only accept number");
+            return;
+        }
+        
+        createDate = Convert.toLocalDate(Convert.toDate(newCreateDate));
+        expiryDate = Convert.toLocalDate(Convert.toDate(newExpiryDate));
+      
+        if(createDate.isBefore(expiryDate)){
+            
+            return;
+        }
+        
+        if(expiryDate.isAfter(createDate)){
+            return;
+        }
+        
+        voucherEdit
+                = new Voucher(currentVoucher.getVoucherCode(), currentVoucher.getVoucherValue(), newEventName, Integer.parseInt(newQuantity), Convert.toDate(newCreateDate), Convert.toDate(newExpiryDate));
+        boolean result = VoucherController.editVoucher(voucherEdit);
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Update successfully");
+            setResultBack();
+        } else {
+            JOptionPane.showMessageDialog(null, "Edit fail !!");
+        }
+        this.dispose();
+    }//GEN-LAST:event_saveBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,16 +281,16 @@ public class EditVoucherDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField createDateInput;
+    private javax.swing.JTextField eventNameInput;
+    private javax.swing.JTextField expiryDateInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField quantityInput;
+    private javax.swing.JButton saveBtn;
     // End of variables declaration//GEN-END:variables
 }

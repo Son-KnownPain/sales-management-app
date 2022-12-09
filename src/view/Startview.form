@@ -63,7 +63,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" alignment="0" min="-2" pref="138" max="-2" attributes="0"/>
@@ -74,18 +74,17 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                       <Component id="statisticProductBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
-                                      <Component id="historyBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       <Component id="voucherbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                                      <Component id="historyBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                       <Component id="importBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       <Component id="sellBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       <Component id="customerBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
-                                      <Component id="searchbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="spendbtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
-                                  <Component id="supplierBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
+                                  <Component id="voucherBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
                                   <Component id="statisticProductBtn1" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
+                                  <Component id="supplierBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -105,12 +104,10 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="customerBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="searchbtn" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="historyBtn" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="statisticProductBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="voucherbtn" min="-2" pref="32" max="-2" attributes="0"/>
@@ -118,11 +115,11 @@
                       <Component id="jLabel3" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="statisticProductBtn1" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="spendbtn" min="-2" pref="32" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="voucherBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="supplierBtn" min="-2" pref="32" max="-2" attributes="0"/>
-                      <EmptySpace pref="51" max="32767" attributes="0"/>
+                      <EmptySpace pref="106" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -160,14 +157,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleCustomerContent"/>
               </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="searchbtn">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="18" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Search"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
@@ -223,13 +212,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleStatisticsProductContent"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="spendbtn">
+            <Component class="javax.swing.JButton" name="voucherBtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Vouchers"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleVoucherContent"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="importBtn">
               <Properties>

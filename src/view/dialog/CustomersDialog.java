@@ -63,8 +63,9 @@ public class CustomersDialog extends javax.swing.JDialog {
     
     public void renderResult(String value, ArrayList<Customer> result, CustomerView customerView) {
         // Set customer view
-        currentUsed = CUSTOMER_MANAGEMENT;
+        
         this.customerView = customerView;
+        currentUsed = CUSTOMER_MANAGEMENT;
         // Render data
         resultForValue.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
