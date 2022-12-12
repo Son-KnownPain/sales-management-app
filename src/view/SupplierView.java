@@ -99,7 +99,7 @@ public class SupplierView extends javax.swing.JPanel {
         jLabel10.setText("Email:");
 
         chooseSupplierBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        chooseSupplierBtn.setText("Choose supplier");
+        chooseSupplierBtn.setText("Choose Supplier");
         chooseSupplierBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleChooseSupplier(evt);

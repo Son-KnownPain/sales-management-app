@@ -96,7 +96,7 @@ public class VoucherView extends javax.swing.JPanel {
         voucherInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         chooseVoucherBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        chooseVoucherBtn.setText("Choose voucher");
+        chooseVoucherBtn.setText("Search Vouchers");
         chooseVoucherBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseVoucherBtnActionPerformed(evt);
