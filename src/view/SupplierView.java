@@ -7,17 +7,18 @@ import view.dialog.EditSupplierDialog;
 import view.dialog.SupplierDialog;
 
 public class SupplierView extends javax.swing.JPanel {
+
     private Supplier currentSupplier = null;
 
     public SupplierView() {
         initComponents();
     }
-    
+
     public void setCurrentSupplier(Supplier supplier) {
         this.currentSupplier = supplier;
         displaySupplierInformation();
     }
-    
+
     private void displaySupplierInformation() {
         if (currentSupplier != null) {
             idDisplay.setText(currentSupplier.getSupplierID() + "");
@@ -28,7 +29,7 @@ public class SupplierView extends javax.swing.JPanel {
             postalCodeDisplay.setText(currentSupplier.getPostalCode());
         }
     }
-    
+
     private void clearAddSupplier() {
         companyNameInput.setText("");
         phoneInput.setText("");
@@ -298,23 +299,23 @@ public class SupplierView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseSupplier
 
     private void handleAddSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleAddSupplier
-        String companyName = companyNameInput.getText();
-        String phone = phoneInput.getText();
-        String email = emailInput.getText();
-        String postalCode = postalCodeInput.getText();
-        String address = addressInput.getText();
-        
-        if(companyName.trim().isBlank() || phone.trim().isBlank() || email.trim().isBlank() || postalCode.trim().isBlank() || address.trim().isBlank()){
+        String companyName = companyNameInput.getText().trim();
+        String phone = phoneInput.getText().trim();
+        String email = emailInput.getText().trim();
+        String postalCode = postalCodeInput.getText().trim();
+        String address = addressInput.getText().trim();
+
+        if (companyName.trim().isBlank() || phone.trim().isBlank() || email.trim().isBlank() || postalCode.trim().isBlank() || address.trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
-        
-        if(!phone.matches("^\\d{10}$") || !phone.matches("[0-9]+")){
+
+        if (!phone.matches("^\\d{10}$") || !phone.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Phone only accept number and get ten numbers");
             return;
         }
-        
-        if(!email.matches("^(.+)@(.+).(.+)$")){
+
+        if (!email.matches("^(.+)@(.+).(.+)$")) {
             JOptionPane.showMessageDialog(null, "Please enter the correct email structure '@', '.'");
             return;
         }

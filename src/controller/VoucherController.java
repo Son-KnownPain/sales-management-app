@@ -5,6 +5,8 @@
 package controller;
 
 import db.objects.Voucher;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import model.VouchersModel;
@@ -23,8 +25,20 @@ public class VoucherController {
     }
     
     public static boolean editVoucher(Voucher voucher){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         VouchersModel vouchersModel = new VouchersModel();
-        return false;
+
+        boolean result = vouchersModel.update(
+                String.format(
+                "EventName = '%s', Quantity = %d, CreateDate = '%s', ExpiryDate = '%s'",
+                voucher.getEventName(), 
+                voucher.getQuantity(),
+                format.format(voucher.getCreateDate()), 
+                format.format(voucher.getExpiryDate())
+            ),
+            "VoucherCode = '" + voucher.getVoucherCode() + "'"
+       );
+         return result;
     }
 
     public static boolean addVoucher(String vCode, String vValue, String vEventName, String vQuantity, String vCreateDate, String vExpiryDate) {

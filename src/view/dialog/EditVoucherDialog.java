@@ -1,34 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
-import controller.SupplierController;
 import controller.VoucherController;
-import db.objects.Supplier;
 import db.objects.Voucher;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import supports.Convert;
+import supports.Validation;
 import view.VoucherView;
 
-/**
- *
- * @author PC HP
- */
 public class EditVoucherDialog extends javax.swing.JDialog {
 
     private Voucher currentVoucher = null;
     private Voucher voucherEdit = null;
-    
+
     private VoucherView voucherView = null;
-    
+
     private LocalDate createDate = null;
     private LocalDate expiryDate = null;
-    
-     private String[] oldData = new String[4];
+
+    private String[] oldData = new String[4];
+
     /**
      * Creates new form EditVoucherDialog
      */
@@ -36,19 +28,20 @@ public class EditVoucherDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-    public void setCurrentVoucher(Voucher voucher){
+
+    public void setCurrentVoucher(Voucher voucher) {
         this.currentVoucher = voucher;
     }
-    
-    public void setVoucherView(VoucherView voucherView){
+
+    public void setVoucherView(VoucherView voucherView) {
         this.voucherView = voucherView;
+        renderInput();
     }
 
-    private void setResultBack(){
+    private void setResultBack() {
         voucherView.setCurrentVoucher(voucherEdit);
     }
-    
+
     private void renderInput() {
         if (currentVoucher != null) {
             eventNameInput.setText(currentVoucher.getEventName());
@@ -56,15 +49,15 @@ public class EditVoucherDialog extends javax.swing.JDialog {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             createDateInput.setText(formatter.format(currentVoucher.getCreateDate()));
             expiryDateInput.setText(formatter.format(currentVoucher.getExpiryDate()));
-            
-            
-           oldData[0] = currentVoucher.getEventName();
-           oldData[1] = currentVoucher.getQuantity() + "";
-           oldData[2] = formatter.format(currentVoucher.getCreateDate());
-           oldData[3] = formatter.format(currentVoucher.getExpiryDate());
-            
+
+            oldData[0] = currentVoucher.getEventName();
+            oldData[1] = currentVoucher.getQuantity() + "";
+            oldData[2] = formatter.format(currentVoucher.getCreateDate());
+            oldData[3] = formatter.format(currentVoucher.getExpiryDate());
+
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -187,45 +180,60 @@ public class EditVoucherDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        
-        String newEventName = eventNameInput.getText();
-        String newQuantity = quantityInput.getText();
-        String newCreateDate = createDateInput.getText();
-        String newExpiryDate = expiryDateInput.getText();
-        
-        if(newEventName.trim().isBlank() || newQuantity.trim().isBlank() || newCreateDate.trim().isBlank() || newExpiryDate.trim().isBlank()){
+
+        String newEventName = eventNameInput.getText().trim();
+        String newQuantity = quantityInput.getText().trim();
+        String newCreateDate = createDateInput.getText().trim();
+        String newExpiryDate = expiryDateInput.getText().trim();
+
+        if (newEventName.trim().isBlank() || newQuantity.trim().isBlank() || newCreateDate.trim().isBlank() || newExpiryDate.trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
-        
-        if(!newCreateDate.matches("^(\\d{2})-(\\d{2})-(\\d{4})$") || !newExpiryDate.matches("^(\\d{2})-(\\d{2})-(\\d{4})$")){
-            JOptionPane.showMessageDialog(null, "Enter the correct format dd-MM-yyyy");
-            return;
+
+        if (newCreateDate.isBlank() || !newExpiryDate.isBlank()) {
+            if (!newCreateDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$") || !newExpiryDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$")) {
+                JOptionPane.showMessageDialog(null, "Enter the correct format dd/MM/yyyy");
+                return;
+            }
+            Object[] isValidStartDate = Validation.isDate(newCreateDate);
+            Object[] isValidEndDate = Validation.isDate(newExpiryDate);
+
+            if (!(boolean) isValidStartDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidStartDate[1]);
+                return;
+            }
+            if (!(boolean) isValidEndDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidEndDate[1]);
+                return;
+            }
+
+            createDate = Convert.toLocalDate(Convert.toDate(newCreateDate));
+            expiryDate = Convert.toLocalDate(Convert.toDate(newExpiryDate));
+
+            if (!createDate.isBefore(expiryDate)) {
+                JOptionPane.showMessageDialog(null, "Creation date must be started before the end date");
+                return;
+            }
+
+            if (!expiryDate.isAfter(createDate)) {
+                JOptionPane.showMessageDialog(null, "The end date must be before the creation date");
+                return;
+            }
+
         }
-        
+
         if (newEventName.equals(oldData[0]) && newQuantity.equals(oldData[1]) && newCreateDate.equals(oldData[2]) && newExpiryDate.equals(oldData[3])) {
             JOptionPane.showMessageDialog(null, "Nothing to edit");
             this.dispose();
             return;
         }
-        
-        if(!newQuantity.trim().matches("[0-9]+")){
+
+        if (!newQuantity.trim().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Quantity only accept number");
             return;
         }
-        
-        createDate = Convert.toLocalDate(Convert.toDate(newCreateDate));
-        expiryDate = Convert.toLocalDate(Convert.toDate(newExpiryDate));
-      
-        if(createDate.isBefore(expiryDate)){
-            
-            return;
-        }
-        
-        if(expiryDate.isAfter(createDate)){
-            return;
-        }
-        
+
         voucherEdit
                 = new Voucher(currentVoucher.getVoucherCode(), currentVoucher.getVoucherValue(), newEventName, Integer.parseInt(newQuantity), Convert.toDate(newCreateDate), Convert.toDate(newExpiryDate));
         boolean result = VoucherController.editVoucher(voucherEdit);

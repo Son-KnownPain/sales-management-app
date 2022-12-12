@@ -325,6 +325,7 @@ public class ProductCategoryView extends javax.swing.JPanel {
                         .addGap(0, 109, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
