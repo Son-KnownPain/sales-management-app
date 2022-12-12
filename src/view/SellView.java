@@ -373,7 +373,7 @@ public class SellView extends javax.swing.JPanel {
         jLabel11.setText("Price To Pay:");
 
         customerChooseOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        customerChooseOkBtn.setText("OK");
+        customerChooseOkBtn.setText("Search");
         customerChooseOkBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleChooseCustomer(evt);
@@ -437,7 +437,7 @@ public class SellView extends javax.swing.JPanel {
         jLabel5.setText("Product ID:");
 
         productIDOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        productIDOkBtn.setText("OK");
+        productIDOkBtn.setText("Search");
         productIDOkBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleProductIDQuery(evt);
@@ -448,7 +448,7 @@ public class SellView extends javax.swing.JPanel {
         jLabel6.setText("Product Name:");
 
         productNameOkBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        productNameOkBtn.setText("OK");
+        productNameOkBtn.setText("Search");
         productNameOkBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 productNameOkBtnActionPerformed(evt);
@@ -526,21 +526,6 @@ public class SellView extends javax.swing.JPanel {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(productIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(productIDOkBtn)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(productNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(productNameOkBtn))
-                            .addComponent(jLabel6))
-                        .addGap(94, 94, 94))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -552,7 +537,7 @@ public class SellView extends javax.swing.JPanel {
                                         .addGap(18, 18, 18)
                                         .addComponent(voucherCodeOkBtn))
                                     .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
@@ -573,13 +558,28 @@ public class SellView extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(deleteBtn)
                                 .addGap(18, 18, 18)
-                                .addComponent(clearBtn)
-                                .addGap(109, 109, 109))))))
+                                .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(109, 109, 109))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(productIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(productIDOkBtn)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(productNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(productNameOkBtn))
+                            .addComponent(jLabel6))
+                        .addGap(58, 58, 58))))
             .addComponent(jScrollPane1)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(678, Short.MAX_VALUE)
-                    .addComponent(sellConfirmBtn1)
+                    .addComponent(sellConfirmBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(16, 16, 16)))
         );
         layout.setVerticalGroup(
@@ -617,7 +617,7 @@ public class SellView extends javax.swing.JPanel {
                             .addComponent(productNameOkBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 23, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -649,15 +649,15 @@ public class SellView extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(deleteBtn)
-                            .addComponent(clearBtn))
+                            .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(17, 17, 17))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(593, Short.MAX_VALUE)
-                    .addComponent(sellConfirmBtn1)
+                    .addComponent(sellConfirmBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(16, 16, 16)))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -667,8 +667,8 @@ public class SellView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnchoosedialogActionPerformed
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
-        if (customerChooseInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter characters, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        if (customerChooseInput.getText().equals("") || customerChooseInput.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Please enter customer name or phone", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         
@@ -681,8 +681,8 @@ public class SellView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChooseCustomer
 
     private void handleProductIDQuery(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleProductIDQuery
-        if (productIDInput.getText().equals("")) {
-            showMessageDialog(null, "Please enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        if (productIDInput.getText().equals("") || productIDInput.getText().trim().isBlank()) {
+            showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         } else if (!productIDInput.getText().matches("[0-9]+")) {
             showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
@@ -705,8 +705,12 @@ public class SellView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleProductIDQuery
 
     private void productNameOkBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameOkBtnActionPerformed
-        if (productNameInput.getText().equals("")) {
-            showMessageDialog(null, "Please enter characters, don't leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        if (productNameInput.getText().equals("") || productNameInput.getText().trim().isBlank()) {
+            showMessageDialog(null, "Please enter product name", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        if (productNameInput.getText().matches("[0-9]+")){
+            showMessageDialog(null, "Please enter product name", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String value = productNameInput.getText();
@@ -741,6 +745,7 @@ public class SellView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleCancelVoucher
 
     private void handleDeleteProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleDeleteProduct
+        
         int viewIndex = productsTable.getSelectedRow();
 
         if (viewIndex != -1) {
@@ -752,6 +757,9 @@ public class SellView extends javax.swing.JPanel {
             int modelIndex = productsTable.convertColumnIndexToModel(viewIndex);
             DefaultTableModel model = (DefaultTableModel) productsTable.getModel();
             model.removeRow(modelIndex);
+        }else{
+            showMessageDialog(null, "Please select a row in table to delete", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
     }//GEN-LAST:event_handleDeleteProduct
 
@@ -771,8 +779,10 @@ public class SellView extends javax.swing.JPanel {
 
     private void handleSell(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSell
         if (currentCustomer == null || selectedProduct.isEmpty()) {
+            showMessageDialog(null, "Please choose cusstomer, choose products to sell", "Message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
+        
         boolean sellResult = SellController.sellOne(currentCustomer, currentVoucher, selectedProduct, isVoucherOfCustomer, priceToPay);
         if (sellResult) {
             OrderSellDialog dialog = new OrderSellDialog(new javax.swing.JFrame(), true);

@@ -201,6 +201,9 @@ public class ImportView extends javax.swing.JPanel {
             int modelIndex = productTableImport.convertColumnIndexToModel(viewIndex);
             DefaultTableModel model = (DefaultTableModel) productTableImport.getModel();
             model.removeRow(modelIndex);
+        }else{
+            showMessageDialog(null, "Please select a row in table to delete", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
         }
     }
     
@@ -457,13 +460,13 @@ public class ImportView extends javax.swing.JPanel {
                                                 .addGap(18, 18, 18)
                                                 .addComponent(informationDiscountDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(Comfirmbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGap(18, 18, 18)
                                                 .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
@@ -585,7 +588,7 @@ public class ImportView extends javax.swing.JPanel {
     private void productIDBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDBtnOkActionPerformed
 
         if (productIDInput.getText().trim().equals("")) {
-            JOptionPane.showMessageDialog(null, "Input can not empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter productID", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         } else if (!productIDInput.getText().trim().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
@@ -618,10 +621,15 @@ public class ImportView extends javax.swing.JPanel {
 
     private void productNameBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameBtnOkActionPerformed
         // TODO add your handling code here:
-        if (productNameInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter characters, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+        if (productNameInput.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter product name", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
+        if (productNameInput.getText().trim().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Please enter product name", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+
         String value = productNameInput.getText();
         ArrayList<Product> sProducts = GeneralController.getProductsWithInput(value);
 
@@ -642,6 +650,7 @@ public class ImportView extends javax.swing.JPanel {
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void handleDeleteAProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleDeleteAProduct
+
         delete();
     }//GEN-LAST:event_handleDeleteAProduct
 
@@ -661,6 +670,9 @@ public class ImportView extends javax.swing.JPanel {
             );
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Please select a row in table product");
+            return;
         }
     }//GEN-LAST:event_handleShowEditBox
 

@@ -183,8 +183,8 @@ public class EditSupplierDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
-        if (!newPhone.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, "Phone only accept number");
+        if (!newPhone.matches("^\\d{10}$") || !newPhone.matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Phone only accept number and get ten numbers");
             return;
         }
         if (!newEmail.matches("^(.+)@(.+).(.+)$")) {

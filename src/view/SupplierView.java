@@ -331,7 +331,7 @@ public class SupplierView extends javax.swing.JPanel {
 
     private void handleEditSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleEditSupplier
         if (currentSupplier == null) {
-            JOptionPane.showMessageDialog(null, "Plase choose supplier");
+            JOptionPane.showMessageDialog(null, "Please choose supplier");
             return;
         }
         EditSupplierDialog dialog = new EditSupplierDialog(new javax.swing.JFrame(), true);
