@@ -48,6 +48,7 @@ public class SupplierDialog extends javax.swing.JDialog {
 
     private void renderResultSupplier(ArrayList<Supplier> sup) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTable.getModel();
+        defaultTableModel.setRowCount(0);
         for (Supplier suppliers : sup) {
             Object[] data = {suppliers.getCompanyName() + String.format("[%s]", suppliers.getSupplierID()), suppliers.getPhone()};
             defaultTableModel.addRow(data);

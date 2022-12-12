@@ -1,20 +1,87 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
-/**
- *
- * @author PC HP
- */
+import controller.SpendingController;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import static java.time.temporal.ChronoUnit.DAYS;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import supports.Convert;
+import supports.NumberFormat;
+import supports.Validation;
+
 public class SpendingView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form SpendingView
-     */
+    private LocalDate startDate = null;
+    private LocalDate endDate = null;
+
+    // OPTIONS DATE
+    private final int ALL_TIME = 0;
+    private final int TODAY = 1;
+    private final int _7_DAYS_AGO = 2;
+    private final int _30_DAYS_AGO = 3;
+
     public SpendingView() {
         initComponents();
+        renderMinMaxDate();
+    }
+
+    private void renderMinMaxDate() {
+        try {
+            ArrayList<Date> listDate = SpendingController.getDateOfSpending();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+            sellDateDisplay.setText(formatter.format(listDate.get(0)) + " - " + formatter.format(listDate.get(1)));
+            importDateDisplay.setText(formatter.format(listDate.get(2)) + " - " + formatter.format(listDate.get(3)));
+
+            Date minDateSell = listDate.get(0);
+            Date maxDateSell = listDate.get(1);
+
+            Date minDateImport = listDate.get(2);
+            Date maxDateImport = listDate.get(3);
+
+            if (minDateSell.compareTo(minDateImport) < 0) {
+                startDate = Convert.toLocalDate(minDateSell);
+            } else {
+                startDate = Convert.toLocalDate(minDateImport);
+            }
+
+            if (maxDateSell.compareTo(maxDateImport) < 0) {
+                endDate = Convert.toLocalDate(maxDateImport);
+            } else {
+                endDate = Convert.toLocalDate(maxDateSell);
+            }
+            renderStartEndDate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void renderStartEndDate() {
+        if (startDate != null && endDate != null) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            dateDisplay.setText(dateTimeFormatter.format(startDate) + " - " + dateTimeFormatter.format(endDate));
+            numDaysDisplay.setText(DAYS.between(startDate, endDate) + "");
+            renderInfo();
+        }
+    }
+
+    private void renderInfo() {
+        if (startDate == null || endDate == null) {
+            return;
+        }
+        int salesMoney = SpendingController.getSalesMoney(startDate, endDate);
+        int importCost = SpendingController.getImportCost(startDate, endDate);
+        int voucherCost = SpendingController.getVoucherCost(startDate, endDate);
+
+        salesMoneyDisplay.setText(NumberFormat.getMoneyFormat(salesMoney) + " VNĐ");
+        importCostDisplay.setText(NumberFormat.getMoneyFormat(importCost) + " VNĐ");
+        benefitsNoVoucherDisplay.setText(NumberFormat.getMoneyFormat(salesMoney - importCost) + " VNĐ");
+        voucherCostDisplay.setText(NumberFormat.getMoneyFormat(voucherCost));
+        benefitsHaveVoucherDisplay.setText(NumberFormat.getMoneyFormat(salesMoney - importCost - voucherCost) + " VNĐ");
     }
 
     /**
@@ -27,64 +94,67 @@ public class SpendingView extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel14 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        salesMoneyDisplay = new javax.swing.JLabel();
+        importCostDisplay = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        benefitsNoVoucherDisplay = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        voucherCostDisplay = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        sellDateDisplay = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        numDaysDisplay = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        startTimeInput1 = new javax.swing.JTextField();
+        benefitsHaveVoucherDisplay = new javax.swing.JLabel();
+        startDateInput = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        endTimeInput1 = new javax.swing.JTextField();
+        endDateInput = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cancelCustomBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
+        options = new javax.swing.JComboBox<>();
+        jLabel19 = new javax.swing.JLabel();
+        importDateDisplay = new javax.swing.JLabel();
+        dateDisplay = new javax.swing.JLabel();
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel14.setText("Sale money:");
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel16.setText("2.480.000 VNĐ");
+        salesMoneyDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        salesMoneyDisplay.setText("0 VNĐ");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setText("1.960.000 VNĐ");
+        importCostDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        importCostDisplay.setText("0 VNĐ");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel8.setText("Benefits no voucher:");
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel9.setText("520.000 VNĐ");
+        benefitsNoVoucherDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        benefitsNoVoucherDisplay.setText("0 VNĐ");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("Voucher cost:");
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel11.setText("200.000 VNĐ");
+        voucherCostDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        voucherCostDisplay.setText("0 VNĐ");
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(90, 90, 90));
         jLabel15.setText("Spending:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Date:");
+        jLabel2.setText("Sell Date:");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("1/11/2022 - 1/12/2022");
+        sellDateDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        sellDateDisplay.setText("---");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Number of days:");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setText("30");
+        numDaysDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        numDaysDisplay.setText("---");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Import cost:");
@@ -92,28 +162,53 @@ public class SpendingView extends javax.swing.JPanel {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel12.setText("Benefits have voucher:");
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel13.setText("320.000 VNĐ");
+        benefitsHaveVoucherDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        benefitsHaveVoucherDisplay.setText("0 VNĐ");
 
-        startTimeInput1.setBackground(new java.awt.Color(217, 217, 217));
+        startDateInput.setBackground(new java.awt.Color(217, 217, 217));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel17.setText("to");
 
-        endTimeInput1.setBackground(new java.awt.Color(217, 217, 217));
+        endDateInput.setBackground(new java.awt.Color(217, 217, 217));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(90, 90, 90));
-        jLabel18.setText("Custom price:");
+        jLabel18.setText("Custom Date:");
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton4.setText("Cancel");
+        cancelCustomBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cancelCustomBtn.setText("Cancel Custom");
+        cancelCustomBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCancelCustom(evt);
+            }
+        });
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton5.setText("Update");
+        updateBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCustomDate(evt);
+            }
+        });
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All time", " " }));
+        options.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        options.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Time", "Today", "7 Days Ago", "30 Days Ago" }));
+        options.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionsActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel19.setText("Import Date:");
+
+        importDateDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        importDateDisplay.setText("---");
+
+        dateDisplay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        dateDisplay.setForeground(new java.awt.Color(90, 90, 90));
+        dateDisplay.setText("---");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -122,51 +217,65 @@ public class SpendingView extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(sellDateDisplay))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel19)
+                                    .addComponent(jLabel14))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel3))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(salesMoneyDisplay)
+                                    .addComponent(importDateDisplay)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel5))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel16))
+                                .addComponent(numDaysDisplay))))
+                    .addComponent(jLabel15)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addGap(18, 18, 18)
+                        .addComponent(dateDisplay))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(importCostDisplay))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(benefitsNoVoucherDisplay))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel11))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(voucherCostDisplay))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel13))))
-                    .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(benefitsHaveVoucherDisplay))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(startTimeInput1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel17)
-                        .addGap(18, 18, 18)
-                        .addComponent(endTimeInput1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel17)
+                                .addGap(16, 16, 16)
+                                .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(options, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cancelCustomBtn)))))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,70 +285,138 @@ public class SpendingView extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(sellDateDisplay))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(importDateDisplay)
+                    .addComponent(jLabel19))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(numDaysDisplay))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jLabel16))
-                .addGap(18, 18, 18)
+                    .addComponent(salesMoneyDisplay))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel7))
+                    .addComponent(importCostDisplay))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9))
+                    .addComponent(benefitsNoVoucherDisplay))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel11))
+                    .addComponent(voucherCostDisplay))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jLabel13))
+                    .addComponent(benefitsHaveVoucherDisplay))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(dateDisplay))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(startTimeInput1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(endTimeInput1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel17)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(options, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelCustomBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void optionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsActionPerformed
+        int itemIndex = options.getSelectedIndex();
+        switch (itemIndex) {
+            case ALL_TIME:
+                renderMinMaxDate();
+                break;
+            case TODAY:
+                startDate = LocalDate.now();
+                endDate = LocalDate.now();
+                renderStartEndDate();
+                break;
+            case _7_DAYS_AGO:
+                startDate = LocalDate.now().minusDays(6);
+                endDate = LocalDate.now();
+                renderStartEndDate();
+                break;
+            case _30_DAYS_AGO:
+                startDate = LocalDate.now().minusDays(30);
+                endDate = LocalDate.now();
+                renderStartEndDate();
+                break;
+            default:
+        }
+    }//GEN-LAST:event_optionsActionPerformed
+
+    private void handleCancelCustom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCancelCustom
+        renderMinMaxDate();
+    }//GEN-LAST:event_handleCancelCustom
+
+    private void handleCustomDate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCustomDate
+        String startDateCustom = startDateInput.getText().trim();
+        String endDateCustom = endDateInput.getText().trim();
+        if (startDateCustom.isBlank() && endDateCustom.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Nothing to custom, please enter date (dd/MM/yyyy) or price (number) to custom history");
+            return;
+        }
+        if (!startDateCustom.isBlank() || !endDateCustom.isBlank()) {
+            if (!startDateCustom.matches("\\d{1,2}/\\d{1,2}/\\d{4}") || !endDateCustom.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
+                JOptionPane.showMessageDialog(null, "Please enter with format dd/MM/yyyy, example: 12/12/2000");
+                return;
+            }
+            Object[] isValidStartDate = Validation.isDate(startDateCustom);
+            Object[] isValidEndDate = Validation.isDate(endDateCustom);
+
+            if (!(boolean) isValidStartDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidStartDate[1]);
+                return;
+            }
+            if (!(boolean) isValidEndDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidEndDate[1]);
+                return;
+            }
+
+            startDate = Convert.toLocalDate(Convert.toDate(startDateCustom));
+            endDate = Convert.toLocalDate(Convert.toDate(endDateCustom));
+        }
+        renderStartEndDate();
+    }//GEN-LAST:event_handleCustomDate
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField endTimeInput1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel benefitsHaveVoucherDisplay;
+    private javax.swing.JLabel benefitsNoVoucherDisplay;
+    private javax.swing.JButton cancelCustomBtn;
+    private javax.swing.JLabel dateDisplay;
+    private javax.swing.JTextField endDateInput;
+    private javax.swing.JLabel importCostDisplay;
+    private javax.swing.JLabel importDateDisplay;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField startTimeInput1;
+    private javax.swing.JLabel numDaysDisplay;
+    private javax.swing.JComboBox<String> options;
+    private javax.swing.JLabel salesMoneyDisplay;
+    private javax.swing.JLabel sellDateDisplay;
+    private javax.swing.JTextField startDateInput;
+    private javax.swing.JButton updateBtn;
+    private javax.swing.JLabel voucherCostDisplay;
     // End of variables declaration//GEN-END:variables
 }

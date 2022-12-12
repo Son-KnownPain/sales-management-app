@@ -1,7 +1,5 @@
 package view.dialog;
 
-import db.objects.Customer;
-import db.objects.Product;
 import db.objects.Voucher;
 import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
@@ -18,8 +16,6 @@ public class VoucherDialog extends javax.swing.JDialog {
 
     private String currentUsing = "";
     private final String DONATE_VOUCHER = "DONATE_VOUCHER";
-
-    private String currentUsingVoucher = "";
     private final String VOUCHER_VIEW = "VOUCHER_VIEW";
 
     private DonateVoucherDialog donateVoucherDialog = null;
@@ -41,7 +37,7 @@ public class VoucherDialog extends javax.swing.JDialog {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         if (vouchers != null) {
             for (Voucher voucher : vouchers) {
-                Object[] rowData = new Object[]{voucher.getVoucherCode(), voucher.getVoucherValue()};
+                Object[] rowData = new Object[]{voucher.getVoucherCode(), NumberFormat.getMoneyFormat(voucher.getVoucherValue())};
                 tableModel.addRow(rowData);
             }
         }
@@ -64,7 +60,6 @@ public class VoucherDialog extends javax.swing.JDialog {
     public void renderVoucher(String valueInput, ArrayList<Voucher> arrayList, VoucherView voucherView) {
         this.currentUsing = VOUCHER_VIEW;
         this.voucherView = voucherView;
-        resultVoucherDisplay.setText(valueInput);
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         for (Voucher voucher : arrayList) {
@@ -78,7 +73,7 @@ public class VoucherDialog extends javax.swing.JDialog {
             public void valueChanged(ListSelectionEvent e) {
                 int index = listSelectionModel.getMinSelectionIndex();
                 currentVoucher = arrayList.get(index);
-                eventDisplay.setText(arrayList.get(index).getVoucherCode());
+                eventNameDisplay.setText(currentVoucher.getEventName());
 
             }
         });
@@ -101,8 +96,6 @@ public class VoucherDialog extends javax.swing.JDialog {
         table = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         chooseBtn = new javax.swing.JButton();
-        resultVoucherDisplay = new javax.swing.JLabel();
-        eventDisplay = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -116,6 +109,7 @@ public class VoucherDialog extends javax.swing.JDialog {
         jLabel2.setText("Event:");
 
         eventNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        eventNameDisplay.setText("---");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -159,10 +153,6 @@ public class VoucherDialog extends javax.swing.JDialog {
             }
         });
 
-        resultVoucherDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        eventDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -170,7 +160,6 @@ public class VoucherDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,16 +167,12 @@ public class VoucherDialog extends javax.swing.JDialog {
                         .addComponent(chooseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(resultVoucherDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(eventNameDisplay)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(eventDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(eventNameDisplay)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -195,15 +180,11 @@ public class VoucherDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(resultVoucherDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel1)
                 .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(eventNameDisplay))
-                    .addComponent(eventDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(eventNameDisplay))
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -217,9 +198,7 @@ public class VoucherDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,13 +221,13 @@ public class VoucherDialog extends javax.swing.JDialog {
             }
             case VOUCHER_VIEW -> {
                 voucherView.setCurrentVoucher(currentVoucher);
+                this.dispose();
                 break;
             }
 
             default -> {
             }
         }
-        this.dispose();
     }//GEN-LAST:event_handleChooseVoucher
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -297,14 +276,12 @@ public class VoucherDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chooseBtn;
-    private javax.swing.JLabel eventDisplay;
     private javax.swing.JLabel eventNameDisplay;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel resultVoucherDisplay;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

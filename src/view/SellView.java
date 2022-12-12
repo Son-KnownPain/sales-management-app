@@ -51,6 +51,7 @@ public class SellView extends javax.swing.JPanel {
     public void renderRowTable(int quantity) {
         int quantityOfProductExist = 0;
         boolean isContainsKey = false;
+        String discountString = currentProduct.getDiscount() == 0F ? "" : " (-" + (int) (currentProduct.getDiscount() * 100) + ")%";
         if (selectedProduct.containsKey(currentProduct.getProductID())) {
             quantityOfProductExist = selectedProduct.get(currentProduct.getProductID());
             isContainsKey = true;
@@ -62,9 +63,15 @@ public class SellView extends javax.swing.JPanel {
         } else if (!isContainsKey) {
             selectedProduct.put(currentProduct.getProductID(), quantity);
             DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
-            Object[] data = {currentProduct.getProductName(), NumberFormat.getMoneyFormat(currentProduct.getPrice() * quantity), quantity, currentProduct.getUnitPerQuantity()};
+            
+            Object[] data = { 
+                currentProduct.getProductName(), 
+                NumberFormat.getMoneyFormat((int) ((currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * quantity)) + discountString, 
+                quantity, 
+                currentProduct.getUnitPerQuantity()
+            };
             defaultTableModel.addRow(data);
-            setInitialPrice(currentProduct.getPrice() * quantity);
+            setInitialPrice((int) ((currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * quantity));
         } else {
             int row = 0;
             for (int keyID : selectedProduct.keySet()) {
@@ -75,9 +82,9 @@ public class SellView extends javax.swing.JPanel {
             }
             int newQuantity = quantity + quantityOfProductExist;
             selectedProduct.put(currentProduct.getProductID(), newQuantity);
-            productsTable.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
+            productsTable.setValueAt(NumberFormat.getMoneyFormat((int) ((currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * newQuantity)) + discountString, row, 1);
             productsTable.setValueAt(newQuantity, row, 2);
-            setInitialPrice(currentProduct.getPrice() * quantity);
+            setInitialPrice((int) ((currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * quantity));
         }
 
         currentProduct = null;
@@ -691,7 +698,7 @@ public class SellView extends javax.swing.JPanel {
 
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
         dialog.setSell(this);
-        dialog.setTitle(currentProduct.getProductName() + ", price: " + NumberFormat.getKMAfter(currentProduct.getPrice()) + "/1");
+        dialog.setTitle(currentProduct.getProductName() + ", price: " + NumberFormat.getKMAfter(currentProduct.getPrice() - (int) (currentProduct.getPrice() * currentProduct.getDiscount())) + "/1");
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
 
@@ -740,7 +747,7 @@ public class SellView extends javax.swing.JPanel {
             //  Xóa dữ liệu lưu trữ quantity ở HashMap và set lại giá tiền
             int productID = getProductIDByIndex(viewIndex);
             selectedProduct.remove(productID);
-            setInitialPrice(-Integer.parseInt(String.join("", (productsTable.getValueAt(viewIndex, 1) + "").split("[.]"))));
+            setInitialPrice(-Integer.parseInt(String.join("", (productsTable.getValueAt(viewIndex, 1) + "").split(" ")[0].split("[.]"))));
 
             int modelIndex = productsTable.convertColumnIndexToModel(viewIndex);
             DefaultTableModel model = (DefaultTableModel) productsTable.getModel();
@@ -780,7 +787,7 @@ public class SellView extends javax.swing.JPanel {
                     currentCustomer.getPhone(), 
                     voucherValue, 
                     initialPrice, 
-                    priceToPay,
+                    (priceToPay < 0  ? 0 : priceToPay),
                     currentCustomer.getBuyPoint()
             );
             dialog.setVisible(true);

@@ -1,25 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
-/**
- *
- * @author PC HP
- */
+import controller.ProductCategoryController;
+import db.objects.Category;
+import db.objects.Product;
+import javax.swing.JOptionPane;
+import view.ProductCategoryView;
+
 public class EditProductDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form s
-     */
+    private Product currentProduct = null;
+    private Category currentCategory = null;
+    private int oldCategoryID = -1;
+    
+    private ProductCategoryView productCategoryView = null;
+
     public EditProductDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    public EditProductDialog() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setProductCategoryView(ProductCategoryView productCategoryView) {
+        this.productCategoryView = productCategoryView;
+    }
+    
+    public void setCurrentProduct(Product currentProduct) {
+        this.currentProduct = currentProduct;
+        setCurrentCategory(ProductCategoryController.getCategoryByID(currentProduct.getCategoryID()));
+        oldCategoryID = currentProduct.getCategoryID();
+        setInputInfo();
+    }
+
+    public void setCurrentCategory(Category currentCategory) {
+        this.currentCategory = currentCategory;
+        if (currentCategory == null) {
+            categoryNameDisplay.setText("---");
+            return;
+        }
+        categoryNameDisplay.setText(currentCategory.getCategoryName());
+    }
+
+    private void setInputInfo() {
+        if (currentProduct != null) {
+            nameInput.setText(currentProduct.getProductName());
+            priceInput.setText(currentProduct.getPrice() + "");
+            discountInput.setText((int) (currentProduct.getDiscount() * 100) + "");
+            unitPerQuantityInput.setText(currentProduct.getUnitPerQuantity());
+            descriptionInput.setText(currentProduct.getDescription());
+        }
     }
 
     /**
@@ -35,21 +62,21 @@ public class EditProductDialog extends javax.swing.JDialog {
         jTree1 = new javax.swing.JTree();
         jPanel3 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
+        categoryNameDisplay = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        changeCategoryBtn = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
+        saveBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nameInput = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        discountInput = new javax.swing.JTextField();
+        priceInput = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        unitPerQuantityInput = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        descriptionInput = new javax.swing.JTextField();
 
         jScrollPane1.setViewportView(jTree1);
 
@@ -59,40 +86,46 @@ public class EditProductDialog extends javax.swing.JDialog {
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(90, 90, 90));
-        jLabel18.setText("Supplier:");
+        jLabel18.setText("Category Of Product:");
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel19.setText("Do uong");
+        categoryNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        categoryNameDisplay.setText("---");
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel21.setText("Category name: ");
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton5.setText("Change Suplier");
+        changeCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        changeCategoryBtn.setText("Change Category");
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
         jLabel24.setText("Edit Product");
 
-        jButton6.setBackground(new java.awt.Color(46, 237, 145));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton6.setText("Save");
+        saveBtn.setBackground(new java.awt.Color(46, 237, 145));
+        saveBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        saveBtn.setForeground(new java.awt.Color(0, 0, 0));
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleSaveNew(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Name:");
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        nameInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Discount (%):");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        discountInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        priceInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Price:");
 
-        jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        unitPerQuantityInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Unit per quantity:");
@@ -100,7 +133,7 @@ public class EditProductDialog extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Description:");
 
-        jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        descriptionInput.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -113,15 +146,15 @@ public class EditProductDialog extends javax.swing.JDialog {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 18, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -129,10 +162,13 @@ public class EditProductDialog extends javax.swing.JDialog {
                             .addComponent(jLabel18)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jLabel21)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel19)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(changeCategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel21)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(categoryNameDisplay)))))
+                        .addGap(0, 307, Short.MAX_VALUE))))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -142,19 +178,16 @@ public class EditProductDialog extends javax.swing.JDialog {
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(discountInput, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(unitPerQuantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(descriptionInput, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -169,33 +202,33 @@ public class EditProductDialog extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(discountInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(unitPerQuantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(descriptionInput, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(categoryNameDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(changeCategoryBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -214,6 +247,74 @@ public class EditProductDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleSaveNew(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSaveNew
+        String name = nameInput.getText().trim();
+        String price = priceInput.getText().trim();
+        String discount = discountInput.getText().trim();
+        String unitPerQuantity = unitPerQuantityInput.getText().trim();
+        String description = descriptionInput.getText().trim();
+
+        if (name.isBlank() || price.isBlank() || discount.isBlank() || unitPerQuantity.isBlank() || description.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Input can not empty");
+            return;
+        }
+
+        if (!price.matches("[0-9]+") || !discount.matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Price and discount only accept number");
+            return;
+        }
+
+        if (currentCategory == null) {
+            JOptionPane.showMessageDialog(null, "Please choose category for product");
+            return;
+        }
+
+        int priceNumber = Integer.parseInt(price);
+        int discountNumber = Integer.parseInt(discount);
+
+        if (discountNumber > 100) {
+            JOptionPane.showMessageDialog(null, "Discount range 1-100");
+            return;
+        }
+
+        if (name.equals(currentProduct.getProductName())
+                && priceNumber == currentProduct.getPrice()
+                && discountNumber == (int) (currentProduct.getDiscount() * 100)
+                && unitPerQuantity.equals(currentProduct.getUnitPerQuantity())
+                && description.equals(currentProduct.getDescription())
+                && currentCategory.getCategoryID() == oldCategoryID) {
+            JOptionPane.showMessageDialog(null, "Nothing to edit");
+            return;
+        }
+        
+        boolean result = ProductCategoryController.editProduct(
+                currentProduct.getProductID(), 
+                currentCategory.getCategoryID(), 
+                name, 
+                priceNumber, 
+                discountNumber, 
+                unitPerQuantity, 
+                description
+        );
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Edit product success");
+            productCategoryView.setCurrentProduct(
+                    new Product(
+                            currentProduct.getProductID(), 
+                            currentCategory.getCategoryID(), 
+                            name, priceNumber, 
+                            description, 
+                            discountNumber/100F, 
+                            currentProduct.getQuantityInStore(), 
+                            unitPerQuantity
+                    )
+            );
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Edit Fail !!");
+        }
+    }//GEN-LAST:event_handleSaveNew
 
     /**
      * @param args the command line arguments
@@ -261,11 +362,12 @@ public class EditProductDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel categoryNameDisplay;
+    private javax.swing.JButton changeCategoryBtn;
+    private javax.swing.JTextField descriptionInput;
+    private javax.swing.JTextField discountInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
@@ -274,11 +376,10 @@ public class EditProductDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTree jTree1;
+    private javax.swing.JTextField nameInput;
+    private javax.swing.JTextField priceInput;
+    private javax.swing.JButton saveBtn;
+    private javax.swing.JTextField unitPerQuantityInput;
     // End of variables declaration//GEN-END:variables
 }

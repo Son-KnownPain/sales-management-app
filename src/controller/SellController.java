@@ -60,12 +60,23 @@ public class SellController {
         String[] dateTimes = dtf.format(now).split(" ");
         
         // Voucher Code
-        String voucherCode = voucher == null ? "null" : voucher.getVoucherCode();
+        String voucherCode = voucher == null ? "NULL" : "'" + voucher.getVoucherCode() + "'";
+        
+        // Update voucher quantity, default TRUE
+        boolean updateVoucherResult = true;
+        if (isVoucherOfCustomer && voucher != null) {
+            String condition = String.format("VoucherCode = %s AND CustomerID = %d", voucherCode, customer.getCustomerID());
+            updateVoucherResult = voucherOfCustomerModel.update("Quantity = Quantity - 1", condition);
+        } else if (voucher != null) {
+            VouchersModel vouchersModel = new VouchersModel();
+            String condition = String.format("VoucherCode = %s AND CustomerID = %d", voucherCode, customer.getCustomerID());
+            updateVoucherResult = vouchersModel.update("Quantity = Quantity - 1", condition);
+        }
         
         // Sells
         String sellInsertValue =
                 String.format(
-                        "%d, '%s', '%s', '%s'", 
+                        "%d, '%s', '%s', %s", 
                         customer.getCustomerID(),
                         dateTimes[0],
                         dateTimes[1],
@@ -89,7 +100,7 @@ public class SellController {
                         currentSell.getSellID(),
                         productID,
                         products.get(productID),
-                        currentProduct.getPrice() * products.get(productID)
+                        ((int) (currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * products.get(productID))
                 );
             
             // Insert 1 or many details
@@ -102,14 +113,6 @@ public class SellController {
             }
         }
         
-        // Update voucher quantity, default TRUE
-        boolean updateVoucherResult = true;
-        if (isVoucherOfCustomer && voucher != null) {
-            updateVoucherResult = voucherOfCustomerModel.update("Quantity = Quantity - 1", "VoucherCode = '" + voucherCode + "'");
-        } else if (voucher != null) {
-            VouchersModel vouchersModel = new VouchersModel();
-            updateVoucherResult = vouchersModel.update("Quantity = Quantity - 1", "VoucherCode = '" + voucherCode + "'");
-        }
         
         // Update BuyPoint
         CustomersModel customersModel = new CustomersModel();

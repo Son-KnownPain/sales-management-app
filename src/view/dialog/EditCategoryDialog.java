@@ -1,22 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view.dialog;
 
-/**
- *
- * @author PC HP
- */
-public class EditCategoryDialog extends javax.swing.JDialog {
+import controller.ProductCategoryController;
+import db.objects.Category;
+import javax.swing.JOptionPane;
+import view.ProductCategoryView;
 
-    /**
-     * Creates new form EditCategory
-     */
+public class EditCategoryDialog extends javax.swing.JDialog {
+    private Category currentCategory = null;
+    
+    private ProductCategoryView productCategoryView = null;
+
     public EditCategoryDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
+
+    public void setCurrentCategory(Category currentCategory) {
+        this.currentCategory = currentCategory;
+        if (currentCategory != null) {
+            nameInput.setText(currentCategory.getCategoryName());
+            descriptionInput.setText(currentCategory.getDescription());
+        }
+    }
+
+    public void setProductCategoryView(ProductCategoryView productCategoryView) {
+        this.productCategoryView = productCategoryView;
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,10 +43,10 @@ public class EditCategoryDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        nameInput = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        descriptionInput = new javax.swing.JTextField();
+        saveBtn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -63,8 +74,15 @@ public class EditCategoryDialog extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Description:");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Save");
+        saveBtn.setBackground(new java.awt.Color(46, 237, 145));
+        saveBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        saveBtn.setForeground(new java.awt.Color(0, 0, 0));
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleSaveNew(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -80,14 +98,14 @@ public class EditCategoryDialog extends javax.swing.JDialog {
                         .addComponent(jLabel2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(descriptionInput, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -98,13 +116,13 @@ public class EditCategoryDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(descriptionInput, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -123,6 +141,33 @@ public class EditCategoryDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleSaveNew(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSaveNew
+        String name = nameInput.getText();
+        String description = descriptionInput.getText();
+        
+        if (name.isBlank() || description.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Inputs can not empty");
+            return;
+        }
+        
+        if (name.equals(currentCategory.getCategoryName()) && description.equals(currentCategory.getDescription())) {
+            JOptionPane.showMessageDialog(null, "Nothing to edit");
+            this.dispose();
+            return;
+        }
+        
+        boolean result = ProductCategoryController.editCategory(name, description, currentCategory.getCategoryID());
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Edit category success");
+            if (productCategoryView != null) {
+                productCategoryView.setCurrentCategory(new Category(currentCategory.getCategoryID(), name, description));
+            }
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Edit fail !!");
+        }
+    }//GEN-LAST:event_handleSaveNew
 
     /**
      * @param args the command line arguments
@@ -168,14 +213,14 @@ public class EditCategoryDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField descriptionInput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField nameInput;
+    private javax.swing.JButton saveBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -74,7 +74,7 @@
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                       <Component id="statisticProductBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
-                                      <Component id="voucherbtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
+                                      <Component id="spendingBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                       <Component id="historyBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" alignment="1" groupAlignment="0" attributes="0">
@@ -83,7 +83,7 @@
                                       <Component id="customerBtn" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="voucherBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
-                                  <Component id="statisticProductBtn1" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
+                                  <Component id="productCategoryBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
                                   <Component id="supplierBtn" alignment="1" min="-2" pref="202" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -110,11 +110,11 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="statisticProductBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="voucherbtn" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="spendingBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" pref="20" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="statisticProductBtn1" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="productCategoryBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="voucherBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -185,13 +185,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleSellContent"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="voucherbtn">
+            <Component class="javax.swing.JButton" name="spendingBtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Spending"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleSpendingContent"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
@@ -234,13 +237,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleImportContent"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="statisticProductBtn1">
+            <Component class="javax.swing.JButton" name="productCategoryBtn">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="18" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Products/ Category"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="handleProductCategoryContent"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

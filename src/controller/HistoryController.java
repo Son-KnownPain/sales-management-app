@@ -32,7 +32,7 @@ public class HistoryController {
     public static ArrayList<String[]> getHistoryImport(LocalDate startDate, LocalDate endDate, int startPrice, int endPrice) {
         ImportsModel importsModel = new ImportsModel();
         String query = String.format(
-                "SELECT I.ImportID, ImportDate, ImportTime, SUM(ID.TotalPrice) AS PriceToPay, "
+                "SELECT TOP 200 I.ImportID, ImportDate, ImportTime, SUM(ID.TotalPrice) AS PriceToPay, "
                 + "SUM(ID.DiscountMoney) AS DiscountValue, COUNT(ID.ImportID) AS NumberOfProduct  "
                 + "FROM Imports AS I JOIN ImportDetails AS ID ON I.ImportID = ID.ImportID "
                 + "WHERE ImportDate >= '%s' AND ImportDate <= '%s' "

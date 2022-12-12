@@ -406,7 +406,7 @@ public class HistoryView extends javax.swing.JPanel {
 
         numOfProductDisplay.setText(numOfProduct + "");
         discountDisplay.setText(NumberFormat.getMoneyFormat(discountValue) + " VNĐ");
-        priceToPayDisplay.setText(NumberFormat.getMoneyFormat(priceToPay) + " VNĐ");
+        priceToPayDisplay.setText(NumberFormat.getMoneyFormat(priceToPay - discountValue < 0 ? 0 : priceToPay - discountValue) + " VNĐ");
     }//GEN-LAST:event_handleClickRowTable
 
     private void handleChooseTime(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseTime

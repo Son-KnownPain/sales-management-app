@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import supports.NumberFormat;
 import view.ImportView;
+import view.ProductCategoryView;
 import view.SellView;
 
 public class ProductsDialog extends javax.swing.JDialog {
@@ -16,7 +17,8 @@ public class ProductsDialog extends javax.swing.JDialog {
     private Product productChoosing = null;
 
     private SellView sell = null;
-    private ImportView supplierImport;
+    private ImportView supplierImport = null;
+    private ProductCategoryView productCategoryView = null;
 
     private String currentUse = "";
 
@@ -31,7 +33,8 @@ public class ProductsDialog extends javax.swing.JDialog {
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
         for (Product product : pro) {
-            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), NumberFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
+            String discountString = product.getDiscount() == 0F ? "" : " (-" + (int) (product.getDiscount() * 100) + "%)";
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), NumberFormat.getMoneyFormat((int) (product.getPrice() - product.getPrice()*product.getDiscount())) + discountString};
             defaultTableModel.addRow(data);
         }
         ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
@@ -54,7 +57,32 @@ public class ProductsDialog extends javax.swing.JDialog {
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
         for (Product product : pro) {
-            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), product.getPrice(), product.getQuantityInStore(), product.getUnitPerQuantity()};
+            String discountString = product.getDiscount() == 0F ? "" : " (-" + (int) (product.getDiscount() * 100) + "%)";
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), NumberFormat.getMoneyFormat((int) (product.getPrice() - product.getPrice()*product.getDiscount())) + discountString};
+            defaultTableModel.addRow(data);
+        }
+        ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
+        listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedCount = listSelectionModel.getMinSelectionIndex();
+                productChoosing = pro.get(selectedCount);
+                int productIDSelecting = productChoosing.getProductID();
+                idDisplay.setText(productIDSelecting + "");
+
+            }
+        });
+
+    }
+    
+    public void renderProduct(String value, ArrayList<Product> pro, ProductCategoryView view) {
+        this.currentUse = "PRODUCT_CATEGORY";
+        this.productCategoryView = view;
+        resultForProduct.setText(value);
+        DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
+        for (Product product : pro) {
+            String discountString = product.getDiscount() == 0F ? "" : " (-" + (int) (product.getDiscount() * 100) + "%)";
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), NumberFormat.getMoneyFormat((int) (product.getPrice() - product.getPrice()*product.getDiscount())) + discountString};
             defaultTableModel.addRow(data);
         }
         ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
@@ -125,7 +153,7 @@ public class ProductsDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "", ""
+                "Product Name", "Price"
             }
         ) {
             Class[] types = new Class [] {
@@ -211,9 +239,11 @@ public class ProductsDialog extends javax.swing.JDialog {
 
     private void chooseProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseProductActionPerformed
         if (productChoosing == null) {
+            JOptionPane.showMessageDialog(null, "Please select a product");
             return;
         }
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
+        dialog.setTitle(productChoosing.getProductName() + ", price: " + NumberFormat.getKMAfter(productChoosing.getPrice() - (int) (productChoosing.getPrice() * productChoosing.getDiscount())) + "/1");
         
         switch (currentUse) {
             case "SELL":
@@ -235,6 +265,10 @@ public class ProductsDialog extends javax.swing.JDialog {
                 dialog.setVisible(true);
                 break;
                 // ---------------------------------------
+            case "PRODUCT_CATEGORY":
+                productCategoryView.setCurrentProduct(productChoosing);
+                this.dispose();
+                break;
             default:
         }
     }//GEN-LAST:event_chooseProductActionPerformed

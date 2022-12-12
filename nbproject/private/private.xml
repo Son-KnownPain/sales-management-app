@@ -3,43 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/HistoryView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/ProductCategoryView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/controller/HistoryController.java</file>
-=======
-<<<<<<< HEAD
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditProductImportDailog.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/ImportView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/ProductCategoryView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/CustomerView.java</file>
-=======
-<<<<<<< HEAD
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditProductDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/OrderSellDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditCategoryDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/QuantityDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/VoucherOfCustomerDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/ProductsDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditProductImportDailog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/EditCustomerDialog.java</file>
-=======
-<<<<<<< HEAD
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/SupplierView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/BestCustomerDialog.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditSupplierDialog.java</file>
-=======
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/DonateVoucherDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/SellView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/controller/CustomerController.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/VoucherDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/dialog/StatisticProductDialog.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/CustomerView.java</file>
-            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/StartView.java</file>
->>>>>>> 8789c1bd81b4d4e73aeb46fac9dc7230efb5467d
->>>>>>> d328ec86fbffaaf14631688e437bfcd2d0b77b57
->>>>>>> ca1477ddb7bd556bd400edf4853ee18569987ecb
->>>>>>> 77009b1f8b3ab5b27e241dd110e16a41110e290a
+            <file>file:/D:/==%20ProjectBasic/ProjectJava/SalesManagerDevApp/src/view/SpendingView.java</file>
         </group>
     </open-files>
 </project-private>

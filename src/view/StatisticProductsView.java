@@ -10,18 +10,20 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import supports.Convert;
 import supports.NumberFormat;
+import supports.Validation;
 
 import view.dialog.StatisticProductDialog;
 
 public class StatisticProductsView extends javax.swing.JPanel {
+
     private boolean isCustom = false;
-    
+
     private LocalDate startDate = null;
     private LocalDate endDate = null;
 
     private String currentType = "BEST";
     private String time = "All Time";
-    
+
     private ArrayList<Integer> listProductID = new ArrayList<>();
 
     public StatisticProductsView() {
@@ -30,7 +32,7 @@ public class StatisticProductsView extends javax.swing.JPanel {
         handleDate(time);
         handleSelectRow();
     }
-    
+
     private void handleDate(String time) {
         LocalDate now = LocalDate.now();
         LocalDate oneWeekAgo = now.minusDays(6);
@@ -96,22 +98,22 @@ public class StatisticProductsView extends javax.swing.JPanel {
             }
         });
     }
-    
+
     private void displayInfo(int index) {
         String[] customersInfo = StatisticsProductController.getBestCustomer(listProductID.get(index), startDate, endDate);
         String priceForOne = StatisticsProductController.getPriceForOne(listProductID.get(index));
-        
+
         bestCustomerDisplay.setText(customersInfo[0] + " - " + customersInfo[1] + ", bought " + customersInfo[2]);
-        
+
         int totalPrice = Convert.toInt(productsTable.getValueAt(index, 1) + "");
         totalPriceDisplay.setText(NumberFormat.getMoneyFormat(totalPrice) + " VNĐ");
-        
+
         pricePerProductDisplay.setText(NumberFormat.getMoneyFormat(priceForOne) + " VNĐ");
-        
+
         int quantity = Integer.parseInt(productsTable.getValueAt(index, 2) + "");
         int totalCost = Integer.parseInt(priceForOne) * quantity;
         totalCostDisplay.setText(NumberFormat.getMoneyFormat(totalCost) + " VNĐ");
-        
+
         benefitsDisplay.setText(NumberFormat.getMoneyFormat((totalPrice - totalCost)) + " VNĐ");
     }
 
@@ -351,7 +353,7 @@ public class StatisticProductsView extends javax.swing.JPanel {
         if (isCustom && startDate != null && endDate != null) {
             renderTable(startDate, endDate);
         } else {
-            
+
             renderTable();
         }
     }//GEN-LAST:event_handleClickBest
@@ -373,10 +375,23 @@ public class StatisticProductsView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleChangeOptionsTime
 
     private void handleCustomDate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCustomDate
-        String startTime = startTimeInput.getText();
-        String endTime = endTimeInput.getText();
-        if (!startTime.matches("\\d{2}/\\d{1,2}/\\d{4}") || !endTime.matches("\\d{2}/\\d{1,2}/\\d{4}")) {
+        String startTime = startTimeInput.getText().trim();
+        String endTime = endTimeInput.getText().trim();
+        
+        if (!startTime.matches("\\d{1,2}/\\d{1,2}/\\d{4}") || !endTime.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
             JOptionPane.showMessageDialog(null, "Invalid input, value must be format dd/MM/yyyy, example: 11/11/2022", "Message", JOptionPane.PLAIN_MESSAGE);
+            return;
+        }
+        
+        Object[] isValidStartDate = Validation.isDate(startTime);
+        Object[] isValidEndDate = Validation.isDate(endTime);
+
+        if (!(boolean) isValidStartDate[0]) {
+            JOptionPane.showMessageDialog(null, isValidStartDate[1]);
+            return;
+        }
+        if (!(boolean) isValidEndDate[0]) {
+            JOptionPane.showMessageDialog(null, isValidEndDate[1]);
             return;
         }
 
