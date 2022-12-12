@@ -6,6 +6,7 @@ package view.dialog;
 
 import db.objects.Customer;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -18,7 +19,7 @@ import view.SellView;
  * @author PC HP
  */
 public class CustomersDialog extends javax.swing.JDialog {
-    private Customer customerChoose;
+    private Customer customerChoose = null;
     
     // Split views when confirm
     private String currentUsed = "";
@@ -222,7 +223,11 @@ public class CustomersDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleChooseCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseCustomer
-        if (idDisplay.getText().equals("")) return;
+
+        if (customerChoose == null) {
+            JOptionPane.showMessageDialog(null, "Please select a cusstomer");
+            return;
+        }
         
         switch (currentUsed) {
             case SELL -> sell.setCurrentCustomer(customerChoose);

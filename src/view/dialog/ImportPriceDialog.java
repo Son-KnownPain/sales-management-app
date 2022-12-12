@@ -118,12 +118,11 @@ public class ImportPriceDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleConfirm
-        if (totalPriceInput.getText().trim().isBlank()) {
-            JOptionPane.showMessageDialog(null, "Please enter total price");
+        if (totalPriceInput.getText().trim().isBlank() || !totalPriceInput.getText().trim().matches("[0-9]+")) {
+            JOptionPane.showMessageDialog(null, "Please enter total price and Please enter number");
+            return;
         }
-        if (!totalPriceInput.getText().trim().matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, "Please enter number");
-        }
+        
 
         if (importView != null) {
             importView.setCurrentTotalPrice(Integer.parseInt(totalPriceInput.getText()));

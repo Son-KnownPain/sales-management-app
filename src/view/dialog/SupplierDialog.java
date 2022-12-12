@@ -201,6 +201,10 @@ public class SupplierDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleChooseSupplier(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleChooseSupplier
+        if(supplierChoosing == null){
+            JOptionPane.showMessageDialog(null, "Please select a supplier");
+            return;
+        }
         switch (currentUsing) {
             case IMPORT:
                 if (supplierChoosing != null && importView != null) {
