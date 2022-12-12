@@ -49,7 +49,7 @@ public class AddCategoryDialog extends javax.swing.JDialog {
         jLabel3.setText("Description:");
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Save");
+        jButton1.setText("Add");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

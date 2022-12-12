@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import supports.Convert;
+import supports.Validation;
 import view.VoucherView;
 
 public class EditVoucherDialog extends javax.swing.JDialog {
@@ -195,10 +196,33 @@ public class EditVoucherDialog extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Enter the correct format dd/MM/yyyy");
                 return;
             }
+            Object[] isValidStartDate = Validation.isDate(newCreateDate);
+            Object[] isValidEndDate = Validation.isDate(newExpiryDate);
+
+            if (!(boolean) isValidStartDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidStartDate[1]);
+                return;
+            }
+            if (!(boolean) isValidEndDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidEndDate[1]);
+                return;
+            }
+
+            createDate = Convert.toLocalDate(Convert.toDate(newCreateDate));
+            expiryDate = Convert.toLocalDate(Convert.toDate(newExpiryDate));
+
+            if (!createDate.isBefore(expiryDate)) {
+                JOptionPane.showMessageDialog(null, "Creation date must be started before the end date");
+                return;
+            }
+
+            if (!expiryDate.isAfter(createDate)) {
+                JOptionPane.showMessageDialog(null, "The end date must be before the creation date");
+                return;
+            }
+
         }
 
-        
-        
         if (newEventName.equals(oldData[0]) && newQuantity.equals(oldData[1]) && newCreateDate.equals(oldData[2]) && newExpiryDate.equals(oldData[3])) {
             JOptionPane.showMessageDialog(null, "Nothing to edit");
             this.dispose();
@@ -207,19 +231,6 @@ public class EditVoucherDialog extends javax.swing.JDialog {
 
         if (!newQuantity.trim().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Quantity only accept number");
-            return;
-        }
-
-        createDate = Convert.toLocalDate(Convert.toDate(newCreateDate));
-        expiryDate = Convert.toLocalDate(Convert.toDate(newExpiryDate));
-
-        if (!createDate.isBefore(expiryDate)) {
-            JOptionPane.showMessageDialog(null, "Creation date must be started before the end date");
-            return;
-        }
-
-        if (!expiryDate.isAfter(createDate)) {
-            JOptionPane.showMessageDialog(null, "The end date must be before the creation date");
             return;
         }
 

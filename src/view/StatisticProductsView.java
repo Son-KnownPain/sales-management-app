@@ -1,7 +1,6 @@
 package view;
 
 import controller.StatisticsProductController;
-import db.use.Connector;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -9,16 +8,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import supports.Convert;
-import supports.MoneyFormat;
+import supports.NumberFormat;
 
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.data.jdbc.JDBCCategoryDataset;
+import view.dialog.StatisticProductDialog;
 
 public class StatisticProductsView extends javax.swing.JPanel {
     private boolean isCustom = false;
@@ -70,8 +63,8 @@ public class StatisticProductsView extends javax.swing.JPanel {
         ArrayList<String[]> data = StatisticsProductController.getStatisticProduct(currentType, time);
         for (String[] rowData : data) {
             listProductID.add(Integer.parseInt(rowData[4]));
-            rowData[1] = MoneyFormat.getMoneyFormat(rowData[1]);
-            rowData[2] = MoneyFormat.getMoneyFormat(rowData[2]);
+            rowData[1] = NumberFormat.getMoneyFormat(rowData[1]);
+            rowData[2] = NumberFormat.getMoneyFormat(rowData[2]);
             tableModel.addRow(rowData);
         }
     }
@@ -83,8 +76,8 @@ public class StatisticProductsView extends javax.swing.JPanel {
         ArrayList<String[]> data = StatisticsProductController.customDateStatistics(currentType, startTime, endTime);
         for (String[] rowData : data) {
             listProductID.add(Integer.parseInt(rowData[4]));
-            rowData[1] = MoneyFormat.getMoneyFormat(rowData[1]);
-            rowData[2] = MoneyFormat.getMoneyFormat(rowData[2]);
+            rowData[1] = NumberFormat.getMoneyFormat(rowData[1]);
+            rowData[2] = NumberFormat.getMoneyFormat(rowData[2]);
             tableModel.addRow(rowData);
         }
     }
@@ -111,15 +104,15 @@ public class StatisticProductsView extends javax.swing.JPanel {
         bestCustomerDisplay.setText(customersInfo[0] + " - " + customersInfo[1] + ", bought " + customersInfo[2]);
         
         int totalPrice = Convert.toInt(productsTable.getValueAt(index, 1) + "");
-        totalPriceDisplay.setText(MoneyFormat.getMoneyFormat(totalPrice) + " VNĐ");
+        totalPriceDisplay.setText(NumberFormat.getMoneyFormat(totalPrice) + " VNĐ");
         
-        pricePerProductDisplay.setText(MoneyFormat.getMoneyFormat(priceForOne) + " VNĐ");
+        pricePerProductDisplay.setText(NumberFormat.getMoneyFormat(priceForOne) + " VNĐ");
         
         int quantity = Integer.parseInt(productsTable.getValueAt(index, 2) + "");
         int totalCost = Integer.parseInt(priceForOne) * quantity;
-        totalCostDisplay.setText(MoneyFormat.getMoneyFormat(totalCost) + " VNĐ");
+        totalCostDisplay.setText(NumberFormat.getMoneyFormat(totalCost) + " VNĐ");
         
-        benefitsDisplay.setText(MoneyFormat.getMoneyFormat((totalPrice - totalCost)) + " VNĐ");
+        benefitsDisplay.setText(NumberFormat.getMoneyFormat((totalPrice - totalCost)) + " VNĐ");
     }
 
     // ------------------------------------------
@@ -395,22 +388,11 @@ public class StatisticProductsView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleCustomDate
 
     private void handleViewChart(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleViewChart
-        try {
-            String query 
-                    = "SELECT SellDate, SUM(TotalPrice) AS TotalValue FROM Sells "
-                    + "JOIN SellDetails ON Sells.SellID = SellDetails.SellID GROUP BY SellDate";
-            JDBCCategoryDataset dataset = new JDBCCategoryDataset(new Connector("SalesManagement").getConnection(), query);
-            JFreeChart chart = ChartFactory.createLineChart("Turnover by date", "Date", "Total Value (VNĐ)", dataset, PlotOrientation.VERTICAL, false, true, true);
-            
-            BarRenderer renderer = new BarRenderer();
-            CategoryPlot plot = null;
-            ChartFrame chartFrame = new ChartFrame("Chart", chart);
-            
-            chartFrame.setSize(900, 600);
-            chartFrame.setLocationRelativeTo(null);
-            chartFrame.setVisible(true);
-        } catch (Exception e) {
-        }
+        StatisticProductDialog dialog = new StatisticProductDialog(new javax.swing.JFrame(), true);
+        dialog.setDate(startDate, endDate);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+
     }//GEN-LAST:event_handleViewChart
     // ------------------------------------------
 

@@ -19,7 +19,7 @@ public class VoucherController {
     
     public static ArrayList<Voucher> getVoucherWithInuput(String valueInput){
         VouchersModel vouchersModel = new VouchersModel();
-        ArrayList<Voucher> arrayList = VouchersModel.takeObject(vouchersModel.selectWithCondition("VoucherCode LIKE '%" + valueInput + "%'"));
+        ArrayList<Voucher> arrayList = VouchersModel.takeObject(vouchersModel.selectWithCondition("EventName LIKE '%" + valueInput + "%'"));
         return arrayList;
         
     }
@@ -27,6 +27,7 @@ public class VoucherController {
     public static boolean editVoucher(Voucher voucher){
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         VouchersModel vouchersModel = new VouchersModel();
+
         boolean result = vouchersModel.update(
                 String.format(
                 "EventName = '%s', Quantity = %d, CreateDate = '%s', ExpiryDate = '%s'",

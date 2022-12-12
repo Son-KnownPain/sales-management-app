@@ -1,8 +1,5 @@
 package view.dialog;
 
-import controller.ImportController;
-import db.objects.Supplier;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import view.SellView;
 import view.ImportView;
@@ -10,7 +7,8 @@ import view.ImportView;
 public class QuantityDialog extends javax.swing.JDialog {
 
     private SellView sell;
-    private ImportView supplierImport;
+    
+    private ImportView importView;
 
     private String currentUse = "";
 
@@ -22,14 +20,14 @@ public class QuantityDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void getSell(SellView sell) {
+    public void setSell(SellView sell) {
         currentUse = "SELL";
         this.sell = sell;
     }
 
-    public void getSupplierImport(ImportView supplierImport) {
+    public void setImportViewAndProduct(ImportView supplierImport) {
         currentUse = "IMPORT";
-        this.supplierImport = supplierImport;
+        this.importView = supplierImport;
     }
 
     /**
@@ -123,7 +121,7 @@ public class QuantityDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void handleQuantityConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuantityConfirm
-        if (quantityInput.getText().equals("") || !quantityInput.getText().matches("[0-9]+")) {
+        if (quantityInput.getText().trim().equals("") || !quantityInput.getText().trim().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Please enter number, don't leave empty and do not enter negative numbers", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
@@ -135,14 +133,12 @@ public class QuantityDialog extends javax.swing.JDialog {
                 this.dispose();
                 break;
             case "IMPORT":
-                // Switch case chia sell và import ra
-                // M code của import thì chỉ cần sửa bên trong case IMPORT
-                // ----- Chỉnh sửa trong này hoặc có gì thắc mắc thì hỏi t
-                supplierImport.setCurrentQuantity(quantity);
-                SupplierDialog dialog = new SupplierDialog(new javax.swing.JFrame(), true);
-                dialog.setImportView(supplierImport);
-                dialog.setLocationRelativeTo(null);
+                importView.setCurrentQuantity(quantity);
                 this.dispose();
+                
+                SupplierDialog dialog = new SupplierDialog(new javax.swing.JFrame(), true);
+                dialog.setImportView(importView);
+                dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 break;
             default:

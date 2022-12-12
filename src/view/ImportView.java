@@ -1,112 +1,128 @@
 package view;
 
+import controller.GeneralController;
 import controller.ImportController;
-import controller.SellController;
 import db.objects.Product;
 import db.objects.Supplier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.table.DefaultTableModel;
 import model.ProductsModel;
-import model.SuppliersModel;
-import supports.MoneyFormat;
-import view.dialog.EditProductDialog;
+import supports.NumberFormat;
+import view.dialog.EditProductImportDailog;
 import view.dialog.ProductsDialog;
 import view.dialog.QuantityDialog;
 
 public class ImportView extends javax.swing.JPanel {
 
-    private Supplier currSupplier = null;
-    private Product currProduct = null;
+    private Product currentProduct = null;
     private int currentQuantity = 0;
+    private Supplier currentSupplier = null;
+    private int currentTotalPrice = 0;
     private int currentDiscount = 0;
 
     private int initialPrice = 0;
     private int totalDiscount = 0;
-   
     private int priceToPay = 0;
 
     public ImportView() {
         initComponents();
     }
-
     
+    /**
+     * 1. productIds để chứa các productID theo thứ tự
+     * 2. selectedProduct là lưu trữ số lượng sản phẩm theo id sản phẩm
+     * 3. supplierOfProduct là lưu trữ id nhà cung cấp theo id sản phẩm
+     * 4. discount tương tự là lưu discount của mỗi sản phẩm
+     * 5. totalPrice tương tự
+     */
+
+    // ArrayList chứa product id
+    ArrayList<Integer> productIds = new ArrayList<>();
+
+    // Lưu các sản phẩm đã hiển thị trên table rồi
     HashMap<Integer, Integer> selectedProduct = new HashMap<>();
-    // luu thong tin supplier id va productid
-    
-    
-    HashMap<Integer, Integer> selectedSupplier = new HashMap<>();
-    
-    HashMap<Integer, Integer> discountsOfProduct = new HashMap<>();
-    
-   
-    
-    
 
-    
-    
-    public void setCurrProduct(Product product) {
-        this.currProduct = product;
+    // Lưu nhà cung cấp của 1 sản phẩm (productID, supplierID)
+    HashMap<Integer, Integer> supplierOfProduct = new HashMap<>();
+
+    // Lưu discount của 1 sản phảm (productID, giá trị discount)
+    HashMap<Integer, Integer> discountsOfProduct = new HashMap<>();
+
+    // Lưu tổng giá của 1 sản phẩm (productID, giá)
+    HashMap<Integer, Integer> totalPriceOfProduct = new HashMap<>();
+
+    public boolean setCurrProduct(Product product) {
+        currentProduct = product;
+        boolean isSelectedProduct = selectedProduct.containsKey(currentProduct.getProductID());
+        if (isSelectedProduct) {
+            currentProduct = null;
+        }
+        return isSelectedProduct;
     }
-    
+
     public void setCurrentQuantity(int quantity) {
         this.currentQuantity = quantity;
     }
-    
+
     public void setCurrentSupplier(Supplier supplier) {
-        this.currSupplier = supplier;
+        currentSupplier = supplier;
     }
-    
+
+    public void setCurrentTotalPrice(int currentTotalPrice) {
+        this.currentTotalPrice = currentTotalPrice;
+    }
+
     public void setDiscountValue(int value) {
         this.currentDiscount = value;
-        selectedSupplier.put(currProduct.getProductID(), currSupplier.getSupplierID());
-        discountsOfProduct.put(currProduct.getProductID(), value);
+        supplierOfProduct.put(currentProduct.getProductID(), currentSupplier.getSupplierID());
+        totalPriceOfProduct.put(currentProduct.getProductID(), currentTotalPrice);
+        discountsOfProduct.put(currentProduct.getProductID(), value);
         renderRowTableImport();
     }
-    
+
     public void renderRowTableImport() {
 
         int quantityOfProductExist = 0;
         boolean isContainsKey = false;
 
-        if (selectedProduct.containsKey(currProduct.getProductID())) {
-            quantityOfProductExist = selectedProduct.get(currProduct.getProductID());
+        if (selectedProduct.containsKey(currentProduct.getProductID())) {
+            quantityOfProductExist = selectedProduct.get(currentProduct.getProductID());
             isContainsKey = true;
-        } else if (!isContainsKey) {
-            selectedProduct.put(currProduct.getProductID(), currentQuantity);
+        }
+        if (!isContainsKey) {
+            selectedProduct.put(currentProduct.getProductID(), currentQuantity);
             DefaultTableModel defaultTableModel = (DefaultTableModel) productTableImport.getModel();
-            Object[] data = {currProduct.getProductName(), currProduct.getPrice() * currentQuantity, currentQuantity, currProduct.getUnitPerQuantity()};
+            Object[] data = {currentProduct.getProductName(), NumberFormat.getKMAfter(currentTotalPrice), currentQuantity, currentProduct.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
-            setInitialPrice(currProduct.getPrice() * currentQuantity);
+            productIds.add(currentProduct.getProductID());
+            setInitialPrice(currentTotalPrice);
             setVoucherValue(currentDiscount);
-            
-            currProduct = null;
+            currentProduct = null;
 
         } else {
             int row = 0;
-            for (int keyID : selectedProduct.keySet()) {
-                if (keyID == currProduct.getProductID()) {
-                    break;
-                }
-                row++;
-            }
+            row = productIds.indexOf(currentProduct.getProductID());
             int newQuantity = currentQuantity + quantityOfProductExist;
-            selectedProduct.put(currProduct.getProductID(), newQuantity);
-            productTableImport.setValueAt(newQuantity * currProduct.getPrice(), row, 1);
+            selectedProduct.put(currentProduct.getProductID(), newQuantity);
+            productTableImport.setValueAt(newQuantity * currentProduct.getPrice(), row, 1);
             productTableImport.setValueAt(newQuantity, row, 2);
-            setInitialPrice(currProduct.getPrice() * currentQuantity);
+            setInitialPrice(currentTotalPrice);
             setVoucherValue(currentDiscount);
         }
-        
 
+        currentDiscount = 0;
+        currentTotalPrice = 0;
+        currentProduct = null;
+        currentQuantity = 0;
+        currentSupplier = null;
     }
 
-    private int getIndex(int index) {
+    private int getProductIDByIndex(int index) {
         int i = 0;
-        for (int key : selectedProduct.keySet()) {
+        for (int key : productIds) {
             if (i == index) {
                 return key;
             }
@@ -122,41 +138,48 @@ public class ImportView extends javax.swing.JPanel {
     }
 
     private void setVoucherValue(int value) {
-        totalDiscount = value;
+        totalDiscount += value;
         priceToPay = initialPrice - totalDiscount;
         changeAndDisplayPrice();
     }
-    
+
     private void changeAndDisplayPrice() {
-        initialPriceDisplay.setText(MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ");
-        totalValueDisplay.setText(MoneyFormat.getMoneyFormat(totalDiscount) + " VNĐ");
-        informationDiscountDisplay.setText(MoneyFormat.getMoneyFormat(totalDiscount) + " VNĐ");
-        priceToPayDisplay.setText(MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
+        initialPriceDisplay.setText(NumberFormat.getMoneyFormat(initialPrice) + " VNĐ");
+        totalDiscountDisplay.setText(NumberFormat.getMoneyFormat(totalDiscount) + " VNĐ");
+        priceToPayDisplay.setText(NumberFormat.getMoneyFormat(priceToPay) + " VNĐ");
     }
 
-   
-        
-    
     private void clear() {
-        setVoucherValue(0);
-        setInitialPrice(0);
+        initialPrice = 0;
+        totalDiscount = 0;
+        priceToPay = 0;
+        changeAndDisplayPrice();
 
         DefaultTableModel producDefaultTableModel = (DefaultTableModel) productTableImport.getModel();
         producDefaultTableModel.setRowCount(0);
+
+        productIds.clear();
         selectedProduct.clear();
+        supplierOfProduct.clear();
+        discountsOfProduct.clear();
+        totalPriceOfProduct.clear();
+
         productIDInput.setText("");
         productNameInput.setText("");
-        supplierNameDisplay.setText("");
-        supplierIDDisplay.setText("");
-        supplierPhoneDisplay.setText("");
-        productIDInput.setText("");
+
+        supplierNameDisplay.setText("---");
+        supplierIDDisplay.setText("---");
+        supplierPhoneDisplay.setText("---");
+
         informationDiscountDisplay.setText("0 VNĐ");
         informationPriceSellingDisplay.setText("0 VNĐ");
         informationTotalDisplay.setText("0 VNĐ");
-        initialPriceDisplay.setText("0 VNĐ");
-        totalValueDisplay.setText("0 VNĐ");
-        priceToPayDisplay.setText("0 VNĐ");
 
+        currentDiscount = 0;
+        currentTotalPrice = 0;
+        currentProduct = null;
+        currentQuantity = 0;
+        currentSupplier = null;
     }
 
     private void delete() {
@@ -164,16 +187,51 @@ public class ImportView extends javax.swing.JPanel {
 
         if (viewIndex != -1) {
             //  Xóa dữ liệu lưu trữ quantity ở HashMap và set lại giá tiền
-            int productID = getIndex(viewIndex);
+            int productID = getProductIDByIndex(viewIndex);
+
+            setInitialPrice(-totalPriceOfProduct.get(productID));
+            setVoucherValue(discountsOfProduct.get(productID));
+
+            productIds.remove(viewIndex);
             selectedProduct.remove(productID);
-            setInitialPrice(-Integer.parseInt(String.join("", (productTableImport.getValueAt(viewIndex, 1) + "").split("[.]"))));
+            supplierOfProduct.remove(productID);
+            discountsOfProduct.remove(productID);
+            totalPriceOfProduct.remove(productID);
+
             int modelIndex = productTableImport.convertColumnIndexToModel(viewIndex);
             DefaultTableModel model = (DefaultTableModel) productTableImport.getModel();
             model.removeRow(modelIndex);
         }
     }
     
+    public void editOne(int productID, int supplierID, int quantity, int price, int discountValue) {
+        int viewIndex = productIds.indexOf(productID);
+        
+        productTableImport.setValueAt(NumberFormat.getKMAfter(price), viewIndex, 1);
+        productTableImport.setValueAt(NumberFormat.getKMAfter(quantity), viewIndex, 2);
+        
+        setInitialPrice(price - totalPriceOfProduct.get(productID));
+        setVoucherValue(discountValue - discountsOfProduct.get(productID));
+        
+        selectedProduct.put(productID, quantity);
+        supplierOfProduct.put(productID, supplierID);
+        discountsOfProduct.put(productID, discountValue);
+        totalPriceOfProduct.put(productID, price);
+        
+        displayInfoOfProduct(productID);
+    }
     
+    private void displayInfoOfProduct(int productID) {
+        Supplier supplier = ImportController.getSupplierByID(supplierOfProduct.get(productID));
+        supplierIDDisplay.setText(supplier.getSupplierID() + "");
+        supplierNameDisplay.setText(supplier.getCompanyName());
+        supplierPhoneDisplay.setText(supplier.getPhone());
+        informationDiscountDisplay.setText(NumberFormat.getMoneyFormat(discountsOfProduct.get(productID)) + " VNĐ");
+        informationTotalDisplay.setText(NumberFormat.getMoneyFormat(totalPriceOfProduct.get(productID)) + " VNĐ");
+        Product product = GeneralController.getProductByID(productID);
+        informationPriceSellingDisplay.setText(NumberFormat.getMoneyFormat(product.getPrice()) + " VNĐ");
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,7 +254,7 @@ public class ImportView extends javax.swing.JPanel {
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         initialPriceDisplay = new javax.swing.JLabel();
-        totalValueDisplay = new javax.swing.JLabel();
+        totalDiscountDisplay = new javax.swing.JLabel();
         priceToPayDisplay = new javax.swing.JLabel();
         Comfirmbtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -257,7 +315,7 @@ public class ImportView extends javax.swing.JPanel {
         });
         productTableImport.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                productTableImportMouseClicked(evt);
+                handleSelectRow(evt);
             }
         });
         jScrollPane1.setViewportView(productTableImport);
@@ -274,8 +332,8 @@ public class ImportView extends javax.swing.JPanel {
         initialPriceDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         initialPriceDisplay.setText("0 VNÐ");
 
-        totalValueDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        totalValueDisplay.setText("0 VNÐ");
+        totalDiscountDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        totalDiscountDisplay.setText("0 VNÐ");
 
         priceToPayDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         priceToPayDisplay.setText("0 VNÐ");
@@ -283,6 +341,11 @@ public class ImportView extends javax.swing.JPanel {
         Comfirmbtn.setBackground(new java.awt.Color(0, 255, 255));
         Comfirmbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         Comfirmbtn.setText("Comfirm");
+        Comfirmbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleConfirm(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(90, 90, 90));
@@ -298,13 +361,13 @@ public class ImportView extends javax.swing.JPanel {
         jLabel18.setText("Phone:");
 
         supplierIDDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        supplierIDDisplay.setText("1");
+        supplierIDDisplay.setText("---");
 
         supplierNameDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        supplierNameDisplay.setText("Tap hoa My Tran");
+        supplierNameDisplay.setText("---");
 
         supplierPhoneDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        supplierPhoneDisplay.setText("0365889794");
+        supplierPhoneDisplay.setText("---");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(90, 90, 90));
@@ -320,13 +383,13 @@ public class ImportView extends javax.swing.JPanel {
         jLabel21.setText("Price selling:");
 
         informationDiscountDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        informationDiscountDisplay.setText("10.000VNĐ");
+        informationDiscountDisplay.setText("0 VNĐ");
 
         informationTotalDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        informationTotalDisplay.setText("3.650.000 VNĐ");
+        informationTotalDisplay.setText("0 VNĐ");
 
         informationPriceSellingDisplay.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        informationPriceSellingDisplay.setText("10.000 VNĐ");
+        informationPriceSellingDisplay.setText("0 VNĐ");
 
         clearBtn.setBackground(new java.awt.Color(237, 172, 46));
         clearBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -342,7 +405,7 @@ public class ImportView extends javax.swing.JPanel {
         editBtn.setText("Edit");
         editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editBtnActionPerformed(evt);
+                handleShowEditBox(evt);
             }
         });
 
@@ -351,7 +414,7 @@ public class ImportView extends javax.swing.JPanel {
         deleteBtn.setText("Delete");
         deleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
+                handleDeleteAProduct(evt);
             }
         });
 
@@ -384,27 +447,30 @@ public class ImportView extends javax.swing.JPanel {
                                 .addGap(15, 15, 15)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel21)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(informationPriceSellingDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel20)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(informationDiscountDisplay))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel21)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(informationPriceSellingDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel20)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(informationDiscountDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(Comfirmbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel19)
                                         .addGap(18, 18, 18)
-                                        .addComponent(informationTotalDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(Comfirmbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(informationTotalDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -433,7 +499,7 @@ public class ImportView extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(initialPriceDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(priceToPayDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(totalValueDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(totalDiscountDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(41, 41, 41))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -481,7 +547,7 @@ public class ImportView extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(totalValueDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(totalDiscountDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
@@ -517,25 +583,35 @@ public class ImportView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void productIDBtnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDBtnOkActionPerformed
-        // TODO add your handling code here:
-        if (productIDInput.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Please enter number, do not leave empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+
+        if (productIDInput.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Input can not empty", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
-        } else if (!productIDInput.getText().matches("[0-9]+")) {
+        } else if (!productIDInput.getText().trim().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Please enter number", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         int productIDEnter = Integer.parseInt(productIDInput.getText());
-        currProduct = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + productIDEnter)).get(0);
+        Product product;
+        try {
+            product = ProductsModel.takeObject(new ProductsModel().selectWithCondition("ProductID = " + productIDEnter)).get(0);
+            boolean isSelectedProduct = setCurrProduct(product);
+            if (isSelectedProduct) {
+                showMessageDialog(null, "The product has been added, please press the edit button to edit it");
+                return;
+            }
+        } catch (Exception ex) {
+            // Do nothing
+        }
 
-        if (currProduct == null) {
+        if (currentProduct == null) {
             showMessageDialog(null, "ID does not exist", "Message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
 
         QuantityDialog dialog = new QuantityDialog(new javax.swing.JFrame(), true);
-
-        dialog.getSupplierImport(this);
+        dialog.setTitle(currentProduct.getProductName() + ", price: " + NumberFormat.getKMAfter(currentProduct.getPrice()) + "/1");
+        dialog.setImportViewAndProduct(this);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_productIDBtnOkActionPerformed
@@ -547,7 +623,7 @@ public class ImportView extends javax.swing.JPanel {
             return;
         }
         String value = productNameInput.getText();
-        ArrayList<Product> sProducts = SellController.getProductsWithInput(value);
+        ArrayList<Product> sProducts = GeneralController.getProductsWithInput(value);
 
         ProductsDialog dialog = new ProductsDialog(new javax.swing.JFrame(), true);
         dialog.renderProduct(value, sProducts, this);
@@ -555,31 +631,47 @@ public class ImportView extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_productNameBtnOkActionPerformed
 
-    private void productTableImportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productTableImportMouseClicked
-        // TODO add your handling code here:
-        DefaultTableModel defaultTableModel = (DefaultTableModel) productTableImport.getModel();
+    private void handleSelectRow(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleSelectRow
         int i = productTableImport.getSelectedRow();
-
-        informationTotalDisplay.setText(defaultTableModel.getValueAt(i, 1).toString() + " VNĐ");
-      
-    }//GEN-LAST:event_productTableImportMouseClicked
+        int productID = getProductIDByIndex(i);
+        displayInfoOfProduct(productID);
+    }//GEN-LAST:event_handleSelectRow
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
-        // TODO add your handling code here:
         clear();
     }//GEN-LAST:event_clearBtnActionPerformed
 
-    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // TODO add your handling code here:
+    private void handleDeleteAProduct(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleDeleteAProduct
         delete();
-    }//GEN-LAST:event_deleteBtnActionPerformed
+    }//GEN-LAST:event_handleDeleteAProduct
 
-    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-      
-        EditProductDialog dialog = new EditProductDialog(new javax.swing.JFrame(), true);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_editBtnActionPerformed
+    private void handleShowEditBox(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleShowEditBox
+        int viewIndex = productTableImport.getSelectedRow();
+
+        if (viewIndex != -1) {
+            int productID = getProductIDByIndex(viewIndex);
+            EditProductImportDailog dialog = new EditProductImportDailog(new javax.swing.JFrame(), true);
+            dialog.setImportView(this);
+            dialog.setAllAttribute(
+                    productID, 
+                    supplierOfProduct.get(productID), 
+                    selectedProduct.get(productID), 
+                    totalPriceOfProduct.get(productID), 
+                    discountsOfProduct.get(productID)
+            );
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_handleShowEditBox
+
+    private void handleConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleConfirm
+        boolean confirmResult = ImportController.confirmImport(productIds, selectedProduct, supplierOfProduct, discountsOfProduct, totalPriceOfProduct);
+        if (confirmResult) {
+            showMessageDialog(null, "Successfully import goods");
+        } else {
+            showMessageDialog(null, "Fail to import goods");
+        }
+    }//GEN-LAST:event_handleConfirm
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -614,6 +706,6 @@ public class ImportView extends javax.swing.JPanel {
     private javax.swing.JLabel supplierIDDisplay;
     private javax.swing.JLabel supplierNameDisplay;
     private javax.swing.JLabel supplierPhoneDisplay;
-    private javax.swing.JLabel totalValueDisplay;
+    private javax.swing.JLabel totalDiscountDisplay;
     // End of variables declaration//GEN-END:variables
 }

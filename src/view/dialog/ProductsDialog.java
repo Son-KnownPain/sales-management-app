@@ -2,11 +2,12 @@ package view.dialog;
 
 import db.objects.Product;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import supports.MoneyFormat;
+import supports.NumberFormat;
 import view.ImportView;
 import view.SellView;
 
@@ -30,7 +31,7 @@ public class ProductsDialog extends javax.swing.JDialog {
         resultForProduct.setText(value);
         DefaultTableModel defaultTableModel = (DefaultTableModel) resultTableProduct.getModel();
         for (Product product : pro) {
-            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), MoneyFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
+            Object[] data = {product.getProductName() + String.format(" [%s]", product.getProductID()), NumberFormat.getMoneyFormat(product.getPrice()), product.getQuantityInStore(), product.getUnitPerQuantity()};
             defaultTableModel.addRow(data);
         }
         ListSelectionModel listSelectionModel = resultTableProduct.getSelectionModel();
@@ -218,17 +219,18 @@ public class ProductsDialog extends javax.swing.JDialog {
             case "SELL":
                 sell.setCurrentProduct(productChoosing);
                 this.dispose();
-                dialog.getSell(sell);
+                dialog.setSell(sell);
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 break;
             case "IMPORT":
-                // Switch case chia sell và import ra
-                // M code của import thì chỉ cần sửa bên trong case IMPORT
-                // ----- Chỉnh sửa trong này hoặc có gì thắc mắc thì hỏi t
-                supplierImport.setCurrProduct(productChoosing);
+                boolean isSelectProduct = supplierImport.setCurrProduct(productChoosing);
                 this.dispose();
-                dialog.getSupplierImport(supplierImport);
+                if (isSelectProduct) {
+                    JOptionPane.showMessageDialog(null, "The product has been added, please press the edit button to edit it");
+                    break;
+                }
+                dialog.setImportViewAndProduct(supplierImport);
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
                 break;

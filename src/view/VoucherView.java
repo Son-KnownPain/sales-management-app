@@ -8,9 +8,12 @@ import controller.VoucherController;
 import db.objects.Customer;
 import db.objects.Voucher;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import supports.MoneyFormat;
+import supports.Convert;
+import supports.NumberFormat;
+import supports.Validation;
 import view.dialog.EditSupplierDialog;
 import view.dialog.EditVoucherDialog;
 import view.dialog.VoucherDialog;
@@ -22,6 +25,9 @@ import view.dialog.VoucherDialog;
 public class VoucherView extends javax.swing.JPanel {
 
     private Voucher currentVoucher = null;
+
+    private LocalDate createDate = null;
+    private LocalDate expiryDate = null;
 
     /**
      * Creates new form VoucherView
@@ -39,12 +45,13 @@ public class VoucherView extends javax.swing.JPanel {
         if (currentVoucher != null) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode() + "");
-            valueDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getVoucherValue()));
+            valueDisplay.setText(currentVoucher.getVoucherValue() + " ");
             eventNameDisplay.setText(currentVoucher.getEventName());
-            quantityDisplay.setText(MoneyFormat.getMoneyFormat(currentVoucher.getQuantity()));
+            quantityDisplay.setText(currentVoucher.getQuantity() + " ");
             dateDisplay.setText(formatter.format(currentVoucher.getCreateDate()) + "  - ");
             exprityDate.setText(formatter.format(currentVoucher.getExpiryDate()));
         }
+
     }
 
     private void clearAddVoucher() {
@@ -235,36 +242,27 @@ public class VoucherView extends javax.swing.JPanel {
                                 .addComponent(chooseVoucherBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel12)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(eventNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel16))
-                                        .addGap(57, 57, 57)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(quantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel17)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel13))
-                                        .addGap(57, 57, 57)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(valueInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(createDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel19))
-                                        .addGap(57, 57, 57)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(expiryDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel18)))
-                                    .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(23, Short.MAX_VALUE))))
+                            .addComponent(jLabel12))
+                        .addContainerGap(114, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(eventNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16)
+                            .addComponent(voucherCodeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13)
+                            .addComponent(createDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(quantityInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17)
+                            .addComponent(valueInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(expiryDateInput, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18)
+                            .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,7 +330,7 @@ public class VoucherView extends javax.swing.JPanel {
 
     private void chooseVoucherBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseVoucherBtnActionPerformed
         if (voucherInput.getText().equals("") || voucherInput.getText().trim().isBlank()) {
-            JOptionPane.showMessageDialog(null, "can not be left blank and no spaces", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter voucher code and no spaces", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String valueInput = voucherInput.getText();
@@ -369,16 +367,43 @@ public class VoucherView extends javax.swing.JPanel {
             return;
         }
 
-        if (!vCreateDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$") || !vExpiryDate.matches("^(\\d{2})/(\\d{2})/(\\d{4})$")) {
-            JOptionPane.showMessageDialog(null, "Enter the correct format dd-MM-yyyy");
-            return;
+        if (!vCreateDate.isBlank() || !vExpiryDate.isBlank()) {
+            if (!vCreateDate.matches("\\d{1,2}/\\d{1,2}/\\d{4}") || !vExpiryDate.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
+                JOptionPane.showMessageDialog(null, "Enter the correct format dd/MM/yyyy");
+                return;
+            }
+            createDate = Convert.toLocalDate(Convert.toDate(vCreateDate));
+            expiryDate = Convert.toLocalDate(Convert.toDate(vExpiryDate));
+
+            Object[] isValidStartDate = Validation.isDate(vCreateDate);
+            Object[] isValidEndDate = Validation.isDate(vExpiryDate);
+
+            if (!(boolean) isValidStartDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidStartDate[1]);
+                return;
+            }
+            if (!(boolean) isValidEndDate[0]) {
+                JOptionPane.showMessageDialog(null, isValidEndDate[1]);
+                return;
+            }
+
+            if (!createDate.isBefore(expiryDate)) {
+                JOptionPane.showMessageDialog(null, "Creation date must be started before the end date");
+                return;
+            }
+
+            if (!expiryDate.isAfter(createDate)) {
+                JOptionPane.showMessageDialog(null, "The end date must be before the creation date");
+                return;
+            }
+
         }
-        
-        if(!vQuantity.matches("[0-9]+") || !vValue.matches("[0-9]+")){
+
+        if (!vQuantity.matches("[0-9]+") || !vValue.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "please enter number for value or quantity");
             return;
         }
-        
+
         boolean result = VoucherController.addVoucher(vCode, vValue, vEventName, vQuantity, vCreateDate, vExpiryDate);
         if (result) {
             JOptionPane.showMessageDialog(null, "Add voucher successfully");

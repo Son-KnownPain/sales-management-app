@@ -8,7 +8,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import supports.MoneyFormat;
+import supports.NumberFormat;
 import view.VoucherView;
 
 public class VoucherDialog extends javax.swing.JDialog {
@@ -68,7 +68,7 @@ public class VoucherDialog extends javax.swing.JDialog {
 
         DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
         for (Voucher voucher : arrayList) {
-            Object[] data = {voucher.getVoucherCode(), MoneyFormat.getMoneyFormat(voucher.getVoucherValue())};
+            Object[] data = {voucher.getVoucherCode(), NumberFormat.getMoneyFormat(voucher.getVoucherValue())};
             defaultTableModel.addRow(data);
         }
 

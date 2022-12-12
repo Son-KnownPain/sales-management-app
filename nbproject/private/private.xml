@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/controller/VoucherController.java</file>
             <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/VoucherView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/db/use/Model.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/dialog/EditVoucherDialog.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/ProductCategoryView.java</file>
-            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/model/SuppliersModel.java</file>
+            <file>file:/D:/Project%20java/SaleManager/sales-management-app/src/view/StartView.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,7 +5,7 @@ import controller.GeneralController;
 import db.objects.Customer;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import supports.MoneyFormat;
+import supports.NumberFormat;
 import view.dialog.BestCustomerDialog;
 import view.dialog.CustomersDialog;
 import view.dialog.DonateVoucherDialog;
@@ -30,7 +30,7 @@ public class CustomerView extends javax.swing.JPanel {
         nameDisplay.setText(currentCustomer.getCustomerName());
         phoneDisplay.setText(currentCustomer.getPhone());
         addressDisplay.setText(currentCustomer.getAddress());
-        buyPointDislpay.setText(MoneyFormat.getMoneyFormat(currentCustomer.getBuyPoint()));
+        buyPointDislpay.setText(NumberFormat.getMoneyFormat(currentCustomer.getBuyPoint()));
     }
 
     private void clearAddInput() {
@@ -166,7 +166,7 @@ public class CustomerView extends javax.swing.JPanel {
         jButton5.setText("Best customer");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                handleShowBestCustomer(evt);
             }
         });
 
@@ -381,18 +381,11 @@ public class CustomerView extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_handleShowDonateVoucher
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+    private void handleShowBestCustomer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleShowBestCustomer
         BestCustomerDialog dialog = new BestCustomerDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setLocationRelativeTo(null);
-                dialog.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_handleShowBestCustomer
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

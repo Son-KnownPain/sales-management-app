@@ -59,4 +59,9 @@ public class CustomerController {
             return vocm.update("Quantity = " + quantity, "CustomerID = " + customer.getCustomerID());
         }
     }
+    
+    public static ArrayList<Customer> getBestCustomers() {
+        CustomersModel customersModel = new CustomersModel();
+        return CustomersModel.takeObject(customersModel.selectTop(10, "ORDER BY BuyPoint DESC"));
+    }
 }

@@ -1,6 +1,6 @@
 package view.dialog;
 
-import supports.MoneyFormat;
+import supports.NumberFormat;
 
 public class OrderSellDialog extends javax.swing.JDialog {
 
@@ -13,16 +13,15 @@ public class OrderSellDialog extends javax.swing.JDialog {
     public void setInformation(String customerName, String phone, int discountValue, int initialPrice, int priceToPay, int buyPoint) {
         customerNameDisplay.setText(customerName);
         phoneDisplay.setText(phone);
-        discountValueDisplay.setText(MoneyFormat.getMoneyFormat(discountValue) + " VNĐ");
+        discountValueDisplay.setText(NumberFormat.getMoneyFormat(discountValue) + " VNĐ");
         if (discountValue != 0) {
-            initialPriceDisplay.setText(
-                "<html><body><span style='text-decoration: line-through; color: #670000;'>" 
-                + MoneyFormat.getMoneyFormat(initialPrice) + " VNĐ" + 
+            initialPriceDisplay.setText("<html><body><span style='text-decoration: line-through; color: #670000;'>" 
+                + NumberFormat.getMoneyFormat(initialPrice) + " VNĐ" + 
                 "</span></body></html>"
             );
         }
-        priceToPayDisplay.setText(MoneyFormat.getMoneyFormat(priceToPay) + " VNĐ");
-        buyPointDisplay.setText(MoneyFormat.getMoneyFormat(buyPoint) + " + " + MoneyFormat.getMoneyFormat(priceToPay / 1000));
+        priceToPayDisplay.setText(NumberFormat.getMoneyFormat(priceToPay) + " VNĐ");
+        buyPointDisplay.setText(NumberFormat.getMoneyFormat(buyPoint) + " + " + NumberFormat.getMoneyFormat(priceToPay / 1000));
     }
 
     /**

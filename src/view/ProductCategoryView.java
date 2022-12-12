@@ -4,7 +4,6 @@
  */
 package view;
 
-import view.dialog.EditCategoryDialog;
 
 /**
  *
@@ -28,9 +27,9 @@ public class ProductCategoryView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        optionsTime = new javax.swing.JComboBox<>();
-        bestBtn = new javax.swing.JButton();
-        worseBtn = new javax.swing.JButton();
+        options = new javax.swing.JComboBox<>();
+        chooseProductBtn = new javax.swing.JButton();
+        chooseCategoryBtn = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -54,20 +53,20 @@ public class ProductCategoryView extends javax.swing.JPanel {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        bestBtn1 = new javax.swing.JButton();
-        worseBtn1 = new javax.swing.JButton();
+        addBtn = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel24 = new javax.swing.JLabel();
-        worseBtn2 = new javax.swing.JButton();
+        cateOfAboveProBtn = new javax.swing.JButton();
 
-        optionsTime.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        optionsTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product" }));
+        options.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        options.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product", "Category" }));
 
-        bestBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        bestBtn.setText("Choose product");
+        chooseProductBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        chooseProductBtn.setText("Choose product");
 
-        worseBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        worseBtn.setText("Choose category");
+        chooseCategoryBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        chooseCategoryBtn.setText("Choose category");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("15");
@@ -137,23 +136,18 @@ public class ProductCategoryView extends javax.swing.JPanel {
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel23.setText("3");
 
-        bestBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        bestBtn1.setText("Add");
+        addBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        addBtn.setText("Add");
 
-        worseBtn1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        worseBtn1.setText("Edit");
-        worseBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                worseBtn1ActionPerformed(evt);
-            }
-        });
+        editBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        editBtn.setText("Edit");
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(90, 90, 90));
         jLabel24.setText("Product information: ");
 
-        worseBtn2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        worseBtn2.setText("Category of above product");
+        cateOfAboveProBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cateOfAboveProBtn.setText("Category of above product");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -167,11 +161,11 @@ public class ProductCategoryView extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(bestBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(chooseProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(worseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(chooseCategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(optionsTime, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(options, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel15)
                             .addComponent(jLabel17)
                             .addGroup(layout.createSequentialGroup()
@@ -218,23 +212,29 @@ public class ProductCategoryView extends javax.swing.JPanel {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel23))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(bestBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(worseBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(worseBtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel24))
+                                .addComponent(cateOfAboveProBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 109, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jSeparator2)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(jLabel24)
+                    .addContainerGap(615, Short.MAX_VALUE)))
         );
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bestBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(worseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(optionsTime, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chooseProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chooseCategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(options, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -287,28 +287,19 @@ public class ProductCategoryView extends javax.swing.JPanel {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bestBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(worseBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(worseBtn2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cateOfAboveProBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void worseBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_worseBtn1ActionPerformed
-        EditCategoryDialog dialog = new EditCategoryDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-    }//GEN-LAST:event_worseBtn1ActionPerformed
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bestBtn;
-    private javax.swing.JButton bestBtn1;
+    private javax.swing.JButton addBtn;
+    private javax.swing.JButton cateOfAboveProBtn;
+    private javax.swing.JButton chooseCategoryBtn;
+    private javax.swing.JButton chooseProductBtn;
+    private javax.swing.JButton editBtn;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -334,9 +325,6 @@ public class ProductCategoryView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JComboBox<String> optionsTime;
-    private javax.swing.JButton worseBtn;
-    private javax.swing.JButton worseBtn1;
-    private javax.swing.JButton worseBtn2;
+    private javax.swing.JComboBox<String> options;
     // End of variables declaration//GEN-END:variables
 }

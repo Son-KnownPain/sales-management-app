@@ -17,5 +17,4 @@ public class VouchersModel extends Model {
         }
         return result;
     }
-
 }
