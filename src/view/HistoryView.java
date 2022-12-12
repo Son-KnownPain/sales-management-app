@@ -484,7 +484,7 @@ public class HistoryView extends javax.swing.JPanel {
 
         if (!startPriceCustom.isBlank() || !endPriceCustom.isBlank()) {
             if (!startPriceCustom.matches("[0-9]+") || !endPriceCustom.matches("[0-9]+")) {
-                JOptionPane.showMessageDialog(null, "Price only accept number, let enter number");
+                JOptionPane.showMessageDialog(null, "Price only accept number and must be greater than or equals 0, let enter number");
                 return;
             }
             if (Integer.parseInt(startPriceCustom) < 0 || Integer.parseInt(endPriceCustom) < Integer.parseInt(startPriceCustom)) {
@@ -507,6 +507,12 @@ public class HistoryView extends javax.swing.JPanel {
         endPrice = 2100000000;
 
         timeOptions.setSelectedIndex(0);
+        
+        // Clear input
+        startDateInput.setText("");
+        endDateInput.setText("");
+        startPriceInput.setText("");
+        endPriceInput.setText("");
 
         renderTableByType();
     }//GEN-LAST:event_handleCancelCustom

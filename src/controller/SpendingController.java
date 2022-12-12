@@ -57,7 +57,7 @@ public class SpendingController {
         try {
             result = Integer.parseInt(sellsModel.run(1, query).get(0)[0]);
         } catch (Exception e) {
-            e.printStackTrace();
+            // When can not get
         }
         return result;
     }

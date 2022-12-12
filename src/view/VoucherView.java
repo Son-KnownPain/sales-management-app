@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
 import controller.VoucherController;
-import db.objects.Customer;
 import db.objects.Voucher;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -14,7 +9,6 @@ import javax.swing.JOptionPane;
 import supports.Convert;
 import supports.NumberFormat;
 import supports.Validation;
-import view.dialog.EditSupplierDialog;
 import view.dialog.EditVoucherDialog;
 import view.dialog.VoucherDialog;
 
@@ -29,9 +23,6 @@ public class VoucherView extends javax.swing.JPanel {
     private LocalDate createDate = null;
     private LocalDate expiryDate = null;
 
-    /**
-     * Creates new form VoucherView
-     */
     public VoucherView() {
         initComponents();
     }
@@ -45,7 +36,7 @@ public class VoucherView extends javax.swing.JPanel {
         if (currentVoucher != null) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             voucherCodeDisplay.setText(currentVoucher.getVoucherCode() + "");
-            valueDisplay.setText(currentVoucher.getVoucherValue() + " ");
+            valueDisplay.setText(NumberFormat.getMoneyFormat(currentVoucher.getVoucherValue()) + " VNĐ");
             eventNameDisplay.setText(currentVoucher.getEventName());
             quantityDisplay.setText(currentVoucher.getQuantity() + " ");
             dateDisplay.setText(formatter.format(currentVoucher.getCreateDate()) + "  - ");
@@ -330,7 +321,7 @@ public class VoucherView extends javax.swing.JPanel {
 
     private void chooseVoucherBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseVoucherBtnActionPerformed
         if (voucherInput.getText().equals("") || voucherInput.getText().trim().isBlank()) {
-            JOptionPane.showMessageDialog(null, "Please enter voucher code and no spaces", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter event name of voucher", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
         String valueInput = voucherInput.getText();

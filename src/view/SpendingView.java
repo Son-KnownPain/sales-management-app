@@ -358,6 +358,8 @@ public class SpendingView extends javax.swing.JPanel {
     }//GEN-LAST:event_optionsActionPerformed
 
     private void handleCancelCustom(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCancelCustom
+        startDateInput.setText("");
+        endDateInput.setText("");
         renderMinMaxDate();
     }//GEN-LAST:event_handleCancelCustom
 

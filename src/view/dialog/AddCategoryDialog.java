@@ -122,6 +122,7 @@ public class AddCategoryDialog extends javax.swing.JDialog {
         boolean result = ProductCategoryController.addOneCategory(categoryName, description);
         if (result) {
             JOptionPane.showMessageDialog(null, "Add category success");
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Add fail !!");
         }

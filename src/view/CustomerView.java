@@ -344,8 +344,8 @@ public class CustomerView extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
-        if (!phoneValue.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, "Phone only accept number");
+        if (!phoneValue.matches("[0-9]{10}")) {
+            JOptionPane.showMessageDialog(null, "Phone only accept ten numbers");
             return;
         }
 

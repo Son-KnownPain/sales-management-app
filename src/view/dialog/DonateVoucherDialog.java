@@ -209,9 +209,14 @@ public class DonateVoucherDialog extends javax.swing.JDialog {
         }
         if (!quantityInput.getText().matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "Quantity only accept number");
+            return;
         }
         if (customerBeDonated == null) {
             JOptionPane.showMessageDialog(null, "Customer is null");
+            return;
+        }
+        if (Integer.parseInt(quantityInput.getText()) <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantity must be greater than 0");
             return;
         }
         

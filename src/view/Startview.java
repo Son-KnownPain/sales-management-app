@@ -36,6 +36,7 @@ public class StartView extends javax.swing.JFrame {
         settingIcon();
         this.setLocationRelativeTo(null);
         Creeping();
+        this.setResizable(false);
     }
     
     private  void Creeping(){
