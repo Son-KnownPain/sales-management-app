@@ -7,6 +7,7 @@ package controller;
 import db.objects.Voucher;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import model.VouchersModel;
@@ -41,16 +42,16 @@ public class VoucherController {
          return result;
     }
 
-    public static boolean addVoucher(String vCode, String vValue, String vEventName, String vQuantity, String vCreateDate, String vExpiryDate) {
+    public static boolean addVoucher(String vCode, int vValue, String vEventName, int vQuantity, LocalDate vCreateDate, LocalDate vExpiryDate) {
         VouchersModel vouchersModel = new VouchersModel();
         boolean result = vouchersModel.insertOne(String.format(
-                "'%s', %s, '%s', %s, '%s', '%s'",
+                "'%s', %d, '%s', %d, '%s', '%s'",
                 vCode,
                 vValue,
                 vEventName,
                 vQuantity,
-                vCreateDate, 
-                vExpiryDate
+                vCreateDate.toString(), 
+                vExpiryDate.toString()
         ));
         return result;
     }

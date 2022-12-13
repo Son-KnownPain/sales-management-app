@@ -169,8 +169,8 @@ public class EditCustomerDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Inputs can not be empty");
             return;
         }
-        if (!newPhone.matches("[0-9]+")) {
-            JOptionPane.showMessageDialog(null, "Phone only accept number");
+        if (!newPhone.matches("[0-9]{10}")) {
+            JOptionPane.showMessageDialog(null, "Phone only accept ten number");
             return;
         }
         if (newName.equals(currentData[0]) && newPhone.equals(currentData[1]) && newAddress.equals(currentData[2])) {

@@ -320,7 +320,7 @@ public class VoucherView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chooseVoucherBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseVoucherBtnActionPerformed
-        if (voucherInput.getText().equals("") || voucherInput.getText().trim().isBlank()) {
+        if (voucherInput.getText().trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Please enter event name of voucher", "Invalid value message", JOptionPane.PLAIN_MESSAGE);
             return;
         }
@@ -389,13 +389,16 @@ public class VoucherView extends javax.swing.JPanel {
             }
 
         }
-
+        
         if (!vQuantity.matches("[0-9]+") || !vValue.matches("[0-9]+")) {
             JOptionPane.showMessageDialog(null, "please enter number for value or quantity");
             return;
         }
+        
+        int quantity = Integer.parseInt(vQuantity);
+        int value = Integer.parseInt(vValue);
 
-        boolean result = VoucherController.addVoucher(vCode, vValue, vEventName, vQuantity, vCreateDate, vExpiryDate);
+        boolean result = VoucherController.addVoucher(vCode, value, vEventName, quantity, createDate, expiryDate);
         if (result) {
             JOptionPane.showMessageDialog(null, "Add voucher successfully");
             clearAddVoucher();

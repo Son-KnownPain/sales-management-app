@@ -205,7 +205,7 @@ public class HistoryView extends javax.swing.JPanel {
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(90, 90, 90));
-        jLabel15.setText("Voucher information: ");
+        jLabel15.setText("General information: ");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Number of product");
