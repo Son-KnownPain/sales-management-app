@@ -33,6 +33,7 @@ public class SellView extends javax.swing.JPanel {
     // HashMap save the id and quantity of the selected product and if you 
     //choose the same product as last time, you will check if there is enough in 
     //stock to get it and if it is not enough, it will not be taken
+    ArrayList<Integer> productIds = new ArrayList<>();
     HashMap<Integer, Integer> selectedProduct = new HashMap<>();
 
     // Chỗ các biến tính toán tiền thanh toán
@@ -62,6 +63,7 @@ public class SellView extends javax.swing.JPanel {
             return;
         } else if (!isContainsKey) {
             selectedProduct.put(currentProduct.getProductID(), quantity);
+            productIds.add(currentProduct.getProductID());
             DefaultTableModel defaultTableModel = (DefaultTableModel) productsTable.getModel();
             
             Object[] data = { 
@@ -74,7 +76,7 @@ public class SellView extends javax.swing.JPanel {
             setInitialPrice((int) ((currentProduct.getPrice() - currentProduct.getDiscount()*currentProduct.getPrice()) * quantity));
         } else {
             int row = 0;
-            for (int keyID : selectedProduct.keySet()) {
+            for (int keyID : productIds) {
                 if (keyID == currentProduct.getProductID()) {
                     break;
                 }
@@ -172,7 +174,7 @@ public class SellView extends javax.swing.JPanel {
     // Get
     private int getProductIDByIndex(int index) {
         int i = 0;
-        for (int keyID : selectedProduct.keySet()) {
+        for (int keyID : productIds) {
             if (i == index) {
                 return keyID;
             }
@@ -193,6 +195,7 @@ public class SellView extends javax.swing.JPanel {
         DefaultTableModel producDefaultTableModel = (DefaultTableModel) productsTable.getModel();
         producDefaultTableModel.setRowCount(0);
         selectedProduct.clear();
+        productIds.clear();
         customerChooseInput.setText("");
         productIDInput.setText("");
         productNameInput.setText("");
@@ -726,17 +729,15 @@ public class SellView extends javax.swing.JPanel {
 
 
     private void handleApplyVoucher(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleApplyVoucher
-        String voucherCode = voucherCodeInput.getText();
+        String voucherCode = voucherCodeInput.getText().trim();
         Voucher voucher = SellController.getVoucher(voucherCode);
         if (voucher == null) {
             showMessageDialog(null, "Voucher code is incorrect", "Message", JOptionPane.PLAIN_MESSAGE);
-            return;
         } else if (voucher.getQuantity() > 0) {
             setCurrentVoucher(voucher);
             isVoucherOfCustomer = false;
         } else {
             showMessageDialog(null, "Quantity is out", "Message", JOptionPane.PLAIN_MESSAGE);
-            return;
         }
     }//GEN-LAST:event_handleApplyVoucher
 
@@ -753,6 +754,7 @@ public class SellView extends javax.swing.JPanel {
             //  Xóa dữ liệu lưu trữ quantity ở HashMap và set lại giá tiền
             int productID = getProductIDByIndex(viewIndex);
             selectedProduct.remove(productID);
+            productIds.remove(viewIndex);
             setInitialPrice(-Integer.parseInt(String.join("", (productsTable.getValueAt(viewIndex, 1) + "").split(" ")[0].split("[.]"))));
 
             int modelIndex = productsTable.convertColumnIndexToModel(viewIndex);

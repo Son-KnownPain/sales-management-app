@@ -3,8 +3,7 @@ package db.use;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 public class Connector {
@@ -20,7 +19,7 @@ public class Connector {
         try {
             this.connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
-            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex.toString());
         }
         
     }

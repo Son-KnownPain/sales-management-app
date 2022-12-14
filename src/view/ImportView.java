@@ -676,9 +676,14 @@ public class ImportView extends javax.swing.JPanel {
     }//GEN-LAST:event_handleShowEditBox
 
     private void handleConfirm(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleConfirm
+        if (productIds.isEmpty()) {
+            showMessageDialog(null, "Please choose products to import before confirm");
+            return;
+        }
         boolean confirmResult = ImportController.confirmImport(productIds, selectedProduct, supplierOfProduct, discountsOfProduct, totalPriceOfProduct);
         if (confirmResult) {
             showMessageDialog(null, "Successfully import goods");
+            clear();
         } else {
             showMessageDialog(null, "Fail to import goods");
         }
